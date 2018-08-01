@@ -8,7 +8,7 @@ public class MaterialStock {
 
     private String categoryName;
 
-    private String itemName;
+    private Integer itemId;
 
     private Integer sellStock;
 
@@ -20,10 +20,10 @@ public class MaterialStock {
 
     private Date lastEditTime;
 
-    public MaterialStock(Integer materialStockId, String categoryName, String itemName, Integer sellStock, Integer useStock, BigDecimal unitPrice, Date createTime, Date lastEditTime) {
+    public MaterialStock(Integer materialStockId, String categoryName, Integer itemId, Integer sellStock, Integer useStock, BigDecimal unitPrice, Date createTime, Date lastEditTime) {
         this.materialStockId = materialStockId;
         this.categoryName = categoryName;
-        this.itemName = itemName;
+        this.itemId = itemId;
         this.sellStock = sellStock;
         this.useStock = useStock;
         this.unitPrice = unitPrice;
@@ -51,12 +51,12 @@ public class MaterialStock {
         this.categoryName = categoryName == null ? null : categoryName.trim();
     }
 
-    public String getItemName() {
-        return itemName;
+    public Integer getItemId() {
+        return itemId;
     }
 
-    public void setItemName(String itemName) {
-        this.itemName = itemName == null ? null : itemName.trim();
+    public void setItemId(Integer itemId) {
+        this.itemId = itemId;
     }
 
     public Integer getSellStock() {

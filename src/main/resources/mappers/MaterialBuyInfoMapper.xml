@@ -5,8 +5,10 @@
     <constructor >
       <idArg column="material_info_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="category_name" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="item_name" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="user_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="item_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="user_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="account_info_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="offer_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="material_info_img" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="seller_name" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="unit_price" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
@@ -19,8 +21,9 @@
     </constructor>
   </resultMap>
   <sql id="Base_Column_List" >
-    material_info_id, category_name, item_name, user_name, material_info_img, seller_name, 
-    unit_price, number, total_price, state, check_user_name, create_time, last_edit_time
+    material_info_id, category_name, item_id, user_id, account_info_id, offer_id, material_info_img, 
+    seller_name, unit_price, number, total_price, state, check_user_name, create_time, 
+    last_edit_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -33,16 +36,18 @@
     where material_info_id = #{materialInfoId,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.pojo.MaterialBuyInfo" >
-    insert into material_buy_info (material_info_id, category_name, item_name, 
-      user_name, material_info_img, seller_name, 
-      unit_price, number, total_price, 
-      state, check_user_name, create_time, 
-      last_edit_time)
-    values (#{materialInfoId,jdbcType=INTEGER}, #{categoryName,jdbcType=VARCHAR}, #{itemName,jdbcType=VARCHAR}, 
-      #{userName,jdbcType=VARCHAR}, #{materialInfoImg,jdbcType=VARCHAR}, #{sellerName,jdbcType=VARCHAR}, 
-      #{unitPrice,jdbcType=DECIMAL}, #{number,jdbcType=INTEGER}, #{totalPrice,jdbcType=DECIMAL}, 
-      #{state,jdbcType=INTEGER}, #{checkUserName,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{lastEditTime,jdbcType=TIMESTAMP})
+    insert into material_buy_info (material_info_id, category_name, item_id, 
+      user_id, account_info_id, offer_id, 
+      material_info_img, seller_name, unit_price, 
+      number, total_price, state, 
+      check_user_name, create_time, last_edit_time
+      )
+    values (#{materialInfoId,jdbcType=INTEGER}, #{categoryName,jdbcType=VARCHAR}, #{itemId,jdbcType=INTEGER}, 
+      #{userId,jdbcType=INTEGER}, #{accountInfoId,jdbcType=INTEGER}, #{offerId,jdbcType=INTEGER}, 
+      #{materialInfoImg,jdbcType=VARCHAR}, #{sellerName,jdbcType=VARCHAR}, #{unitPrice,jdbcType=DECIMAL}, 
+      #{number,jdbcType=INTEGER}, #{totalPrice,jdbcType=DECIMAL}, #{state,jdbcType=INTEGER}, 
+      #{checkUserName,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{lastEditTime,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.pojo.MaterialBuyInfo" >
     insert into material_buy_info
@@ -53,11 +58,17 @@
       <if test="categoryName != null" >
         category_name,
       </if>
-      <if test="itemName != null" >
-        item_name,
+      <if test="itemId != null" >
+        item_id,
       </if>
-      <if test="userName != null" >
-        user_name,
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="accountInfoId != null" >
+        account_info_id,
+      </if>
+      <if test="offerId != null" >
+        offer_id,
       </if>
       <if test="materialInfoImg != null" >
         material_info_img,
@@ -94,11 +105,17 @@
       <if test="categoryName != null" >
         #{categoryName,jdbcType=VARCHAR},
       </if>
-      <if test="itemName != null" >
-        #{itemName,jdbcType=VARCHAR},
+      <if test="itemId != null" >
+        #{itemId,jdbcType=INTEGER},
       </if>
-      <if test="userName != null" >
-        #{userName,jdbcType=VARCHAR},
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="accountInfoId != null" >
+        #{accountInfoId,jdbcType=INTEGER},
+      </if>
+      <if test="offerId != null" >
+        #{offerId,jdbcType=INTEGER},
       </if>
       <if test="materialInfoImg != null" >
         #{materialInfoImg,jdbcType=VARCHAR},
@@ -135,11 +152,17 @@
       <if test="categoryName != null" >
         category_name = #{categoryName,jdbcType=VARCHAR},
       </if>
-      <if test="itemName != null" >
-        item_name = #{itemName,jdbcType=VARCHAR},
+      <if test="itemId != null" >
+        item_id = #{itemId,jdbcType=INTEGER},
       </if>
-      <if test="userName != null" >
-        user_name = #{userName,jdbcType=VARCHAR},
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="accountInfoId != null" >
+        account_info_id = #{accountInfoId,jdbcType=INTEGER},
+      </if>
+      <if test="offerId != null" >
+        offer_id = #{offerId,jdbcType=INTEGER},
       </if>
       <if test="materialInfoImg != null" >
         material_info_img = #{materialInfoImg,jdbcType=VARCHAR},
@@ -174,8 +197,10 @@
   <update id="updateByPrimaryKey" parameterType="com.pojo.MaterialBuyInfo" >
     update material_buy_info
     set category_name = #{categoryName,jdbcType=VARCHAR},
-      item_name = #{itemName,jdbcType=VARCHAR},
-      user_name = #{userName,jdbcType=VARCHAR},
+      item_id = #{itemId,jdbcType=INTEGER},
+      user_id = #{userId,jdbcType=INTEGER},
+      account_info_id = #{accountInfoId,jdbcType=INTEGER},
+      offer_id = #{offerId,jdbcType=INTEGER},
       material_info_img = #{materialInfoImg,jdbcType=VARCHAR},
       seller_name = #{sellerName,jdbcType=VARCHAR},
       unit_price = #{unitPrice,jdbcType=DECIMAL},

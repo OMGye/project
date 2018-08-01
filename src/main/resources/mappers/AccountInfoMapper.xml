@@ -5,8 +5,8 @@
     <constructor >
       <idArg column="account_info_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="category_name" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="user_name" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="item_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="user_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="item_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="account_img" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="pre_price" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
       <arg column="account_rel_price" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
@@ -18,7 +18,7 @@
     </constructor>
   </resultMap>
   <sql id="Base_Column_List" >
-    account_info_id, category_name, user_name, item_name, account_img, pre_price, account_rel_price, 
+    account_info_id, category_name, user_id, item_id, account_img, pre_price, account_rel_price, 
     account_info_dec, state, check_user_name, create_time, last_edit_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
@@ -32,13 +32,13 @@
     where account_info_id = #{accountInfoId,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.pojo.AccountInfo" >
-    insert into account_info (account_info_id, category_name, user_name, 
-      item_name, account_img, pre_price, 
+    insert into account_info (account_info_id, category_name, user_id, 
+      item_id, account_img, pre_price, 
       account_rel_price, account_info_dec, state, 
       check_user_name, create_time, last_edit_time
       )
-    values (#{accountInfoId,jdbcType=INTEGER}, #{categoryName,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, 
-      #{itemName,jdbcType=VARCHAR}, #{accountImg,jdbcType=VARCHAR}, #{prePrice,jdbcType=DECIMAL}, 
+    values (#{accountInfoId,jdbcType=INTEGER}, #{categoryName,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER}, 
+      #{itemId,jdbcType=INTEGER}, #{accountImg,jdbcType=VARCHAR}, #{prePrice,jdbcType=DECIMAL}, 
       #{accountRelPrice,jdbcType=DECIMAL}, #{accountInfoDec,jdbcType=VARCHAR}, #{state,jdbcType=INTEGER}, 
       #{checkUserName,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{lastEditTime,jdbcType=TIMESTAMP}
       )
@@ -52,11 +52,11 @@
       <if test="categoryName != null" >
         category_name,
       </if>
-      <if test="userName != null" >
-        user_name,
+      <if test="userId != null" >
+        user_id,
       </if>
-      <if test="itemName != null" >
-        item_name,
+      <if test="itemId != null" >
+        item_id,
       </if>
       <if test="accountImg != null" >
         account_img,
@@ -90,11 +90,11 @@
       <if test="categoryName != null" >
         #{categoryName,jdbcType=VARCHAR},
       </if>
-      <if test="userName != null" >
-        #{userName,jdbcType=VARCHAR},
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
       </if>
-      <if test="itemName != null" >
-        #{itemName,jdbcType=VARCHAR},
+      <if test="itemId != null" >
+        #{itemId,jdbcType=INTEGER},
       </if>
       <if test="accountImg != null" >
         #{accountImg,jdbcType=VARCHAR},
@@ -128,11 +128,11 @@
       <if test="categoryName != null" >
         category_name = #{categoryName,jdbcType=VARCHAR},
       </if>
-      <if test="userName != null" >
-        user_name = #{userName,jdbcType=VARCHAR},
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
       </if>
-      <if test="itemName != null" >
-        item_name = #{itemName,jdbcType=VARCHAR},
+      <if test="itemId != null" >
+        item_id = #{itemId,jdbcType=INTEGER},
       </if>
       <if test="accountImg != null" >
         account_img = #{accountImg,jdbcType=VARCHAR},
@@ -164,8 +164,8 @@
   <update id="updateByPrimaryKey" parameterType="com.pojo.AccountInfo" >
     update account_info
     set category_name = #{categoryName,jdbcType=VARCHAR},
-      user_name = #{userName,jdbcType=VARCHAR},
-      item_name = #{itemName,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=INTEGER},
+      item_id = #{itemId,jdbcType=INTEGER},
       account_img = #{accountImg,jdbcType=VARCHAR},
       pre_price = #{prePrice,jdbcType=DECIMAL},
       account_rel_price = #{accountRelPrice,jdbcType=DECIMAL},

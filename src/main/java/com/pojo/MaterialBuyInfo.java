@@ -8,9 +8,13 @@ public class MaterialBuyInfo {
 
     private String categoryName;
 
-    private String itemName;
+    private Integer itemId;
 
-    private String userName;
+    private Integer userId;
+
+    private Integer accountInfoId;
+
+    private Integer offerId;
 
     private String materialInfoImg;
 
@@ -30,11 +34,13 @@ public class MaterialBuyInfo {
 
     private Date lastEditTime;
 
-    public MaterialBuyInfo(Integer materialInfoId, String categoryName, String itemName, String userName, String materialInfoImg, String sellerName, BigDecimal unitPrice, Integer number, BigDecimal totalPrice, Integer state, String checkUserName, Date createTime, Date lastEditTime) {
+    public MaterialBuyInfo(Integer materialInfoId, String categoryName, Integer itemId, Integer userId, Integer accountInfoId, Integer offerId, String materialInfoImg, String sellerName, BigDecimal unitPrice, Integer number, BigDecimal totalPrice, Integer state, String checkUserName, Date createTime, Date lastEditTime) {
         this.materialInfoId = materialInfoId;
         this.categoryName = categoryName;
-        this.itemName = itemName;
-        this.userName = userName;
+        this.itemId = itemId;
+        this.userId = userId;
+        this.accountInfoId = accountInfoId;
+        this.offerId = offerId;
         this.materialInfoImg = materialInfoImg;
         this.sellerName = sellerName;
         this.unitPrice = unitPrice;
@@ -66,20 +72,36 @@ public class MaterialBuyInfo {
         this.categoryName = categoryName == null ? null : categoryName.trim();
     }
 
-    public String getItemName() {
-        return itemName;
+    public Integer getItemId() {
+        return itemId;
     }
 
-    public void setItemName(String itemName) {
-        this.itemName = itemName == null ? null : itemName.trim();
+    public void setItemId(Integer itemId) {
+        this.itemId = itemId;
     }
 
-    public String getUserName() {
-        return userName;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName == null ? null : userName.trim();
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
+    public Integer getAccountInfoId() {
+        return accountInfoId;
+    }
+
+    public void setAccountInfoId(Integer accountInfoId) {
+        this.accountInfoId = accountInfoId;
+    }
+
+    public Integer getOfferId() {
+        return offerId;
+    }
+
+    public void setOfferId(Integer offerId) {
+        this.offerId = offerId;
     }
 
     public String getMaterialInfoImg() {

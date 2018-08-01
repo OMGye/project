@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.OfferMaterialMapper" >
+  <resultMap id="BaseResultMap" type="com.pojo.OfferMaterial" >
+    <constructor >
+      <idArg column="offer_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="offer_company" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="offer_phone" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="address" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="last_edit_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    offer_id, offer_company, offer_phone, address, create_time, last_edit_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from offer_material
+    where offer_id = #{offerId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from offer_material
+    where offer_id = #{offerId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.pojo.OfferMaterial" >
+    insert into offer_material (offer_id, offer_company, offer_phone, 
+      address, create_time, last_edit_time
+      )
+    values (#{offerId,jdbcType=INTEGER}, #{offerCompany,jdbcType=VARCHAR}, #{offerPhone,jdbcType=VARCHAR}, 
+      #{address,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{lastEditTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pojo.OfferMaterial" >
+    insert into offer_material
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="offerId != null" >
+        offer_id,
+      </if>
+      <if test="offerCompany != null" >
+        offer_company,
+      </if>
+      <if test="offerPhone != null" >
+        offer_phone,
+      </if>
+      <if test="address != null" >
+        address,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="lastEditTime != null" >
+        last_edit_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="offerId != null" >
+        #{offerId,jdbcType=INTEGER},
+      </if>
+      <if test="offerCompany != null" >
+        #{offerCompany,jdbcType=VARCHAR},
+      </if>
+      <if test="offerPhone != null" >
+        #{offerPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastEditTime != null" >
+        #{lastEditTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pojo.OfferMaterial" >
+    update offer_material
+    <set >
+      <if test="offerCompany != null" >
+        offer_company = #{offerCompany,jdbcType=VARCHAR},
+      </if>
+      <if test="offerPhone != null" >
+        offer_phone = #{offerPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastEditTime != null" >
+        last_edit_time = #{lastEditTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where offer_id = #{offerId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pojo.OfferMaterial" >
+    update offer_material
+    set offer_company = #{offerCompany,jdbcType=VARCHAR},
+      offer_phone = #{offerPhone,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      last_edit_time = #{lastEditTime,jdbcType=TIMESTAMP}
+    where offer_id = #{offerId,jdbcType=INTEGER}
+  </update>
+</mapper>

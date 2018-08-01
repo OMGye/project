@@ -8,9 +8,9 @@ public class AccountInfo {
 
     private String categoryName;
 
-    private String userName;
+    private Integer userId;
 
-    private String itemName;
+    private Integer itemId;
 
     private String accountImg;
 
@@ -28,11 +28,11 @@ public class AccountInfo {
 
     private Date lastEditTime;
 
-    public AccountInfo(Integer accountInfoId, String categoryName, String userName, String itemName, String accountImg, BigDecimal prePrice, BigDecimal accountRelPrice, String accountInfoDec, Integer state, String checkUserName, Date createTime, Date lastEditTime) {
+    public AccountInfo(Integer accountInfoId, String categoryName, Integer userId, Integer itemId, String accountImg, BigDecimal prePrice, BigDecimal accountRelPrice, String accountInfoDec, Integer state, String checkUserName, Date createTime, Date lastEditTime) {
         this.accountInfoId = accountInfoId;
         this.categoryName = categoryName;
-        this.userName = userName;
-        this.itemName = itemName;
+        this.userId = userId;
+        this.itemId = itemId;
         this.accountImg = accountImg;
         this.prePrice = prePrice;
         this.accountRelPrice = accountRelPrice;
@@ -63,20 +63,20 @@ public class AccountInfo {
         this.categoryName = categoryName == null ? null : categoryName.trim();
     }
 
-    public String getUserName() {
-        return userName;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName == null ? null : userName.trim();
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
-    public String getItemName() {
-        return itemName;
+    public Integer getItemId() {
+        return itemId;
     }
 
-    public void setItemName(String itemName) {
-        this.itemName = itemName == null ? null : itemName.trim();
+    public void setItemId(Integer itemId) {
+        this.itemId = itemId;
     }
 
     public String getAccountImg() {

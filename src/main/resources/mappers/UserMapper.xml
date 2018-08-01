@@ -36,7 +36,7 @@
       user_img)
     values (#{userId,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
       #{phone,jdbcType=VARCHAR}, #{state,jdbcType=TINYINT}, #{userType,jdbcType=INTEGER}, 
-      #{itemId,jdbcType=INTEGER}, now(), now(),
+      #{itemId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{lastEditTime,jdbcType=TIMESTAMP}, 
       #{userImg,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.pojo.User" >
@@ -130,9 +130,9 @@
       <if test="createTime != null" >
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
-
-        last_edit_time = now(),
-
+      <if test="lastEditTime != null" >
+        last_edit_time = #{lastEditTime,jdbcType=TIMESTAMP},
+      </if>
       <if test="userImg != null" >
         user_img = #{userImg,jdbcType=VARCHAR},
       </if>
@@ -152,26 +152,4 @@
       user_img = #{userImg,jdbcType=VARCHAR}
     where user_id = #{userId,jdbcType=INTEGER}
   </update>
-
-  <select id="selectByUserNameAndPassword" parameterType="map" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List"/>
-    from project_user
-    where user_name = #{userName}
-    and password = #{password}
-  </select>
-
-  <select id="selectUserList" resultMap="BaseResultMap">
-    SELECT
-    <include refid="Base_Column_List"/>
-    from project_user
-    where state = 1
-  </select>
-
-  <select id="selectUnAbleUserList" resultMap="BaseResultMap">
-    SELECT
-    <include refid="Base_Column_List"/>
-    from project_user
-    where state = 0
-  </select>
 </mapper>
