@@ -98,13 +98,17 @@ public class UserController {
         return ServerResponse.createByErrorMessage("请登入管理员账户");
     }
 
-    public ServerResponse getUserForItem(HttpSession session, Integer userType){
+    @RequestMapping(value = "getuserinfo.do",method = RequestMethod.GET)
+    @ResponseBody
+    public ServerResponse getUserInfo(HttpSession session, Integer userId){
         User user = (User)session.getAttribute(Const.CURRENT_USER);
         if(user == null){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");
         }
-        if (UserAuth.BOSS.getCode() == user.getUserType() | UserAuth.MANAGER.getCode() == user.getUserType()){
-            return null;
+        if (UserAuth.BOSS.getCode() == user.getUserType() ){
+            if (userId == null)
+                return ServerResponse.createByErrorMessage("参数错误");
+            return userService.getUserInfo(userId);
         }
         return ServerResponse.createByErrorMessage("请登入管理员账户");
     }

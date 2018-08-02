@@ -21,4 +21,6 @@ public interface UserService {
     ServerResponse<PageInfo> unAbleUserList(int pageNum, int pageSize);
 
     ServerResponse<String> updateUser(User user);
+
+    ServerResponse<User> getUserInfo(Integer userId);
 }

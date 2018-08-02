@@ -114,9 +114,11 @@ public class UserServiceImpl implements UserService{
         return ServerResponse.createBySuccess("操作失败");
     }
 
-    @Transactional
-    public ServerResponse updateItemId(List<Integer> userIds, Integer itemId) throws Exception{
-
-        return null;
+    @Override
+    public ServerResponse<User> getUserInfo(Integer userId) {
+        User user = userMapper.selectByPrimaryKey(userId);
+        if (user == null)
+            ServerResponse.createByErrorMessage("没有该用户");
+        return ServerResponse.createBySuccess(user);
     }
 }
