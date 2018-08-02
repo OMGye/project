@@ -73,7 +73,7 @@ public class UserController {
 
     @RequestMapping(value = "listunableuser.do",method = RequestMethod.GET)
     @ResponseBody
-    public ServerResponse<PageInfo> listUnAbleUser(HttpSession session,@RequestParam(value = "pageNum",defaultValue = "1") int pageNum, @RequestParam(value = "pageSize",defaultValue = "1") int pageSize){
+    public ServerResponse<PageInfo> listUnAbleUser(HttpSession session,@RequestParam(value = "pageNum",defaultValue = "1") int pageNum, @RequestParam(value = "pageSize",defaultValue = "5") int pageSize){
         User user = (User)session.getAttribute(Const.CURRENT_USER);
         if(user == null){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");
@@ -98,5 +98,17 @@ public class UserController {
         return ServerResponse.createByErrorMessage("请登入管理员账户");
     }
 
+    public ServerResponse getUserForItem(HttpSession session, Integer userType){
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        if(user == null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");
+        }
+        if (UserAuth.BOSS.getCode() == user.getUserType() | UserAuth.MANAGER.getCode() == user.getUserType()){
+            return null;
+        }
+        return ServerResponse.createByErrorMessage("请登入管理员账户");
+    }
+    }
 
-}
+
+

@@ -60,6 +60,7 @@ public class ItemServiceImpl implements ItemService{
     @Override
     public ServerResponse<PageInfo> listItemVo(Integer userId,int pageNum, int pageSize) {
         PageHelper.startPage(pageNum,pageSize);
+
         List<Item> list = new ArrayList<>();
         if (UserAuth.BOSS.getCode() == userId) {
             list = itemMapper.select();
