@@ -117,7 +117,7 @@ public class UserServiceImpl implements UserService{
     @Override
     public ServerResponse<User> getUserInfo(Integer userId) {
         User user = userMapper.selectByPrimaryKey(userId);
-        if (user == null)
+        if (user.getUserId() == null)
             ServerResponse.createByErrorMessage("没有该用户");
         return ServerResponse.createBySuccess(user);
     }
