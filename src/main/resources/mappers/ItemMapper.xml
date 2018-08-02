@@ -11,10 +11,12 @@
       <arg column="state" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
       <arg column="last_edit_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="end_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List" >
-    item_id, item_name, item_dec, prority, user_id, state, create_time, last_edit_time
+    item_id, item_name, item_dec, prority, user_id, state, create_time, last_edit_time, 
+    end_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -26,13 +28,15 @@
     delete from project_item
     where item_id = #{itemId,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.pojo.Item" >
+  <insert id="insert" useGeneratedKeys="true" keyProperty="itemId" parameterType="com.pojo.Item" >
     insert into project_item (item_id, item_name, item_dec, 
       prority, user_id, state, 
-      create_time, last_edit_time)
+      create_time, last_edit_time, end_time
+      )
     values (#{itemId,jdbcType=INTEGER}, #{itemName,jdbcType=VARCHAR}, #{itemDec,jdbcType=VARCHAR}, 
       #{prority,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{state,jdbcType=INTEGER}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{lastEditTime,jdbcType=TIMESTAMP})
+      now(), now(), #{endTime,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.pojo.Item" >
     insert into project_item
@@ -61,6 +65,9 @@
       <if test="lastEditTime != null" >
         last_edit_time,
       </if>
+      <if test="endTime != null" >
+        end_time,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="itemId != null" >
@@ -86,6 +93,9 @@
       </if>
       <if test="lastEditTime != null" >
         #{lastEditTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null" >
+        #{endTime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -113,6 +123,9 @@
       <if test="lastEditTime != null" >
         last_edit_time = #{lastEditTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="endTime != null" >
+        end_time = #{endTime,jdbcType=TIMESTAMP},
+      </if>
     </set>
     where item_id = #{itemId,jdbcType=INTEGER}
   </update>
@@ -124,7 +137,21 @@
       user_id = #{userId,jdbcType=INTEGER},
       state = #{state,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP},
-      last_edit_time = #{lastEditTime,jdbcType=TIMESTAMP}
+      last_edit_time = #{lastEditTime,jdbcType=TIMESTAMP},
+      end_time = #{endTime,jdbcType=TIMESTAMP}
     where item_id = #{itemId,jdbcType=INTEGER}
   </update>
+
+  <select id="selectByUserId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    from project_item
+    where user_id = #{userId}
+  </select>
+
+  <select id="select" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    from project_item
+  </select>
 </mapper>

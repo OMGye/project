@@ -19,7 +19,9 @@ public class Item {
 
     private Date lastEditTime;
 
-    public Item(Integer itemId, String itemName, String itemDec, Integer prority, Integer userId, Integer state, Date createTime, Date lastEditTime) {
+    private Date endTime;
+
+    public Item(Integer itemId, String itemName, String itemDec, Integer prority, Integer userId, Integer state, Date createTime, Date lastEditTime, Date endTime) {
         this.itemId = itemId;
         this.itemName = itemName;
         this.itemDec = itemDec;
@@ -28,6 +30,7 @@ public class Item {
         this.state = state;
         this.createTime = createTime;
         this.lastEditTime = lastEditTime;
+        this.endTime = endTime;
     }
 
     public Item() {
@@ -96,5 +99,13 @@ public class Item {
 
     public void setLastEditTime(Date lastEditTime) {
         this.lastEditTime = lastEditTime;
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
     }
 }

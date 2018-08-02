@@ -4,8 +4,11 @@ import com.google.common.collect.Lists;
 import com.pojo.User;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.text.ParseException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,9 +20,15 @@ public class ProductServiceTest extends TestBase {
     private UserMapper userMapper;
 
     @Test
-    public void testIProductService() throws ParseException {
-        User user = userMapper.selectByUserNameAndPassword("","");
-        System.out.println(user);
+    @Transactional
+    public void testIProductService() throws Exception {
+        List<Integer> list = new ArrayList<>();
+        list.add(1);
+        list.add(2);
+        int row = userMapper.updateItemId(list,2);
+        if (row < 2)
+            throw new Exception();
+        System.out.println(row);
     }
 
 }

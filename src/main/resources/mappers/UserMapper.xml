@@ -16,11 +16,11 @@
     </constructor>
   </resultMap>
   <sql id="Base_Column_List" >
-    user_id, user_name, password, phone, state, user_type, item_id, create_time, last_edit_time, 
+    user_id, user_name, password, phone, state, user_type, item_id, create_time, last_edit_time,
     user_img
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
+    select
     <include refid="Base_Column_List" />
     from project_user
     where user_id = #{userId,jdbcType=INTEGER}
@@ -30,14 +30,14 @@
     where user_id = #{userId,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.pojo.User" >
-    insert into project_user (user_id, user_name, password, 
-      phone, state, user_type, 
-      item_id, create_time, last_edit_time, 
-      user_img)
-    values (#{userId,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
-      #{phone,jdbcType=VARCHAR}, #{state,jdbcType=TINYINT}, #{userType,jdbcType=INTEGER}, 
-      #{itemId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{lastEditTime,jdbcType=TIMESTAMP}, 
-      #{userImg,jdbcType=VARCHAR})
+    insert into project_user (user_id, user_name, password,
+    phone, state, user_type,
+    item_id, create_time, last_edit_time,
+    user_img)
+    values (#{userId,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
+    #{phone,jdbcType=VARCHAR}, #{state,jdbcType=TINYINT}, #{userType,jdbcType=INTEGER},
+    #{itemId,jdbcType=INTEGER}, now(), now(),
+    #{userImg,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.pojo.User" >
     insert into project_user
@@ -130,9 +130,9 @@
       <if test="createTime != null" >
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="lastEditTime != null" >
-        last_edit_time = #{lastEditTime,jdbcType=TIMESTAMP},
-      </if>
+
+      last_edit_time = now(),
+
       <if test="userImg != null" >
         user_img = #{userImg,jdbcType=VARCHAR},
       </if>
@@ -142,14 +142,46 @@
   <update id="updateByPrimaryKey" parameterType="com.pojo.User" >
     update project_user
     set user_name = #{userName,jdbcType=VARCHAR},
-      password = #{password,jdbcType=VARCHAR},
-      phone = #{phone,jdbcType=VARCHAR},
-      state = #{state,jdbcType=TINYINT},
-      user_type = #{userType,jdbcType=INTEGER},
-      item_id = #{itemId,jdbcType=INTEGER},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      last_edit_time = #{lastEditTime,jdbcType=TIMESTAMP},
-      user_img = #{userImg,jdbcType=VARCHAR}
+    password = #{password,jdbcType=VARCHAR},
+    phone = #{phone,jdbcType=VARCHAR},
+    state = #{state,jdbcType=TINYINT},
+    user_type = #{userType,jdbcType=INTEGER},
+    item_id = #{itemId,jdbcType=INTEGER},
+    create_time = #{createTime,jdbcType=TIMESTAMP},
+    last_edit_time = #{lastEditTime,jdbcType=TIMESTAMP},
+    user_img = #{userImg,jdbcType=VARCHAR}
     where user_id = #{userId,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectByUserNameAndPassword" parameterType="map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from project_user
+    where user_name = #{userName}
+    and password = #{password}
+  </select>
+
+  <select id="selectUserList" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    from project_user
+    where state = 1
+  </select>
+
+  <select id="selectUnAbleUserList" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    from project_user
+    where state = 0
+  </select>
+
+  <update id="updateItemId" parameterType="map">
+    UPDATE
+    project_user
+    set item_id = #{itemId}
+    where user_id in
+    <foreach item="item" index="index" open="(" separator="," close=")" collection="userIds">
+    #{item}
+  </foreach>
   </update>
 </mapper>

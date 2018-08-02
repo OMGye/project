@@ -2,6 +2,8 @@ package com.dao;
 
 import com.pojo.Item;
 
+import java.util.List;
+
 public interface ItemMapper {
     int deleteByPrimaryKey(Integer itemId);
 
@@ -14,4 +16,9 @@ public interface ItemMapper {
     int updateByPrimaryKeySelective(Item record);
 
     int updateByPrimaryKey(Item record);
+
+    List<Item> selectByUserId(Integer userId);
+
+    List<Item> select();
+
 }

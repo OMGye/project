@@ -4,6 +4,7 @@ import com.common.Const;
 import com.common.ResponseCode;
 import com.common.ServerResponse;
 import com.common.UserAuth;
+import com.github.pagehelper.PageInfo;
 import com.pojo.User;
 import com.service.UserService;
 import org.apache.commons.lang3.StringUtils;
@@ -29,7 +30,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping(value = "login.do",method = RequestMethod.GET)
+    @RequestMapping(value = "login.do",method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<User> login(User user, HttpSession session){
         if (StringUtils.isBlank(user.getPassword()) | StringUtils.isBlank(user.getUserName()))
@@ -41,7 +42,7 @@ public class UserController {
         return response;
     }
 
-    @RequestMapping(value = "adduser.do",method = RequestMethod.GET)
+    @RequestMapping(value = "adduser.do",method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse addUser(User addUser, HttpSession session, @RequestParam(value = "upload_file",required = false) MultipartFile file, HttpServletRequest request){
         User user = (User)session.getAttribute(Const.CURRENT_USER);
@@ -59,32 +60,32 @@ public class UserController {
 
     @RequestMapping(value = "listableuser.do",method = RequestMethod.GET)
     @ResponseBody
-    public ServerResponse<List<User>> listAbleUser(HttpSession session){
+    public ServerResponse<PageInfo> listAbleUser(HttpSession session,@RequestParam(value = "pageNum",defaultValue = "1") int pageNum, @RequestParam(value = "pageSize",defaultValue = "5")int pageSize){
         User user = (User)session.getAttribute(Const.CURRENT_USER);
         if(user == null){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");
         }
         if (UserAuth.BOSS.getCode() == user.getUserType()){
-            return userService.ableUserList();
+            return userService.ableUserList(pageNum,pageSize);
         }
         return ServerResponse.createByErrorMessage("请登入管理员账户");
     }
 
     @RequestMapping(value = "listunableuser.do",method = RequestMethod.GET)
     @ResponseBody
-    public ServerResponse<List<User>> listUnAbleUser(HttpSession session){
+    public ServerResponse<PageInfo> listUnAbleUser(HttpSession session,@RequestParam(value = "pageNum",defaultValue = "1") int pageNum, @RequestParam(value = "pageSize",defaultValue = "5")int pageSize){
         User user = (User)session.getAttribute(Const.CURRENT_USER);
         if(user == null){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");
         }
         if (UserAuth.BOSS.getCode() == user.getUserType()){
-            return userService.unAbleUserList();
+            return userService.unAbleUserList(pageNum,pageSize);
         }
         return ServerResponse.createByErrorMessage("请登入管理员账户");
     }
 
 
-    @RequestMapping(value = "updateuser.do",method = RequestMethod.GET)
+    @RequestMapping(value = "updateuser.do",method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<String> updateUser(HttpSession session,User reUser){
         User user = (User)session.getAttribute(Const.CURRENT_USER);

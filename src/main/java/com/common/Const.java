@@ -11,4 +11,9 @@ public class Const {
         int ACTIVATE = 1;
         int UNACTIVATE = 0;
     }
+
+    public interface Item{
+        int WORKING = 0;
+        int FINISHED = 1;
+    }
 }

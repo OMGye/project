@@ -1,6 +1,7 @@
 package com.service;
 
 import com.common.ServerResponse;
+import com.github.pagehelper.PageInfo;
 import com.pojo.User;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -15,9 +16,9 @@ public interface UserService {
 
     ServerResponse<String> addUser(User user, MultipartFile file, String path);
 
-    ServerResponse<List<User>> ableUserList();
+    ServerResponse<PageInfo> ableUserList(int pageNum, int pageSize);
 
-    ServerResponse<List<User>> unAbleUserList();
+    ServerResponse<PageInfo> unAbleUserList(int pageNum, int pageSize);
 
     ServerResponse<String> updateUser(User user);
 }

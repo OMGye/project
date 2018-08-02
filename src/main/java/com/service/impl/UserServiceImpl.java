@@ -3,7 +3,10 @@ package com.service.impl;
 import com.common.Const;
 import com.common.ServerResponse;
 import com.dao.UserMapper;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
+import com.pojo.Item;
 import com.pojo.User;
 import com.service.UserService;
 import com.util.FTPUtil;
@@ -13,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -83,15 +87,21 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public ServerResponse<List<User>> ableUserList() {
-
-        return ServerResponse.createBySuccess(userMapper.selectUserList());
+    public ServerResponse<PageInfo> ableUserList(int pageNum, int pageSize) {
+        PageHelper.startPage(pageNum,pageSize);
+        List<User> list = userMapper.selectUserList();
+        PageInfo pageInfo = new PageInfo();
+        pageInfo.setList(list);
+        return ServerResponse.createBySuccess(pageInfo);
     }
 
     @Override
-    public ServerResponse<List<User>> unAbleUserList() {
-
-        return ServerResponse.createBySuccess(userMapper.selectUnAbleUserList());
+    public ServerResponse<PageInfo> unAbleUserList(int pageNum, int pageSize) {
+        PageHelper.startPage(pageNum,pageSize);
+        List<User> list = userMapper.selectUnAbleUserList();
+        PageInfo pageInfo = new PageInfo();
+        pageInfo.setList(list);
+        return ServerResponse.createBySuccess(pageInfo);
     }
 
     @Override
@@ -100,5 +110,11 @@ public class UserServiceImpl implements UserService{
         if (res > 0)
             return ServerResponse.createBySuccess("操作成功");
         return ServerResponse.createBySuccess("操作失败");
+    }
+
+    @Transactional
+    public ServerResponse updateItemId(List<Integer> userIds, Integer itemId) throws Exception{
+
+        return null;
     }
 }
