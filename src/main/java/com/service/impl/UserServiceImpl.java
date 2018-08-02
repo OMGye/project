@@ -90,7 +90,7 @@ public class UserServiceImpl implements UserService{
     public ServerResponse<PageInfo> ableUserList(int pageNum, int pageSize) {
         PageHelper.startPage(pageNum,pageSize);
         List<User> list = userMapper.selectUserList();
-        PageInfo pageInfo = new PageInfo();
+        PageInfo pageInfo = new PageInfo(list);
         pageInfo.setList(list);
         return ServerResponse.createBySuccess(pageInfo);
     }
@@ -99,7 +99,7 @@ public class UserServiceImpl implements UserService{
     public ServerResponse<PageInfo> unAbleUserList(int pageNum, int pageSize) {
         PageHelper.startPage(pageNum,pageSize);
         List<User> list = userMapper.selectUnAbleUserList();
-        PageInfo pageInfo = new PageInfo();
+        PageInfo pageInfo = new PageInfo(list);
         pageInfo.setList(list);
         return ServerResponse.createBySuccess(pageInfo);
     }
