@@ -112,7 +112,14 @@ public class UserController {
         }
         return ServerResponse.createByErrorMessage("请登入管理员账户");
     }
+
+    @RequestMapping(value = "logout.do",method = RequestMethod.POST)
+    @ResponseBody
+    public ServerResponse<String> logout(HttpSession session){
+        session.removeAttribute(Const.CURRENT_USER);
+        return ServerResponse.createBySuccess("注销成功");
     }
+}
 
 
 
