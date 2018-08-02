@@ -89,7 +89,7 @@ public class UserServiceImpl implements UserService{
     @Override
     public ServerResponse<PageInfo> ableUserList(int pageNum, int pageSize) {
         PageHelper.startPage(pageNum,pageSize);
-        PageHelper.orderBy("id desc");
+        PageHelper.orderBy("user_id desc");
         List<User> list = userMapper.selectUserList();
         PageInfo pageInfo = new PageInfo(list);
         pageInfo.setList(list);
@@ -99,7 +99,7 @@ public class UserServiceImpl implements UserService{
     @Override
     public ServerResponse<PageInfo> unAbleUserList(int pageNum, int pageSize) {
         PageHelper.startPage(pageNum,pageSize);
-        PageHelper.orderBy("id desc");
+        PageHelper.orderBy("user_id desc");
         List<User> list = userMapper.selectUnAbleUserList();
         PageInfo pageInfo = new PageInfo(list);
         pageInfo.setList(list);
