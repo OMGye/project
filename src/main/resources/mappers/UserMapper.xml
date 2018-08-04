@@ -184,4 +184,12 @@
     #{item}
   </foreach>
   </update>
+
+  <select id="selectByUserType" resultMap="BaseResultMap" parameterType="int">
+    SELECT
+    <include refid="Base_Column_List"/>
+    from project_user
+    where user_type = #{userType}
+    and item_id IS NULL
+  </select>
 </mapper>

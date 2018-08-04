@@ -8,6 +8,7 @@ import com.github.pagehelper.PageInfo;
 import com.pojo.Item;
 import com.pojo.User;
 import com.service.ItemService;
+import com.vo.UserVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 /**
  * Created by upupgogogo on 2018/8/2.上午2:42
@@ -39,7 +41,7 @@ public class ItemController {
              item.setItemDec(itemDec);
              item.setUserId(userId);
              item.setItemName(itemName);
-            if (item.getUserId() == null && accountUserId == null && accountCheckUserId == null && materialUserId == null && materialCheckUserId == null && endTime == null)
+            if (item.getUserId() == null && endTime == null)
                 return ServerResponse.createByErrorMessage("请选定负责人");
             try {
                 return itemService.addNewItem(item,accountUserId,accountCheckUserId,materialUserId,materialCheckUserId,endTime);
@@ -50,6 +52,22 @@ public class ItemController {
 
         return ServerResponse.createByErrorMessage("请登入管理员账户");
     }
+
+    @RequestMapping(value = "getuserforcheck.do",method = RequestMethod.GET)
+    @ResponseBody
+    public ServerResponse<List<UserVo>> getLeader(HttpSession session,Integer userType){
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        if(user == null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");
+        }
+        if (UserAuth.BOSS.getCode() == user.getUserType() ){
+            if (userType > 7)
+                return ServerResponse.createByErrorMessage("参数错误");
+            return itemService.getUserForCheck(userType);
+        }
+        return ServerResponse.createByErrorMessage("请登入管理员账户");
+    }
+
 
     @RequestMapping(value = "listitem.do",method = RequestMethod.GET)
     @ResponseBody

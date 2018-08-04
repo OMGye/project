@@ -8,8 +8,10 @@ import com.dao.UserMapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.pojo.Item;
+import com.pojo.User;
 import com.service.ItemService;
 import com.vo.ItemListVo;
+import com.vo.UserVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,14 +44,18 @@ public class ItemServiceImpl implements ItemService{
         if (itemId == null)
             return ServerResponse.createByErrorMessage("新建项目失败");
         List<Integer> userIds = new ArrayList<>();
-        userIds.add(accountCheckUserId);
-        userIds.add(accountUserId);
-        userIds.add(materialCheckUserId);
-        userIds.add(materialUserId);
+        if (accountCheckUserId != null)
+            userIds.add(accountCheckUserId);
+        if (accountUserId != null)
+            userIds.add(accountUserId);
+        if (materialCheckUserId != null)
+            userIds.add(materialCheckUserId);
+        if (materialUserId != null)
+            userIds.add(materialUserId);
         userIds.add(item.getUserId());
 
         int row = userMapper.updateItemId(userIds,itemId);
-        if (row < 5){
+        if (row < userIds.size()){
             itemMapper.deleteByPrimaryKey(itemId);
             throw new Exception();
         }
@@ -85,5 +91,17 @@ public class ItemServiceImpl implements ItemService{
             listVos.add(listVo);
         }
         return listVos;
+    }
+
+    @Override
+    public ServerResponse<List<UserVo>> getUserForCheck(Integer userType) {
+
+        List<User> list = userMapper.selectByUserType(userType);
+        List<UserVo> userVoList = new ArrayList<>();
+        for (User user : list){
+            UserVo userVo = new UserVo(user.getUserId(),user.getUserName());
+            userVoList.add(userVo);
+        }
+        return ServerResponse.createBySuccess(userVoList);
     }
 }

@@ -25,4 +25,6 @@ public interface UserMapper {
     List<User> selectUnAbleUserList();
 
     int updateItemId(@Param("userIds") List<Integer> userIds, @Param("itemId") Integer itemId);
+
+    List<User> selectByUserType(Integer userType);
 }
