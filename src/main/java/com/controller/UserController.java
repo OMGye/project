@@ -105,7 +105,7 @@ public class UserController {
         if(user == null){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");
         }
-        if (UserAuth.BOSS.getCode() == user.getUserType() ){
+        if (UserAuth.BOSS.getCode() == user.getUserType() || user.getUserId() == userId){
             if (userId == null)
                 return ServerResponse.createByErrorMessage("参数错误");
             return userService.getUserInfo(userId);
@@ -119,6 +119,17 @@ public class UserController {
         session.removeAttribute(Const.CURRENT_USER);
         return ServerResponse.createBySuccess("注销成功");
     }
+
+    @RequestMapping(value = "updatemyself.do",method = RequestMethod.POST)
+    @ResponseBody
+    public ServerResponse update(HttpSession session,HttpServletRequest request, User updateUser,@RequestParam(value = "upload_file",required = false) MultipartFile file){
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        if(user == null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");
+        }
+        return userService.update(updateUser,file,request.getSession().getServletContext().getRealPath("upload"));
+    }
+
 }
 
 
