@@ -127,6 +127,9 @@ public class UserController {
         if(user == null){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");
         }
+        updateUser.setUserId(user.getUserId());
+        updateUser.setState(user.getState());
+        updateUser.setUserType(user.getUserType());
         return userService.update(updateUser,file,request.getSession().getServletContext().getRealPath("upload"));
     }
 
