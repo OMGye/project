@@ -50,7 +50,7 @@ public class ItemController {
             try {
                 return itemService.addNewItem(item,accountUserId,accountCheckUserId,materialUserId,materialCheckUserId,endTime);
             } catch (Exception e) {
-                logger.info(e.getMessage());
+                logger.error(e.getMessage());
                 return ServerResponse.createByErrorMessage("参数错误");
             }
         }
