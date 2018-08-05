@@ -60,7 +60,7 @@ public class ItemServiceImpl implements ItemService{
 
         int row = userMapper.updateItemId(userIds,item.getItemId());
         if (row < userIds.size()){
-            itemMapper.deleteByPrimaryKey(itemId);
+            itemMapper.deleteByPrimaryKey(item.getItemId());
             throw new Exception();
         }
 
