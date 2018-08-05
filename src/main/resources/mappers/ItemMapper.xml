@@ -155,6 +155,11 @@
     from project_item
   </select>
 
-
+  <select id="selectByItemName" resultMap="BaseResultMap" parameterType="java.lang.String">
+    SELECT
+    <include refid="Base_Column_List"/>
+    from project_item
+    where item_name = #{itemName}
+  </select>
 
 </mapper>

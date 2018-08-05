@@ -21,5 +21,7 @@ public interface ItemMapper {
 
     List<Item> select();
 
+    Item selectByItemName(String itemName);
+
 
 }

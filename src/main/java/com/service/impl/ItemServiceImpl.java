@@ -35,13 +35,17 @@ public class ItemServiceImpl implements ItemService{
 
     @Transactional
     public ServerResponse addNewItem(Item item, Integer accountUserId, Integer accountCheckUserId, Integer materialUserId, Integer materialCheckUserId, String endTime) throws Exception{
+        Item selectItem = itemMapper.selectByItemName(item.getItemName());
+        if (selectItem != null){
+            return ServerResponse.createByErrorMessage("项目名已经存在");
+        }
         item.setState(Const.Item.WORKING);
         SimpleDateFormat sDateFormat=new SimpleDateFormat("yyyy-MM-dd");
         Date date=sDateFormat.parse(endTime);
         item.setEndTime(date);
 
         Integer itemId = itemMapper.insert(item);
-        if (itemId == null)
+        if (itemId < 0)
             return ServerResponse.createByErrorMessage("新建项目失败");
         List<Integer> userIds = new ArrayList<>();
         if (accountCheckUserId != null)
@@ -54,7 +58,7 @@ public class ItemServiceImpl implements ItemService{
             userIds.add(materialUserId);
         userIds.add(item.getUserId());
 
-        int row = userMapper.updateItemId(userIds,itemId);
+        int row = userMapper.updateItemId(userIds,item.getItemId());
         if (row < userIds.size()){
             itemMapper.deleteByPrimaryKey(itemId);
             throw new Exception();
