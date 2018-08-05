@@ -82,7 +82,7 @@ public class ItemController {
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");
         }
         if (UserAuth.BOSS.getCode() == user.getUserType() | UserAuth.MANAGER.getCode() == user.getUserType()){
-            return itemService.listItemVo(user.getUserId(),pageNum,pageSize);
+            return itemService.listItemVo(user,pageNum,pageSize);
         }
         return ServerResponse.createByErrorMessage("请登入管理员账户");
     }

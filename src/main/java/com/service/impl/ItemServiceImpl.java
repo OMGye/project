@@ -68,15 +68,15 @@ public class ItemServiceImpl implements ItemService{
     }
 
     @Override
-    public ServerResponse<PageInfo> listItemVo(Integer userId,int pageNum, int pageSize) {
+    public ServerResponse<PageInfo> listItemVo(User user,int pageNum, int pageSize) {
         PageHelper.startPage(pageNum,pageSize);
 
         List<Item> list = new ArrayList<>();
-        if (UserAuth.BOSS.getCode() == userId) {
+        if (UserAuth.BOSS.getCode() == user.getUserType()) {
             list = itemMapper.select();
         }
         else{
-            list = itemMapper.selectByUserId(userId);
+            list = itemMapper.selectByUserId(user.getUserId());
 
         }
         PageInfo pageInfo = new PageInfo(list);

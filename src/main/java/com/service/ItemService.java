@@ -3,6 +3,7 @@ package com.service;
 import com.common.ServerResponse;
 import com.github.pagehelper.PageInfo;
 import com.pojo.Item;
+import com.pojo.User;
 import com.vo.UserVo;
 
 import java.util.List;
@@ -14,7 +15,7 @@ public interface ItemService {
 
     ServerResponse addNewItem(Item item, Integer accountUserId, Integer accountCheckUserId, Integer materialUserId, Integer materialCheckUserId, String endTime)throws Exception;
 
-    ServerResponse<PageInfo> listItemVo(Integer userId, int pageNum, int pageSize);
+    ServerResponse<PageInfo> listItemVo(User user, int pageNum, int pageSize);
 
     ServerResponse<List<UserVo>> getUserForCheck(Integer userType);
 
