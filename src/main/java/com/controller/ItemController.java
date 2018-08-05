@@ -9,6 +9,8 @@ import com.pojo.Item;
 import com.pojo.User;
 import com.service.ItemService;
 import com.vo.UserVo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,6 +31,8 @@ public class ItemController {
     @Autowired
     private ItemService itemService;
 
+    private Logger logger = LoggerFactory.getLogger(ItemController.class);
+
     @RequestMapping(value = "additem.do",method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse addItem(HttpSession session, Integer userId,String itemName, String itemDec, Integer accountUserId, Integer accountCheckUserId, Integer materialUserId, Integer materialCheckUserId, String endTime){
@@ -46,6 +50,7 @@ public class ItemController {
             try {
                 return itemService.addNewItem(item,accountUserId,accountCheckUserId,materialUserId,materialCheckUserId,endTime);
             } catch (Exception e) {
+                logger.info(e.getMessage());
                 return ServerResponse.createByErrorMessage("参数错误");
             }
         }
