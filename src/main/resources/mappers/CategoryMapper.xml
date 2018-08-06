@@ -27,7 +27,7 @@
     insert into project_category (category_id, category_name, priority, 
       create_time, last_edit_time)
     values (#{categoryId,jdbcType=INTEGER}, #{categoryName,jdbcType=VARCHAR}, #{priority,jdbcType=INTEGER}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{lastEditTime,jdbcType=TIMESTAMP})
+      now(), now())
   </insert>
   <insert id="insertSelective" parameterType="com.pojo.Category" >
     insert into project_category
@@ -78,9 +78,8 @@
       <if test="createTime != null" >
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="lastEditTime != null" >
-        last_edit_time = #{lastEditTime,jdbcType=TIMESTAMP},
-      </if>
+
+        last_edit_time = now(),
     </set>
     where category_id = #{categoryId,jdbcType=INTEGER}
   </update>
@@ -92,4 +91,25 @@
       last_edit_time = #{lastEditTime,jdbcType=TIMESTAMP}
     where category_id = #{categoryId,jdbcType=INTEGER}
   </update>
+
+  <select id="selectList" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from project_category
+  </select>
+
+  <select id="selectCountByName" parameterType="java.lang.String" resultType="java.lang.Integer">
+    SELECT
+    COUNT(1)
+    from project_category
+    where category_name = #{categoryName}
+  </select>
+
+  <select id="selectCountByNameAndId" parameterType="map" resultType="java.lang.Integer">
+    SELECT
+    COUNT(1)
+    from project_category
+    where category_name = #{categoryName}
+    and category_id != #{categoryId}
+  </select>
 </mapper>

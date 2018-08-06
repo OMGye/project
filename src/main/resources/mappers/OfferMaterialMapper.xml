@@ -29,7 +29,7 @@
       address, create_time, last_edit_time
       )
     values (#{offerId,jdbcType=INTEGER}, #{offerCompany,jdbcType=VARCHAR}, #{offerPhone,jdbcType=VARCHAR}, 
-      #{address,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{lastEditTime,jdbcType=TIMESTAMP}
+      #{address,jdbcType=VARCHAR}, now(), now()
       )
   </insert>
   <insert id="insertSelective" parameterType="com.pojo.OfferMaterial" >
@@ -90,9 +90,9 @@
       <if test="createTime != null" >
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="lastEditTime != null" >
-        last_edit_time = #{lastEditTime,jdbcType=TIMESTAMP},
-      </if>
+
+       last_edit_time = now(),
+
     </set>
     where offer_id = #{offerId,jdbcType=INTEGER}
   </update>
@@ -105,4 +105,25 @@
       last_edit_time = #{lastEditTime,jdbcType=TIMESTAMP}
     where offer_id = #{offerId,jdbcType=INTEGER}
   </update>
+
+  <select id="selectList" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from offer_material
+  </select>
+
+  <select id="selectCountByName" parameterType="java.lang.String" resultType="java.lang.Integer">
+    SELECT
+    COUNT(1)
+    from offer_material
+    where offer_company = #{offerCompany}
+  </select>
+
+  <select id="selectCountByNameAndId" parameterType="map" resultType="java.lang.Integer">
+    SELECT
+    COUNT(1)
+    from offer_material
+    where offer_company = #{offerCompany}
+    and offer_id != #{offerId}
+  </select>
 </mapper>

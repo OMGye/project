@@ -16,4 +16,9 @@ public class Const {
         int WORKING = 0;
         int FINISHED = 1;
     }
+
+    public interface Material{
+        int AUDITING = 0;
+        int FINISHED = 1;
+    }
 }

@@ -192,4 +192,13 @@
     where user_type = #{userType}
     and item_id IS NULL
   </select>
+
+  <select id="selectByUserTypeAndItemId" resultMap="BaseResultMap" parameterType="map">
+    SELECT
+    <include refid="Base_Column_List"/>
+    from project_user
+    where user_type = #{userType}
+    and item_id = #{itemId}
+  </select>
+
 </mapper>

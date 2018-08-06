@@ -46,7 +46,7 @@
       #{userId,jdbcType=INTEGER}, #{accountInfoId,jdbcType=INTEGER}, #{offerId,jdbcType=INTEGER}, 
       #{materialInfoImg,jdbcType=VARCHAR}, #{sellerName,jdbcType=VARCHAR}, #{unitPrice,jdbcType=DECIMAL}, 
       #{number,jdbcType=INTEGER}, #{totalPrice,jdbcType=DECIMAL}, #{state,jdbcType=INTEGER}, 
-      #{checkUserName,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{lastEditTime,jdbcType=TIMESTAMP}
+      #{checkUserName,jdbcType=VARCHAR}, now(), now()
       )
   </insert>
   <insert id="insertSelective" parameterType="com.pojo.MaterialBuyInfo" >
@@ -188,9 +188,9 @@
       <if test="createTime != null" >
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="lastEditTime != null" >
-        last_edit_time = #{lastEditTime,jdbcType=TIMESTAMP},
-      </if>
+
+        last_edit_time = now(),
+
     </set>
     where material_info_id = #{materialInfoId,jdbcType=INTEGER}
   </update>
