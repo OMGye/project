@@ -1,6 +1,8 @@
 
+import com.dao.MaterialStockMapper;
 import com.dao.UserMapper;
 import com.google.common.collect.Lists;
+import com.pojo.MaterialStock;
 import com.pojo.User;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,17 +20,13 @@ public class ProductServiceTest extends TestBase {
 
     @Autowired
     private UserMapper userMapper;
-
+    @Autowired
+    private MaterialStockMapper materialStockMapper;
     @Test
     @Transactional
     public void testIProductService() throws Exception {
-        List<Integer> list = new ArrayList<>();
-        list.add(1);
-        list.add(2);
-        int row = userMapper.updateItemId(list,2);
-        if (row < 2)
-            throw new Exception();
-        System.out.println(row);
+        MaterialStock materialStock = materialStockMapper.selectByCategoryName("11");
+        System.out.println(materialStock);
     }
 
 }

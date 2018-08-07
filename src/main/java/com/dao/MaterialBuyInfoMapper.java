@@ -14,4 +14,6 @@ public interface MaterialBuyInfoMapper {
     int updateByPrimaryKeySelective(MaterialBuyInfo record);
 
     int updateByPrimaryKey(MaterialBuyInfo record);
+
+    int updateByOfferId(Integer offerId);
 }

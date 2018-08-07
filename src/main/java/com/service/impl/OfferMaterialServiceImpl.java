@@ -43,14 +43,16 @@ public class OfferMaterialServiceImpl implements OfferMaterialService{
         if (offerId == null)
             return ServerResponse.createByErrorMessage("参数错误");
         int row = offerMaterialMapper.deleteByPrimaryKey(offerId);
-        if (row > 0)
+        if (row > 0){
             return ServerResponse.createBySuccess("删除成功");
+        }
         return ServerResponse.createByErrorMessage("删除失败");
     }
 
     @Override
     public ServerResponse<PageInfo> list(int pageSize, int pageNum) {
         PageHelper.startPage(pageNum,pageSize);
+        PageHelper.orderBy("offer_id desc");
         List<OfferMaterial> list = offerMaterialMapper.selectList();
         PageInfo pageInfo = new PageInfo(list);
         return ServerResponse.createBySuccess(pageInfo);

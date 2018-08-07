@@ -2,6 +2,8 @@ package com.dao;
 
 import com.pojo.MaterialStock;
 
+import java.util.List;
+
 public interface MaterialStockMapper {
     int deleteByPrimaryKey(Integer materialStockId);
 
@@ -14,4 +16,8 @@ public interface MaterialStockMapper {
     int updateByPrimaryKeySelective(MaterialStock record);
 
     int updateByPrimaryKey(MaterialStock record);
+
+    MaterialStock selectByCategoryName(String categoryName);
+
+    List<MaterialStock> selectByItemId(Integer itemId);
 }

@@ -33,7 +33,7 @@
       create_time, last_edit_time)
     values (#{materialStockId,jdbcType=INTEGER}, #{categoryName,jdbcType=VARCHAR}, #{itemId,jdbcType=INTEGER}, 
       #{sellStock,jdbcType=INTEGER}, #{useStock,jdbcType=INTEGER}, #{unitPrice,jdbcType=DECIMAL}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{lastEditTime,jdbcType=TIMESTAMP})
+      now(), now())
   </insert>
   <insert id="insertSelective" parameterType="com.pojo.MaterialStock" >
     insert into material_stock
@@ -111,12 +111,13 @@
       <if test="createTime != null" >
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="lastEditTime != null" >
-        last_edit_time = #{lastEditTime,jdbcType=TIMESTAMP},
-      </if>
+
+        last_edit_time = now(),
+
     </set>
     where material_stock_id = #{materialStockId,jdbcType=INTEGER}
   </update>
+
   <update id="updateByPrimaryKey" parameterType="com.pojo.MaterialStock" >
     update material_stock
     set category_name = #{categoryName,jdbcType=VARCHAR},
@@ -128,4 +129,18 @@
       last_edit_time = #{lastEditTime,jdbcType=TIMESTAMP}
     where material_stock_id = #{materialStockId,jdbcType=INTEGER}
   </update>
+
+  <select id="selectByCategoryName" parameterType="java.lang.String" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    from material_stock
+    where category_name = #{categoryName}
+  </select>
+
+  <select id="selectByItemId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    from material_stock
+    where item_id = #{itemId}
+  </select>
 </mapper>

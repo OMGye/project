@@ -212,4 +212,10 @@
       last_edit_time = #{lastEditTime,jdbcType=TIMESTAMP}
     where material_info_id = #{materialInfoId,jdbcType=INTEGER}
   </update>
+
+  <update id="updateByOfferId" parameterType="java.lang.Integer">
+    update material_buy_info
+    set offer_id = 0
+    where offer_id = #{offerId}
+  </update>
 </mapper>

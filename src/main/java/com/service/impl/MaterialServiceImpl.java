@@ -4,9 +4,13 @@ import com.common.Const;
 import com.common.ServerResponse;
 import com.common.UserAuth;
 import com.dao.MaterialBuyInfoMapper;
+import com.dao.MaterialStockMapper;
+import com.dao.MaterialUseInfoMapper;
 import com.dao.UserMapper;
 import com.google.common.collect.Lists;
 import com.pojo.MaterialBuyInfo;
+import com.pojo.MaterialStock;
+import com.pojo.MaterialUseInfo;
 import com.pojo.User;
 import com.service.MaterialService;
 import com.util.BigDecimalUtil;
@@ -21,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -35,6 +40,12 @@ public class MaterialServiceImpl implements MaterialService{
 
     @Autowired
     private MaterialBuyInfoMapper materialBuyInfoMapper;
+
+    @Autowired
+    private MaterialStockMapper materialStockMapper;
+
+    @Autowired
+    private MaterialUseInfoMapper materialUseInfoMapper;
 
     @Override
     public ServerResponse buyMaterial(MaterialBuyInfo materialBuyInfo, MultipartFile file, String path) {
@@ -79,8 +90,52 @@ public class MaterialServiceImpl implements MaterialService{
         BigDecimal number = new BigDecimal(materialBuyInfo.getNumber());
         materialBuyInfo.setTotalPrice(number.multiply(materialBuyInfo.getUnitPrice()));
         int row = materialBuyInfoMapper.insert(materialBuyInfo);
-        if (row > 0)
+        if (row > 0){
+            MaterialStock materialStock = materialStockMapper.selectByCategoryName(materialBuyInfo.getCategoryName());
+            if (materialStock != null){
+                materialStock.setSellStock(materialStock.getSellStock() + materialBuyInfo.getNumber());
+                materialStockMapper.updateByPrimaryKeySelective(materialStock);
+            }
+            else {
+               materialStock = new MaterialStock();
+               materialStock.setSellStock(materialBuyInfo.getNumber());
+               materialStock.setItemId(materialBuyInfo.getItemId());
+               materialStock.setUseStock(0);
+               materialStock.setCategoryName(materialBuyInfo.getCategoryName());
+               materialStock.setUnitPrice(materialBuyInfo.getUnitPrice());
+               materialStockMapper.insert(materialStock);
+            }
             return ServerResponse.createBySuccess("上传材料流水成功");
+        }
         return ServerResponse.createByErrorMessage("上传材料流水失败");
     }
+
+    @Override
+    public ServerResponse<List<MaterialStock>> getMaterialStockByItemId(Integer itemId) {
+        List<MaterialStock> list = materialStockMapper.selectByItemId(itemId);
+        return ServerResponse.createBySuccess(list);
+    }
+
+    @Override
+    public ServerResponse useMaterial(MaterialUseInfo materialUseInfo) {
+        if (materialUseInfo.getCategoryName() == null || materialUseInfo.getUserId() == null || materialUseInfo.getNumber() == null )
+            return ServerResponse.createByErrorMessage("参数错误");
+
+        User user = userMapper.selectByUserTypeAndItemId(UserAuth.MATERIAL_CHECKED.getCode(),materialUseInfo.getItemId());
+        if (user == null)
+            return ServerResponse.createByErrorMessage("没有找到该项目材料审核员");
+
+        materialUseInfo.setCheckUserName(user.getUserName());
+        materialUseInfo.setState(Const.Material.AUDITING);
+        int row = materialUseInfoMapper.insert(materialUseInfo);
+        if (row > 0){
+            MaterialStock materialStock = materialStockMapper.selectByCategoryName(materialUseInfo.getCategoryName());
+            materialStock.setSellStock(materialStock.getSellStock() - materialUseInfo.getNumber() < 0 ? 0 : materialStock.getSellStock() - materialUseInfo.getNumber());
+            materialStockMapper.updateByPrimaryKeySelective(materialStock);
+            return ServerResponse.createBySuccess("上传材料流水成功");
+        }
+        return ServerResponse.createByErrorMessage("上传材料流水失败");
+    }
+
+
 }

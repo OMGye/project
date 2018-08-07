@@ -23,4 +23,5 @@ public interface CategoryMapper {
     int selectCountByName(String offerCompany);
 
     int selectCountByNameAndId(@Param("categoryName") String categoryName, @Param("categoryId") Integer categoryId);
+
 }

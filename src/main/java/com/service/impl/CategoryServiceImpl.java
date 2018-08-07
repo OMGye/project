@@ -44,6 +44,7 @@ public class CategoryServiceImpl implements CategoryService{
     @Override
     public ServerResponse<PageInfo> list(int pageSize, int pageNum) {
         PageHelper.startPage(pageNum,pageSize);
+        PageHelper.orderBy("category_id desc");
         List<Category> list = categoryMapper.selectList();
         PageInfo pageInfo = new PageInfo(list);
         return ServerResponse.createBySuccess(pageInfo);
