@@ -129,6 +129,8 @@ public class MaterialServiceImpl implements MaterialService{
             return ServerResponse.createByErrorMessage("参数错误");
         if (materialInfoId != null){
             MaterialBuyInfo materialBuyInfo = materialBuyInfoMapper.selectByPrimaryKey(materialInfoId);
+            if (materialBuyInfo == null)
+                return ServerResponse.createByErrorMessage("materialInfoId不存在");
             materialBuyInfo.setState(Const.Material.FINISHED);
             int row = materialBuyInfoMapper.updateByPrimaryKeySelective(materialBuyInfo);
             if (row > 0){
@@ -151,6 +153,8 @@ public class MaterialServiceImpl implements MaterialService{
         }
         else {
             MaterialUseInfo materialUseInfo = materialUseInfoMapper.selectByPrimaryKey(materialUserId);
+            if (materialUseInfo == null)
+                return ServerResponse.createByErrorMessage("materialUserId不存在");
             materialUseInfo.setState(Const.Material.FINISHED);
             int row = materialUseInfoMapper.updateByPrimaryKeySelective(materialUseInfo);
             if (row > 0){
