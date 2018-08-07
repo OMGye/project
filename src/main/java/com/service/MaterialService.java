@@ -18,4 +18,6 @@ public interface MaterialService {
     ServerResponse<List<MaterialStock>> getMaterialStockByItemId(Integer itemId);
 
     ServerResponse useMaterial(MaterialUseInfo materialUseInfo);
+
+    ServerResponse updateState(Integer materialUserId, Integer materialInfoId);
 }

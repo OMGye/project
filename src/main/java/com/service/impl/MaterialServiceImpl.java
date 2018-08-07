@@ -90,23 +90,9 @@ public class MaterialServiceImpl implements MaterialService{
         BigDecimal number = new BigDecimal(materialBuyInfo.getNumber());
         materialBuyInfo.setTotalPrice(number.multiply(materialBuyInfo.getUnitPrice()));
         int row = materialBuyInfoMapper.insert(materialBuyInfo);
-        if (row > 0){
-            MaterialStock materialStock = materialStockMapper.selectByCategoryName(materialBuyInfo.getCategoryName());
-            if (materialStock != null){
-                materialStock.setSellStock(materialStock.getSellStock() + materialBuyInfo.getNumber());
-                materialStockMapper.updateByPrimaryKeySelective(materialStock);
-            }
-            else {
-               materialStock = new MaterialStock();
-               materialStock.setSellStock(materialBuyInfo.getNumber());
-               materialStock.setItemId(materialBuyInfo.getItemId());
-               materialStock.setUseStock(0);
-               materialStock.setCategoryName(materialBuyInfo.getCategoryName());
-               materialStock.setUnitPrice(materialBuyInfo.getUnitPrice());
-               materialStockMapper.insert(materialStock);
-            }
+        if (row > 0)
             return ServerResponse.createBySuccess("上传材料流水成功");
-        }
+
         return ServerResponse.createByErrorMessage("上传材料流水失败");
     }
 
@@ -118,7 +104,7 @@ public class MaterialServiceImpl implements MaterialService{
 
     @Override
     public ServerResponse useMaterial(MaterialUseInfo materialUseInfo) {
-        if (materialUseInfo.getCategoryName() == null || materialUseInfo.getUserId() == null || materialUseInfo.getNumber() == null )
+        if (materialUseInfo.getCategoryName() == null || materialUseInfo.getNumber() == null )
             return ServerResponse.createByErrorMessage("参数错误");
 
         User user = userMapper.selectByUserTypeAndItemId(UserAuth.MATERIAL_CHECKED.getCode(),materialUseInfo.getItemId());
@@ -135,6 +121,47 @@ public class MaterialServiceImpl implements MaterialService{
             return ServerResponse.createBySuccess("上传材料流水成功");
         }
         return ServerResponse.createByErrorMessage("上传材料流水失败");
+    }
+
+    @Override
+    public ServerResponse updateState(Integer materialUserId, Integer materialInfoId) {
+        if (materialInfoId == null && materialUserId == null)
+            return ServerResponse.createByErrorMessage("参数错误");
+        if (materialInfoId != null){
+            MaterialBuyInfo materialBuyInfo = materialBuyInfoMapper.selectByPrimaryKey(materialInfoId);
+            materialBuyInfo.setState(Const.Material.FINISHED);
+            int row = materialBuyInfoMapper.updateByPrimaryKeySelective(materialBuyInfo);
+            if (row > 0){
+                MaterialStock materialStock = materialStockMapper.selectByCategoryName(materialBuyInfo.getCategoryName());
+                if (materialStock != null){
+                    materialStock.setSellStock(materialStock.getSellStock() + materialBuyInfo.getNumber());
+                    materialStockMapper.updateByPrimaryKeySelective(materialStock);
+                }
+                else {
+                    materialStock = new MaterialStock();
+                    materialStock.setSellStock(materialBuyInfo.getNumber());
+                    materialStock.setItemId(materialBuyInfo.getItemId());
+                    materialStock.setUseStock(0);
+                    materialStock.setCategoryName(materialBuyInfo.getCategoryName());
+                    materialStock.setUnitPrice(materialBuyInfo.getUnitPrice());
+                    materialStockMapper.insert(materialStock);
+                }
+                return ServerResponse.createBySuccess("审核通过");
+            }
+        }
+        else {
+            MaterialUseInfo materialUseInfo = materialUseInfoMapper.selectByPrimaryKey(materialUserId);
+            materialUseInfo.setState(Const.Material.FINISHED);
+            int row = materialUseInfoMapper.updateByPrimaryKeySelective(materialUseInfo);
+            if (row > 0){
+                MaterialStock materialStock = materialStockMapper.selectByCategoryName(materialUseInfo.getCategoryName());
+                materialStock.setSellStock(materialStock.getSellStock() - materialUseInfo.getNumber() < 0 ? 0 : materialStock.getSellStock() - materialUseInfo.getNumber());
+                materialStockMapper.updateByPrimaryKeySelective(materialStock);
+                return ServerResponse.createBySuccess("审核通过");
+            }
+        }
+
+        return ServerResponse.createByErrorMessage("审核失败");
     }
 
 

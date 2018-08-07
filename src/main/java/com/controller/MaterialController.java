@@ -79,4 +79,19 @@ public class MaterialController {
         return ServerResponse.createByErrorMessage("请登入管理员账户");
     }
 
+    @RequestMapping(value = "check.do",method = RequestMethod.POST)
+    @ResponseBody
+    public ServerResponse useMaterial(HttpSession session, Integer materialUserId, Integer materialInfoId, Integer itemId){
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        if(user == null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录");
+        }
+        if (itemId == null)
+            return ServerResponse.createByErrorMessage("没有传入项目");
+        if (UserAuth.MATERIAL_UPLOAD.getCode() == user.getUserType() && user.getItemId() == itemId){
+           return materialService.updateState(materialUserId,materialInfoId);
+        }
+        return ServerResponse.createByErrorMessage("请登入管理员账户");
+    }
+
 }
