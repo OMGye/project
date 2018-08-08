@@ -166,7 +166,7 @@ public class MaterialServiceImpl implements MaterialService{
     }
 
     @Override
-    public ServerResponse<List> getUncheckList(Integer itemId) {
+    public ServerResponse<List<MaterialBuyInfo>> getUncheckList(Integer itemId) {
         if (itemId == null)
             return ServerResponse.createByErrorMessage("参数错误");
         List<MaterialBuyInfo> list = materialBuyInfoMapper.selectByItemId(itemId);
@@ -174,7 +174,7 @@ public class MaterialServiceImpl implements MaterialService{
     }
 
     @Override
-    public ServerResponse<List> getUncheckUseList(Integer itemId) {
+    public ServerResponse<List<MaterialUseInfo>> getUncheckUseList(Integer itemId) {
         if (itemId == null)
             return ServerResponse.createByErrorMessage("参数错误");
         List<MaterialUseInfo> list = materialUseInfoMapper.selectByItemId(itemId);

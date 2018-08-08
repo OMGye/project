@@ -97,7 +97,7 @@ public class MaterialController {
 
     @RequestMapping(value = "uncheckbuylist.do",method = RequestMethod.GET)
     @ResponseBody
-    public ServerResponse<List> getUnCheckList(HttpSession session,Integer itemId){
+    public ServerResponse<List<MaterialBuyInfo>> getUnCheckList(HttpSession session,Integer itemId){
         User user = (User)session.getAttribute(Const.CURRENT_USER);
         if(user == null){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");
@@ -107,7 +107,7 @@ public class MaterialController {
 
     @RequestMapping(value = "uncheckuselist.do",method = RequestMethod.GET)
     @ResponseBody
-    public ServerResponse<List> getUnCheckUseList(HttpSession session,Integer itemId){
+    public ServerResponse<List<MaterialUseInfo>> getUnCheckUseList(HttpSession session,Integer itemId){
         User user = (User)session.getAttribute(Const.CURRENT_USER);
         if(user == null){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");

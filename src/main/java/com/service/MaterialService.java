@@ -22,9 +22,9 @@ public interface MaterialService {
 
     ServerResponse updateState(Integer materialUserId, Integer materialInfoId);
 
-    ServerResponse<List> getUncheckList(Integer itemId);
+    ServerResponse<List<MaterialBuyInfo>> getUncheckList(Integer itemId);
 
-    ServerResponse<List> getUncheckUseList(Integer itemId);
+    ServerResponse<List<MaterialUseInfo>> getUncheckUseList(Integer itemId);
 
     ServerResponse getMaterialDetail(Integer materialUserId, Integer materialInfoId);
 }
