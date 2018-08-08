@@ -117,7 +117,7 @@ public class MaterialController {
 
     @RequestMapping(value = "materialdetail.do",method = RequestMethod.GET)
     @ResponseBody
-    public ServerResponse<List> materialDetail(HttpSession session,Integer materialUserId, Integer materialInfoId){
+    public ServerResponse materialDetail(HttpSession session,Integer materialUserId, Integer materialInfoId){
         User user = (User)session.getAttribute(Const.CURRENT_USER);
         if(user == null){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");
