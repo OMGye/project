@@ -72,13 +72,7 @@ public class ItemServiceImpl implements ItemService{
         PageHelper.startPage(pageNum,pageSize);
 
         List<Item> list = new ArrayList<>();
-        if (UserAuth.BOSS.getCode() == user.getUserType()) {
-            list = itemMapper.select();
-        }
-        else{
-            list = itemMapper.selectByUserId(user.getUserId());
-
-        }
+        list = itemMapper.select();
         PageInfo pageInfo = new PageInfo(list);
         pageInfo.setList(assembleItemListVo(list));
         return ServerResponse.createBySuccess(pageInfo);
