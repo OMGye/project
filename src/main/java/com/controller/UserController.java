@@ -105,12 +105,10 @@ public class UserController {
         if(user == null){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");
         }
-        if (UserAuth.BOSS.getCode() == user.getUserType() || user.getUserId() == userId){
             if (userId == null)
                 return ServerResponse.createByErrorMessage("参数错误");
             return userService.getUserInfo(userId);
-        }
-        return ServerResponse.createByErrorMessage("请登入管理员账户");
+
     }
 
     @RequestMapping(value = "logout.do",method = RequestMethod.POST)
