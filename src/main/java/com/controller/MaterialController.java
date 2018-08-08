@@ -135,7 +135,7 @@ public class MaterialController {
         if(user == null){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");
         }
-        PageBean pageBean = DBConnection.getMaterialVo(pageNum,pageSize);
+        PageBean<MaterialListVo> pageBean = DBConnection.getMaterialVo(pageNum,pageSize);
         return ServerResponse.createBySuccess(pageBean);
     }
 
