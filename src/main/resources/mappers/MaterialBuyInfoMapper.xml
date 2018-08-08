@@ -213,9 +213,13 @@
     where material_info_id = #{materialInfoId,jdbcType=INTEGER}
   </update>
 
-  <update id="updateByOfferId" parameterType="java.lang.Integer">
-    update material_buy_info
-    set offer_id = 0
-    where offer_id = #{offerId}
-  </update>
+  <select id="selectByItemId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    SELECT
+    <include refid="Base_Column_List"/>
+    from material_buy_info
+    where item_id = #{itemId}
+    and state = 0
+  </select>
+
+
 </mapper>

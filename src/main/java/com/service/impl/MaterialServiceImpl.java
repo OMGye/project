@@ -7,6 +7,7 @@ import com.dao.MaterialBuyInfoMapper;
 import com.dao.MaterialStockMapper;
 import com.dao.MaterialUseInfoMapper;
 import com.dao.UserMapper;
+import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import com.pojo.MaterialBuyInfo;
 import com.pojo.MaterialStock;
@@ -162,6 +163,22 @@ public class MaterialServiceImpl implements MaterialService{
         }
 
         return ServerResponse.createByErrorMessage("审核失败");
+    }
+
+    @Override
+    public ServerResponse<List> getUncheckList(Integer itemId) {
+        if (itemId == null)
+            return ServerResponse.createByErrorMessage("参数错误");
+        List<MaterialBuyInfo> list = materialBuyInfoMapper.selectByItemId(itemId);
+        return ServerResponse.createBySuccess(list);
+    }
+
+    @Override
+    public ServerResponse<List> getUncheckUseList(Integer itemId) {
+        if (itemId == null)
+            return ServerResponse.createByErrorMessage("参数错误");
+        List<MaterialUseInfo> list = materialUseInfoMapper.selectByItemId(itemId);
+        return ServerResponse.createBySuccess(list);
     }
 
 

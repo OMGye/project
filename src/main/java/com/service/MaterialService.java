@@ -1,6 +1,7 @@
 package com.service;
 
 import com.common.ServerResponse;
+import com.github.pagehelper.PageInfo;
 import com.pojo.MaterialBuyInfo;
 import com.pojo.MaterialStock;
 import com.pojo.MaterialUseInfo;
@@ -20,4 +21,8 @@ public interface MaterialService {
     ServerResponse useMaterial(MaterialUseInfo materialUseInfo);
 
     ServerResponse updateState(Integer materialUserId, Integer materialInfoId);
+
+    ServerResponse<List> getUncheckList(Integer itemId);
+
+    ServerResponse<List> getUncheckUseList(Integer itemId);
 }

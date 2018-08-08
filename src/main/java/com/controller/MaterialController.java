@@ -4,6 +4,7 @@ import com.common.Const;
 import com.common.ResponseCode;
 import com.common.ServerResponse;
 import com.common.UserAuth;
+import com.github.pagehelper.PageInfo;
 import com.pojo.*;
 import com.service.MaterialService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,5 +94,26 @@ public class MaterialController {
         }
         return ServerResponse.createByErrorMessage("请登入管理员账户");
     }
+
+    @RequestMapping(value = "uncheckbuylist.do",method = RequestMethod.POST)
+    @ResponseBody
+    public ServerResponse<List> getUnCheckList(HttpSession session,Integer itemId){
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        if(user == null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");
+        }
+        return materialService.getUncheckList(itemId);
+    }
+
+    @RequestMapping(value = "uncheckuselist.do",method = RequestMethod.POST)
+    @ResponseBody
+    public ServerResponse<List> getUnCheckUseList(HttpSession session,Integer itemId){
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        if(user == null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");
+        }
+        return materialService.getUncheckList(itemId);
+    }
+
 
 }

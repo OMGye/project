@@ -25,4 +25,6 @@ public interface UserService {
     ServerResponse<User> getUserInfo(Integer userId);
 
     ServerResponse<User> update(User user, MultipartFile file, String path);
+
+
 }

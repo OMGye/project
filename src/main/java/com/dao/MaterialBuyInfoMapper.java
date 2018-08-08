@@ -2,6 +2,8 @@ package com.dao;
 
 import com.pojo.MaterialBuyInfo;
 
+import java.util.List;
+
 public interface MaterialBuyInfoMapper {
     int deleteByPrimaryKey(Integer materialInfoId);
 
@@ -16,4 +18,6 @@ public interface MaterialBuyInfoMapper {
     int updateByPrimaryKey(MaterialBuyInfo record);
 
     int updateByOfferId(Integer offerId);
+
+    List<MaterialBuyInfo> selectByItemId(Integer itemId);
 }

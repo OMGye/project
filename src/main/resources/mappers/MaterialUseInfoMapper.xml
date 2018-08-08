@@ -141,4 +141,12 @@
       last_edit_time = #{lastEditTime,jdbcType=TIMESTAMP}
     where material_use_id = #{materialUseId,jdbcType=INTEGER}
   </update>
+
+  <select id="selectByItemId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    SELECT
+    <include refid="Base_Column_List"/>
+    from material_use_info
+    where item_id = #{itemId}
+    and state = 0
+  </select>
 </mapper>
