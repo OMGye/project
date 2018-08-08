@@ -7,6 +7,9 @@ import com.common.UserAuth;
 import com.github.pagehelper.PageInfo;
 import com.pojo.*;
 import com.service.MaterialService;
+import com.util.DBConnection;
+import com.util.PageBean;
+import com.vo.MaterialListVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -125,6 +128,16 @@ public class MaterialController {
         return materialService.getMaterialDetail(materialUserId,materialInfoId);
     }
 
+    @RequestMapping(value = "materiallist.do",method = RequestMethod.GET)
+    @ResponseBody
+    public ServerResponse<PageBean<MaterialListVo>> materialList(HttpSession session, @RequestParam(value = "pageNum",defaultValue = "1") int pageNum, @RequestParam(value = "pageSize",defaultValue = "5")int pageSize){
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        if(user == null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");
+        }
+        PageBean pageBean = DBConnection.getMaterialVo(pageNum,pageSize);
+        return ServerResponse.createBySuccess(pageBean);
+    }
 
 
 }

@@ -112,6 +112,7 @@ public class MaterialServiceImpl implements MaterialService{
             return ServerResponse.createByErrorMessage("没有找到该项目材料审核员");
 
         materialUseInfo.setCheckUserName(user.getUserName());
+        materialUseInfo.setNumber(materialUseInfo.getNumber() - 2*materialUseInfo.getNumber());
         materialUseInfo.setState(Const.Material.AUDITING);
         int row = materialUseInfoMapper.insert(materialUseInfo);
         if (row > 0){
