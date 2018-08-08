@@ -115,9 +115,6 @@ public class MaterialServiceImpl implements MaterialService{
         materialUseInfo.setState(Const.Material.AUDITING);
         int row = materialUseInfoMapper.insert(materialUseInfo);
         if (row > 0){
-            MaterialStock materialStock = materialStockMapper.selectByCategoryName(materialUseInfo.getCategoryName());
-            materialStock.setSellStock(materialStock.getSellStock() - materialUseInfo.getNumber() < 0 ? 0 : materialStock.getSellStock() - materialUseInfo.getNumber());
-            materialStockMapper.updateByPrimaryKeySelective(materialStock);
             return ServerResponse.createBySuccess("上传材料流水成功");
         }
         return ServerResponse.createByErrorMessage("上传材料流水失败");
@@ -159,7 +156,7 @@ public class MaterialServiceImpl implements MaterialService{
             int row = materialUseInfoMapper.updateByPrimaryKeySelective(materialUseInfo);
             if (row > 0){
                 MaterialStock materialStock = materialStockMapper.selectByCategoryName(materialUseInfo.getCategoryName());
-                materialStock.setSellStock(materialStock.getSellStock() - materialUseInfo.getNumber() < 0 ? 0 : materialStock.getSellStock() - materialUseInfo.getNumber());
+                materialStock.setSellStock(materialStock.getUseStock() + materialUseInfo.getNumber());
                 materialStockMapper.updateByPrimaryKeySelective(materialStock);
                 return ServerResponse.createBySuccess("审核通过");
             }
