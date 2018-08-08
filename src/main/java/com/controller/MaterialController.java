@@ -89,7 +89,7 @@ public class MaterialController {
         }
         if (itemId == null)
             return ServerResponse.createByErrorMessage("没有传入项目");
-        if (UserAuth.MATERIAL_UPLOAD.getCode() == user.getUserType() && user.getItemId() == itemId){
+        if (UserAuth.MATERIAL_CHECKED.getCode() == user.getUserType() && user.getItemId() == itemId){
            return materialService.updateState(materialUserId,materialInfoId);
         }
         return ServerResponse.createByErrorMessage("请登入管理员账户");
