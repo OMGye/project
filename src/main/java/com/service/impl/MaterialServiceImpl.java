@@ -181,5 +181,26 @@ public class MaterialServiceImpl implements MaterialService{
         return ServerResponse.createBySuccess(list);
     }
 
+    @Override
+    public ServerResponse getMaterialDetail(Integer materialUserId, Integer materialInfoId) {
+        if (materialInfoId == null && materialUserId == null)
+            return ServerResponse.createByErrorMessage("参数错误");
+        if (materialInfoId != null){
+            MaterialBuyInfo materialBuyInfo = materialBuyInfoMapper.selectByPrimaryKey(materialInfoId);
+            if (materialBuyInfo == null)
+                return ServerResponse.createByErrorMessage("materialInfoId不存在");
+            else
+                return ServerResponse.createBySuccess(materialBuyInfo);
+        }
+        else {
+            MaterialUseInfo materialUseInfo = materialUseInfoMapper.selectByPrimaryKey(materialUserId);
+            if (materialUseInfo == null)
+                return ServerResponse.createByErrorMessage("materialUserId不存在");
+            else
+                return ServerResponse.createBySuccess(materialUseInfo);
+        }
+
+    }
+
 
 }

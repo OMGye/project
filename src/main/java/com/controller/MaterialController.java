@@ -95,7 +95,7 @@ public class MaterialController {
         return ServerResponse.createByErrorMessage("请登入管理员账户");
     }
 
-    @RequestMapping(value = "uncheckbuylist.do",method = RequestMethod.POST)
+    @RequestMapping(value = "uncheckbuylist.do",method = RequestMethod.GET)
     @ResponseBody
     public ServerResponse<List> getUnCheckList(HttpSession session,Integer itemId){
         User user = (User)session.getAttribute(Const.CURRENT_USER);
@@ -105,7 +105,7 @@ public class MaterialController {
         return materialService.getUncheckList(itemId);
     }
 
-    @RequestMapping(value = "uncheckuselist.do",method = RequestMethod.POST)
+    @RequestMapping(value = "uncheckuselist.do",method = RequestMethod.GET)
     @ResponseBody
     public ServerResponse<List> getUnCheckUseList(HttpSession session,Integer itemId){
         User user = (User)session.getAttribute(Const.CURRENT_USER);
@@ -114,6 +114,17 @@ public class MaterialController {
         }
         return materialService.getUncheckUseList(itemId);
     }
+
+    @RequestMapping(value = "materialdetail.do",method = RequestMethod.GET)
+    @ResponseBody
+    public ServerResponse<List> materialDetail(HttpSession session,Integer materialUserId, Integer materialInfoId){
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        if(user == null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");
+        }
+        return materialService.getMaterialDetail(materialUserId,materialInfoId);
+    }
+
 
 
 }

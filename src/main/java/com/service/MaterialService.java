@@ -25,4 +25,6 @@ public interface MaterialService {
     ServerResponse<List> getUncheckList(Integer itemId);
 
     ServerResponse<List> getUncheckUseList(Integer itemId);
+
+    ServerResponse getMaterialDetail(Integer materialUserId, Integer materialInfoId);
 }
