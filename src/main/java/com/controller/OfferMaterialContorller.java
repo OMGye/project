@@ -61,11 +61,9 @@ public class OfferMaterialContorller {
         if(user == null){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");
         }
-        if (UserAuth.BOSS.getCode() == user.getUserType() || UserAuth.MANAGER.getCode() == user.getUserType()){
-            return offerMaterialService.list(pageSize,pageNum);
-        }
 
-        return ServerResponse.createByErrorMessage("请登入管理员账户");
+        return offerMaterialService.list(pageSize,pageNum);
+
     }
 
     @RequestMapping(value = "updateofferer.do",method = RequestMethod.POST)
