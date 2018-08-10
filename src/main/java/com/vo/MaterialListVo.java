@@ -21,9 +21,9 @@ public class MaterialListVo {
 
     private Integer number;
 
-    private Date createTime;
+    private String createTime;
 
-    private Date lastEditTime;
+    private String lastEditTime;
 
     public void setId(Integer id) {
         this.id = id;
@@ -53,11 +53,11 @@ public class MaterialListVo {
         this.number = number;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 
-    public void setLastEditTime(Date lastEditTime) {
+    public void setLastEditTime(String lastEditTime) {
         this.lastEditTime = lastEditTime;
     }
 
@@ -90,11 +90,11 @@ public class MaterialListVo {
         return number;
     }
 
-    public Date getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
-    public Date getLastEditTime() {
+    public String getLastEditTime() {
         return lastEditTime;
     }
 }

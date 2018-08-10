@@ -19,7 +19,7 @@ public class DBConnection {
     /**
      * 数据库连接字符串   jdbc:mysql://localhost:3306/test 这种方式只对本地的数据库有用       test为数据库名称
      */
-    private static final String DATABASE_URL = "jdbc:mysql://localhost:3306/project?characterEncoding=utf-8";
+    private static final String DATABASE_URL = "jdbc:mysql://193.112.26.167:3306/project?characterEncoding=utf-8";
 
     /**
      * 数据库用户名
@@ -98,7 +98,7 @@ public class DBConnection {
             pageBean.setPageNum(pageNum);
             pageBean.setPageSize(pageSize);
             int begin = (pageNum - 1) * pageSize;
-            String sql3 = "SELECT material_info_id as id,item_id,user_id,category_name,check_user_name,number,create_time,last_edit_time,state from material_buy_info union all select material_use_id as id,item_id,user_id,category_name,check_user_name,number,create_time,last_edit_time ,state from material_use_info where state = 1 order by last_edit_time DESC limit " +  begin + "," + pageSize;
+            String sql3 = "SELECT material_info_id as id,item_id,user_id,category_name,check_user_name,number,create_time,last_edit_time,state from material_buy_info where state = 1 union all select material_use_id as id,item_id,user_id,category_name,check_user_name,number,create_time,last_edit_time ,state from material_use_info order by last_edit_time DESC limit " +  begin + "," + pageSize;
             ResultSet rs3 = stmt.executeQuery(sql3);
             List<MaterialListVo> listVos = new ArrayList<>();
             while (rs3.next()) {
@@ -109,8 +109,10 @@ public class DBConnection {
                 materialListVo.setCategoryName(rs3.getString(4));
                 materialListVo.setCheckUserName(rs3.getString(5));
                 materialListVo.setNumber(rs3.getInt(6));
-                materialListVo.setCreateTime(rs3.getDate(7));
-                materialListVo.setLastEditTime(rs3.getDate(8));
+                java.util.Date createTime = rs3.getTimestamp(7);
+                java.util.Date lastEidtTime = rs3.getTimestamp(8);
+                materialListVo.setCreateTime(DateTimeUtil.dateToStr(createTime));
+                materialListVo.setLastEditTime(DateTimeUtil.dateToStr(lastEidtTime));
                 materialListVo.setType(materialListVo.getNumber() > 0 ? 1 : 0);
                 listVos.add(materialListVo);
             }
