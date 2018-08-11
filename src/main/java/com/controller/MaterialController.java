@@ -9,6 +9,7 @@ import com.pojo.*;
 import com.service.MaterialService;
 import com.util.DBConnection;
 import com.util.PageBean;
+import com.vo.ItemMaterialDetailVo;
 import com.vo.MaterialListVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -61,10 +62,7 @@ public class MaterialController {
         }
         if (itemId == null)
             return ServerResponse.createByErrorMessage("没有传入项目");
-        if (user.getItemId() == itemId){
-            return materialService.getMaterialStockByItemId(itemId);
-        }
-        return ServerResponse.createByErrorMessage("请登入管理员账户");
+        return materialService.getMaterialStockByItemId(itemId);
     }
 
     @RequestMapping(value = "usematerial.do",method = RequestMethod.POST)
@@ -138,6 +136,17 @@ public class MaterialController {
         PageBean<MaterialListVo> pageBean = DBConnection.getMaterialVo(pageNum,pageSize);
         return ServerResponse.createBySuccess(pageBean);
     }
+
+    @RequestMapping(value = "itemdetail.do",method = RequestMethod.GET)
+    @ResponseBody
+    public ServerResponse<ItemMaterialDetailVo> getItemMaterialStockDetail(HttpSession session, Integer itemId){
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        if(user == null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");
+        }
+        return materialService.getItemMaterialStockDetail(itemId);
+    }
+
 
 
 }

@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 import com.pojo.MaterialBuyInfo;
 import com.pojo.MaterialStock;
 import com.pojo.MaterialUseInfo;
+import com.vo.ItemMaterialDetailVo;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -27,4 +28,6 @@ public interface MaterialService {
     ServerResponse<List<MaterialUseInfo>> getUncheckUseList(Integer itemId);
 
     ServerResponse getMaterialDetail(Integer materialUserId, Integer materialInfoId);
+
+    ServerResponse<ItemMaterialDetailVo> getItemMaterialStockDetail(Integer itemId);
 }

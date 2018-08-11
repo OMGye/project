@@ -3,19 +3,14 @@ package com.service.impl;
 import com.common.Const;
 import com.common.ServerResponse;
 import com.common.UserAuth;
-import com.dao.MaterialBuyInfoMapper;
-import com.dao.MaterialStockMapper;
-import com.dao.MaterialUseInfoMapper;
-import com.dao.UserMapper;
+import com.dao.*;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
-import com.pojo.MaterialBuyInfo;
-import com.pojo.MaterialStock;
-import com.pojo.MaterialUseInfo;
-import com.pojo.User;
+import com.pojo.*;
 import com.service.MaterialService;
 import com.util.FTPUtil;
 import com.util.PropertiesUtil;
+import com.vo.ItemMaterialDetailVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +41,9 @@ public class MaterialServiceImpl implements MaterialService{
 
     @Autowired
     private MaterialUseInfoMapper materialUseInfoMapper;
+
+    @Autowired
+    private ItemMapper itemMapper;
 
     @Override
     public ServerResponse buyMaterial(MaterialBuyInfo materialBuyInfo, MultipartFile file, String path) {
@@ -203,5 +201,16 @@ public class MaterialServiceImpl implements MaterialService{
 
     }
 
-
+    @Override
+    public ServerResponse<ItemMaterialDetailVo> getItemMaterialStockDetail(Integer itemId) {
+        if (itemId == null)
+            return ServerResponse.createByErrorMessage("参数错误");
+        Item item = itemMapper.selectByPrimaryKey(itemId);
+        if (item != null){
+            List<MaterialStock> list = materialStockMapper.selectByItemId(itemId);
+            ItemMaterialDetailVo itemMaterialDetailVo = new ItemMaterialDetailVo(item,list);
+            return ServerResponse.createBySuccess(itemMaterialDetailVo);
+        }
+        return ServerResponse.createByErrorMessage("找不到该项目");
+    }
 }
