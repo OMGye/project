@@ -4,6 +4,7 @@ import com.common.Const;
 import com.common.ServerResponse;
 import com.common.UserAuth;
 import com.dao.*;
+import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import com.pojo.*;
@@ -20,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -216,6 +218,19 @@ public class MaterialServiceImpl implements MaterialService{
 
     @Override
     public ServerResponse<PageInfo<ItemMaterialDetailVo>> getListItemMaterialStockDetail(int pageSize, int pageNum) {
-        return null;
+        PageHelper.startPage(pageNum,pageSize);
+        List<Item> list = itemMapper.select();
+        if (list != null){
+            List<ItemMaterialDetailVo> itemMaterialDetailVos = new ArrayList<>();
+            for (Item item : list){
+                List<MaterialStock> materialStockList = materialStockMapper.selectByItemId(item.getItemId());
+                ItemMaterialDetailVo itemMaterialDetailVo = new ItemMaterialDetailVo(item,materialStockList);
+                itemMaterialDetailVos.add(itemMaterialDetailVo);
+            }
+            PageInfo<ItemMaterialDetailVo> pageInfo = new PageInfo(list);
+            pageInfo.setList(itemMaterialDetailVos);
+            return ServerResponse.createBySuccess(pageInfo);
+        }
+        return ServerResponse.createByErrorMessage("没有任何项目");
     }
 }

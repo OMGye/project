@@ -154,7 +154,7 @@ public class MaterialController {
         if(user == null){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");
         }
-        return null;
+        return materialService.getListItemMaterialStockDetail(pageSize,pageNum);
     }
 
 
