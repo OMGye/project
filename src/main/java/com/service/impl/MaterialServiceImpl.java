@@ -213,4 +213,9 @@ public class MaterialServiceImpl implements MaterialService{
         }
         return ServerResponse.createByErrorMessage("找不到该项目");
     }
+
+    @Override
+    public ServerResponse<PageInfo<ItemMaterialDetailVo>> getListItemMaterialStockDetail(int pageSize, int pageNum) {
+        return null;
+    }
 }

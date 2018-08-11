@@ -30,4 +30,6 @@ public interface MaterialService {
     ServerResponse getMaterialDetail(Integer materialUserId, Integer materialInfoId);
 
     ServerResponse<ItemMaterialDetailVo> getItemMaterialStockDetail(Integer itemId);
+
+    ServerResponse<PageInfo<ItemMaterialDetailVo>> getListItemMaterialStockDetail(int pageSize, int pageNum);
 }
