@@ -12,6 +12,8 @@ public class AccountInfo {
 
     private Integer itemId;
 
+    private String accountInfoCode;
+
     private String accountImg;
 
     private BigDecimal prePrice;
@@ -28,11 +30,12 @@ public class AccountInfo {
 
     private Date lastEditTime;
 
-    public AccountInfo(Integer accountInfoId, String categoryName, Integer userId, Integer itemId, String accountImg, BigDecimal prePrice, BigDecimal accountRelPrice, String accountInfoDec, Integer state, String checkUserName, Date createTime, Date lastEditTime) {
+    public AccountInfo(Integer accountInfoId, String categoryName, Integer userId, Integer itemId, String accountInfoCode, String accountImg, BigDecimal prePrice, BigDecimal accountRelPrice, String accountInfoDec, Integer state, String checkUserName, Date createTime, Date lastEditTime) {
         this.accountInfoId = accountInfoId;
         this.categoryName = categoryName;
         this.userId = userId;
         this.itemId = itemId;
+        this.accountInfoCode = accountInfoCode;
         this.accountImg = accountImg;
         this.prePrice = prePrice;
         this.accountRelPrice = accountRelPrice;
@@ -41,6 +44,14 @@ public class AccountInfo {
         this.checkUserName = checkUserName;
         this.createTime = createTime;
         this.lastEditTime = lastEditTime;
+    }
+
+    public String getAccountInfoCode() {
+        return accountInfoCode;
+    }
+
+    public void setAccountInfoCode(String accountInfoCode) {
+        this.accountInfoCode = accountInfoCode;
     }
 
     public AccountInfo() {

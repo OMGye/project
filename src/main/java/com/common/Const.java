@@ -21,4 +21,10 @@ public class Const {
         int AUDITING = 0;
         int FINISHED = 1;
     }
+
+    public interface Account{
+        int UPLOAD_AUDITING = 0;
+        int CHECK_AUDITING = 1;
+        int FINISHED = 2;
+    }
 }

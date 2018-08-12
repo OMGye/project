@@ -9,6 +9,8 @@ public class User {
 
     private String password;
 
+    private String accountInfoCode;
+
     private String phone;
 
     private Byte state;
@@ -23,10 +25,11 @@ public class User {
 
     private String userImg;
 
-    public User(Integer userId, String userName, String password, String phone, Byte state, Integer userType, Integer itemId, Date createTime, Date lastEditTime, String userImg) {
+    public User(Integer userId, String userName, String password, String accountInfoCode, String phone, Byte state, Integer userType, Integer itemId, Date createTime, Date lastEditTime, String userImg) {
         this.userId = userId;
         this.userName = userName;
         this.password = password;
+        this.accountInfoCode = accountInfoCode;
         this.phone = phone;
         this.state = state;
         this.userType = userType;
@@ -34,6 +37,15 @@ public class User {
         this.createTime = createTime;
         this.lastEditTime = lastEditTime;
         this.userImg = userImg;
+    }
+
+    public void setAccountInfoCode(String accountInfoCode) {
+        this.accountInfoCode = accountInfoCode;
+    }
+
+    public String getAccountInfoCode() {
+
+        return accountInfoCode;
     }
 
     public User() {

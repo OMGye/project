@@ -6,6 +6,7 @@
       <idArg column="user_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="user_name" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="password" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="account_info_code" jdbcType="INTEGER" javaType="java.lang.String" />
       <arg column="phone" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="state" jdbcType="TINYINT" javaType="java.lang.Byte" />
       <arg column="user_type" jdbcType="INTEGER" javaType="java.lang.Integer" />
@@ -16,7 +17,7 @@
     </constructor>
   </resultMap>
   <sql id="Base_Column_List" >
-    user_id, user_name, password, phone, state, user_type, item_id, create_time, last_edit_time,
+    user_id, user_name, password,account_info_code, phone, state, user_type, item_id, create_time, last_edit_time,
     user_img
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
@@ -30,11 +31,11 @@
     where user_id = #{userId,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.pojo.User" >
-    insert into project_user (user_id, user_name, password,
+    insert into project_user (user_id, user_name, password,account_info_code,
     phone, state, user_type,
     item_id, create_time, last_edit_time,
     user_img)
-    values (#{userId,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
+    values (#{userId,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},#{accountInfoCode,jdbcType=VARCHAR},
     #{phone,jdbcType=VARCHAR}, #{state,jdbcType=TINYINT}, #{userType,jdbcType=INTEGER},
     #{itemId,jdbcType=INTEGER}, now(), now(),
     #{userImg,jdbcType=VARCHAR})
@@ -50,6 +51,9 @@
       </if>
       <if test="password != null" >
         password,
+      </if>
+      <if test="accountInfoCode != null" >
+        account_info_code,
       </if>
       <if test="phone != null" >
         phone,
@@ -83,6 +87,9 @@
       <if test="password != null" >
         #{password,jdbcType=VARCHAR},
       </if>
+      <if test="accountInfoCode != null" >
+        #{accountInfoCode,jdbcType=VARCHAR},
+      </if>
       <if test="phone != null" >
         #{phone,jdbcType=VARCHAR},
       </if>
@@ -115,6 +122,9 @@
       <if test="password != null" >
         password = #{password,jdbcType=VARCHAR},
       </if>
+      <if test="accountInfoCode != null" >
+        account_info_code = #{accountInfoCode,jdbcType=VARCHAR},
+      </if>
       <if test="phone != null" >
         phone = #{phone,jdbcType=VARCHAR},
       </if>
@@ -143,6 +153,7 @@
     update project_user
     set user_name = #{userName,jdbcType=VARCHAR},
     password = #{password,jdbcType=VARCHAR},
+    account_info_code = #{accountInfoCode,jdbcType=VARCHAR},
     phone = #{phone,jdbcType=VARCHAR},
     state = #{state,jdbcType=TINYINT},
     user_type = #{userType,jdbcType=INTEGER},
