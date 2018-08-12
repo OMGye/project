@@ -17,6 +17,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -28,6 +29,7 @@ import java.util.UUID;
 /**
  * Created by upupgogogo on 2018/8/12.下午12:57
  */
+@Service("accountInfoService")
 public class AccountInfoServiceImpl implements AccountInfoService{
 
     private Logger logger = LoggerFactory.getLogger(AccountInfoServiceImpl.class);
