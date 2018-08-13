@@ -187,4 +187,22 @@
       last_edit_time = #{lastEditTime,jdbcType=TIMESTAMP}
     where account_info_id = #{accountInfoId,jdbcType=INTEGER}
   </update>
+
+  <select id="selectUncheckList" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    from account_info
+    where item_id = #{itemId}
+    and state = 0
+  </select>
+
+  <select id="selectCheckList" parameterType="map" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    from account_info
+    where item_id = #{itemId}
+    and state = 1
+    and user_id = #{userId}
+    and 0 > account_rel_price
+  </select>
 </mapper>

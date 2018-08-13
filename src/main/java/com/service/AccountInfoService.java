@@ -1,6 +1,7 @@
 package com.service;
 
 import com.common.ServerResponse;
+import com.github.pagehelper.PageInfo;
 import com.pojo.AccountInfo;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -10,4 +11,12 @@ import org.springframework.web.multipart.MultipartFile;
 public interface AccountInfoService {
 
     ServerResponse insert(AccountInfo accountInfo, Integer materialInfoId, MultipartFile file, String path);
+
+    ServerResponse<PageInfo<AccountInfo>> checkUserList(int pageSize, int pageNum, Integer itemId);
+
+    ServerResponse checkUserConfirm(Integer accountInfoId);
+
+    ServerResponse<PageInfo<AccountInfo>> userList(int pageSize, int pageNum,Integer userId, Integer itemId);
+
+    ServerResponse userConfirm(Integer accountInfoId);
 }

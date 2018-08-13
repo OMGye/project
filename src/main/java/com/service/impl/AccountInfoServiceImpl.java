@@ -6,6 +6,8 @@ import com.common.UserAuth;
 import com.dao.AccountInfoMapper;
 import com.dao.MaterialBuyInfoMapper;
 import com.dao.UserMapper;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import com.pojo.AccountInfo;
 import com.pojo.MaterialBuyInfo;
@@ -123,5 +125,43 @@ public class AccountInfoServiceImpl implements AccountInfoService{
             }
         }
         return ServerResponse.createByErrorMessage("图片上传失败");
+    }
+
+    public ServerResponse<PageInfo<AccountInfo>> checkUserList(int pageSize, int pageNum, Integer itemId){
+        PageHelper.startPage(pageNum,pageSize);
+        List<AccountInfo> list = accountInfoMapper.selectUncheckList(itemId);
+        PageInfo<AccountInfo> pageInfo = new PageInfo(list);
+        return ServerResponse.createBySuccess(pageInfo);
+    }
+
+    public ServerResponse checkUserConfirm(Integer accountInfoId){
+        if (accountInfoId == null)
+            return ServerResponse.createByErrorMessage("参数错误");
+        AccountInfo accountInfo = new AccountInfo();
+        accountInfo.setAccountInfoId(accountInfoId);
+        accountInfo.setState(Const.Account.CHECK_AUDITING);
+        int row = accountInfoMapper.updateByPrimaryKeySelective(accountInfo);
+        if (row > 0)
+            return ServerResponse.createBySuccess("审核成功");
+        return ServerResponse.createByErrorMessage("审核失败");
+    }
+
+    public ServerResponse<PageInfo<AccountInfo>> userList(int pageSize, int pageNum,Integer userId, Integer itemId){
+        PageHelper.startPage(pageNum,pageSize);
+        List<AccountInfo> list = accountInfoMapper.selectCheckList(itemId,userId);
+        PageInfo<AccountInfo> pageInfo = new PageInfo<>(list);
+        return ServerResponse.createBySuccess(pageInfo);
+    }
+
+    public ServerResponse userConfirm(Integer accountInfoId){
+        if (accountInfoId == null)
+            return ServerResponse.createByErrorMessage("参数错误");
+        AccountInfo accountInfo = new AccountInfo();
+        accountInfo.setAccountInfoId(accountInfoId);
+        accountInfo.setState(Const.Account.FINISHED);
+        int row = accountInfoMapper.updateByPrimaryKeySelective(accountInfo);
+        if (row > 0)
+            return ServerResponse.createBySuccess("确认成功");
+        return ServerResponse.createByErrorMessage("确认失败");
     }
 }

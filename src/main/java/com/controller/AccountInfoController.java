@@ -3,6 +3,7 @@ package com.controller;
 import com.common.Const;
 import com.common.ResponseCode;
 import com.common.ServerResponse;
+import com.common.UserAuth;
 import com.pojo.AccountInfo;
 import com.pojo.User;
 import com.service.AccountInfoService;
@@ -40,4 +41,45 @@ public class AccountInfoController {
         String path = request.getSession().getServletContext().getRealPath("upload");
         return accountInfoService.insert(accountInfo,materialInfoId,file,path);
     }
+
+    @RequestMapping(value = "unchecklist.do",method = RequestMethod.GET)
+    @ResponseBody
+    public ServerResponse unCheckList(HttpSession session, Integer itemId,@RequestParam(value = "pageNum",defaultValue = "1") int pageNum, @RequestParam(value = "pageSize",defaultValue = "5")int pageSize){
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        if(user == null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登入");
+        }
+        return accountInfoService.checkUserList(pageSize,pageNum,itemId);
+    }
+
+    @RequestMapping(value = "checkconfirm.do",method = RequestMethod.GET)
+    @ResponseBody
+    public ServerResponse checkConfirm(HttpSession session, Integer accountInfoId){
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        if(user == null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登入");
+        }
+        return accountInfoService.checkUserConfirm(accountInfoId);
+    }
+
+    @RequestMapping(value = "userlist.do",method = RequestMethod.GET)
+    @ResponseBody
+    public ServerResponse userList(HttpSession session, Integer itemId,@RequestParam(value = "pageNum",defaultValue = "1") int pageNum, @RequestParam(value = "pageSize",defaultValue = "5")int pageSize){
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        if(user == null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登入");
+        }
+        return accountInfoService.userList(pageSize,pageNum,user.getUserId(),itemId);
+    }
+
+    @RequestMapping(value = "userconfirm.do",method = RequestMethod.GET)
+    @ResponseBody
+    public ServerResponse userConfirm(HttpSession session,Integer accountInfoId){
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        if(user == null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登入");
+        }
+        return accountInfoService.userConfirm(accountInfoId);
+    }
+
 }
