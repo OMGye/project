@@ -39,7 +39,7 @@
       check_user_name, create_time, last_edit_time
       )
     values (#{accountInfoId,jdbcType=INTEGER}, #{categoryName,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER}, 
-      #{itemId,jdbcType=INTEGER},#{accountInfoCode,jdbcType=VARCHAR},, #{accountImg,jdbcType=VARCHAR}, #{prePrice,jdbcType=DECIMAL},
+      #{itemId,jdbcType=INTEGER},#{accountInfoCode,jdbcType=VARCHAR}, #{accountImg,jdbcType=VARCHAR}, #{prePrice,jdbcType=DECIMAL},
       #{accountRelPrice,jdbcType=DECIMAL}, #{accountInfoDec,jdbcType=VARCHAR}, #{state,jdbcType=INTEGER}, 
       #{checkUserName,jdbcType=VARCHAR}, now(),now()
       )

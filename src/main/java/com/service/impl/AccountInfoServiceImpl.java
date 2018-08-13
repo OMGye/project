@@ -76,6 +76,7 @@ public class AccountInfoServiceImpl implements AccountInfoService{
                 logger.error("上传文件异常", e);
                 return ServerResponse.createByErrorMessage("上传文件异常");
             }
+
             if (materialInfoId == null){
                 if (StringUtils.isBlank(accountInfo.getCategoryName()) || accountInfo.getPrePrice() == null || accountInfo.getAccountRelPrice() == null)
                     return ServerResponse.createByErrorMessage("参数错误");
@@ -99,6 +100,8 @@ public class AccountInfoServiceImpl implements AccountInfoService{
                     return ServerResponse.createBySuccess("上传成功");
                 return ServerResponse.createByErrorMessage("上传失败");
             }
+
+
             else {
                 if (accountInfo.getPrePrice() == null || accountInfo.getAccountRelPrice() == null)
                     return ServerResponse.createByErrorMessage("参数错误");
