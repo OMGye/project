@@ -114,8 +114,11 @@ public class AccountInfoServiceImpl implements AccountInfoService{
                     accountInfo.setAccountInfoCode(user.getAccountInfoCode());
                 }
                 int row = accountInfoMapper.insert(accountInfo);
-                if (row > 0)
+                if (row > 0){
+                    materialBuyInfo.setAccountInfoId(accountInfo.getAccountInfoId());
+                    materialBuyInfoMapper.updateByPrimaryKeySelective(materialBuyInfo);
                     return ServerResponse.createBySuccess("上传成功");
+                }
                 return ServerResponse.createByErrorMessage("上传失败");
             }
         }

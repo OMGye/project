@@ -32,7 +32,7 @@
     delete from account_info
     where account_info_id = #{accountInfoId,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.pojo.AccountInfo" >
+  <insert id="insert" useGeneratedKeys="true" keyProperty="account_info_id" parameterType="com.pojo.AccountInfo" >
     insert into account_info (account_info_id, category_name, user_id, 
       item_id, account_info_code, account_img, pre_price,
       account_rel_price, account_info_dec, state, 
