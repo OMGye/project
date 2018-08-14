@@ -213,4 +213,14 @@
     and user_id = #{userId}
     and 0 > account_rel_price
   </select>
+
+  <select id="selectCheckListNotItemId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    from account_info
+    where item_id is NULL
+    and state = 1
+    and user_id = #{userId}
+    and 0 > account_rel_price
+  </select>
 </mapper>

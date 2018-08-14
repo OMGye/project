@@ -163,6 +163,13 @@ public class AccountInfoServiceImpl implements AccountInfoService{
         return ServerResponse.createBySuccess(pageInfo);
     }
 
+    public ServerResponse<PageInfo<AccountInfo>> userList(int pageSize, int pageNum,Integer userId){
+        PageHelper.startPage(pageNum,pageSize);
+        List<AccountInfo> list = accountInfoMapper.selectCheckListNotItemId(userId);
+        PageInfo<AccountInfo> pageInfo = new PageInfo<>(list);
+        return ServerResponse.createBySuccess(pageInfo);
+    }
+
     public ServerResponse userConfirm(Integer accountInfoId){
         if (accountInfoId == null)
             return ServerResponse.createByErrorMessage("参数错误");

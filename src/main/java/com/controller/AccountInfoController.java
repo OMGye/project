@@ -71,6 +71,8 @@ public class AccountInfoController {
         if(user == null){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登入");
         }
+        if (itemId == null)
+            return accountInfoService.userList(pageSize,pageNum,user.getUserId());
         return accountInfoService.userList(pageSize,pageNum,user.getUserId(),itemId);
     }
 
