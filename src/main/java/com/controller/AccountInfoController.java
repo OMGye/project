@@ -8,6 +8,9 @@ import com.pojo.AccountInfo;
 import com.pojo.User;
 import com.service.AccountInfoService;
 import com.service.CategoryService;
+import com.util.DBConnection;
+import com.util.PageBean;
+import com.vo.AccountItemVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import sun.jvm.hotspot.debugger.Page;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -95,4 +99,16 @@ public class AccountInfoController {
         }
         return accountInfoService.getAccountById(accountInfoId);
     }
+
+    @RequestMapping(value = "getaccountitem.do",method = RequestMethod.GET)
+    @ResponseBody
+    public ServerResponse<PageBean<AccountItemVo>> getAccountById(HttpSession session,@RequestParam(value = "pageNum",defaultValue = "1") int pageNum, @RequestParam(value = "pageSize",defaultValue = "2")int pageSize){
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        if(user == null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登入");
+        }
+        PageBean<AccountItemVo> pageBean = DBConnection.getItemAccount(pageNum,pageSize);
+        return ServerResponse.createBySuccess(pageBean);
+    }
+
 }

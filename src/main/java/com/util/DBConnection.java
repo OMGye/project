@@ -1,7 +1,9 @@
 package com.util;
 
+import com.vo.AccountItemVo;
 import com.vo.MaterialListVo;
 
+import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -130,9 +132,99 @@ public class DBConnection {
         }
         return pageBean;
     }
+    public static PageBean<AccountItemVo> getItemAccount(int pageNum, int pageSize) {
+        PageBean<AccountItemVo> pageBean = new PageBean();
+        try {
+            stmt = getConnection().createStatement();
+        } catch (Exception e) {
+            System.out.println("statement取得错误");
+            return null;
+        }
+        try {
+            String sql = "select count(*) rec from project_item ";
+            ResultSet rs = stmt.executeQuery(sql);
+            int rowCount = 0;
+            while (rs.next()) {
+                rowCount = rs.getInt("rec");
+            }
+            int totalCount = rowCount;
+            pageBean.setTotalCount(totalCount);
+            int totalPage = 0;
+            if (totalCount % pageSize == 0) {
+                totalPage = totalCount / pageSize;
+            } else {
+                totalPage = totalCount / pageSize + 1;
+            }
+            pageBean.setTotalPage(totalPage);
+            pageBean.setPageNum(pageNum);
+            pageBean.setPageSize(pageSize);
+            int begin = (pageNum - 1) * pageSize;
+            List<AccountItemVo> list = new ArrayList<>();
+            if (pageNum == 1){
+                AccountItemVo accountItemVo = new AccountItemVo();
+                accountItemVo.setItemId(null);
+                accountItemVo.setItemName("公司财务");
+                list.add(accountItemVo);
+            }
+            String sql2 = "select item_id,item_name from project_item order by create_time desc limit " +  begin + "," + pageSize ;
+            ResultSet rs2 = stmt.executeQuery(sql2);
+            while (rs2.next()) {
+                AccountItemVo accountItemVo = new AccountItemVo();
+                accountItemVo.setItemId(rs2.getInt(1));
+                accountItemVo.setItemName(rs2.getString(2));
+                list.add(accountItemVo);
+            }
 
+            for (int i = 0; i < list.size(); i++) {
+                String sql3 = "";
+                if (list.get(i).getItemId() == null)
+                     sql3 = "select sum(account_rel_price) he from account_info where account_rel_price > 0 and item_id is null ";
+                else
+                    sql3 = "select sum(account_rel_price) he from account_info where account_rel_price > 0 and item_id = " + list.get(i).getItemId();
+                ResultSet rs3 = stmt.executeQuery(sql3);
+                while (rs3.next()) {
+                    if (rs3.getBigDecimal("he") != null)
+                        list.get(i).setIncomeAccount(rs3.getBigDecimal("he"));
+                    else
+                        list.get(i).setIncomeAccount(new BigDecimal(0));
+                }
+
+                String sql4 = "";
+                if (list.get(i).getItemId() == null)
+                    sql4 = "select sum(account_rel_price) he from account_info where account_rel_price < 0 and item_id is null ";
+                else
+                    sql4 = "select sum(account_rel_price) he from account_info where account_rel_price < 0 and item_id = " + list.get(i).getItemId();
+                ResultSet rs4 = stmt.executeQuery(sql4);
+                while (rs4.next()) {
+                    if (rs4.getBigDecimal("he") != null)
+                        list.get(i).setPayAccount(rs4.getBigDecimal("he"));
+                    else
+                        list.get(i).setPayAccount(new BigDecimal(0));
+                }
+            }
+            pageBean.setPageNum(list.size());
+            pageBean.setList(list);
+
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+        finally {
+            try {
+                stmt.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return pageBean;
+    }
     public static void main(String[] args) {
-        PageBean pageBean = getMaterialVo(2,5);
-        System.out.println(pageBean.getList().size());
+        PageBean<AccountItemVo> pageBean = getItemAccount(1,2);
+        for (int i = 0; i < pageBean.getList().size(); i ++){
+            System.out.println(pageBean.getList().get(i).getItemId());
+            System.out.println(pageBean.getList().get(i).getIncomeAccount());
+            System.out.println(pageBean.getList().get(i).getPayAccount());
+            System.out.println(pageBean.getList().get(i).getItemName());
+        }
+
     }
 }
