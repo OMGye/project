@@ -19,4 +19,6 @@ public interface AccountInfoService {
     ServerResponse<PageInfo<AccountInfo>> userList(int pageSize, int pageNum,Integer userId, Integer itemId);
 
     ServerResponse userConfirm(Integer accountInfoId);
+
+    ServerResponse<PageInfo<AccountInfo>> checkUserList(int pageSize, int pageNum);
 }

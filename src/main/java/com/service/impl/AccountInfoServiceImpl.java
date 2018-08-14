@@ -130,6 +130,13 @@ public class AccountInfoServiceImpl implements AccountInfoService{
         return ServerResponse.createByErrorMessage("图片上传失败");
     }
 
+    public ServerResponse<PageInfo<AccountInfo>> checkUserList(int pageSize, int pageNum){
+        PageHelper.startPage(pageNum,pageSize);
+        List<AccountInfo> list = accountInfoMapper.selectUncheckListNotItemId();
+        PageInfo<AccountInfo> pageInfo = new PageInfo(list);
+        return ServerResponse.createBySuccess(pageInfo);
+    }
+
     public ServerResponse<PageInfo<AccountInfo>> checkUserList(int pageSize, int pageNum, Integer itemId){
         PageHelper.startPage(pageNum,pageSize);
         List<AccountInfo> list = accountInfoMapper.selectUncheckList(itemId);

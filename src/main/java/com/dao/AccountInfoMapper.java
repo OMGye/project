@@ -18,6 +18,8 @@ public interface AccountInfoMapper {
 
     int updateByPrimaryKey(AccountInfo record);
 
+    List<AccountInfo> selectUncheckListNotItemId();
+
     List<AccountInfo> selectUncheckList(Integer itemId);
 
     List<AccountInfo> selectCheckList(@Param("itemId") Integer itemId, @Param("userId")Integer userId);
