@@ -122,7 +122,7 @@
                 $("button#loginbtn").click(
                         function login() {
                             $.ajax({
-                              url: "/project/user/login.do",
+                              url: "http://193.112.26.167:8080/project/user/login.do",
                               type:"POST",
                               data: $('#loginform').serialize(),
                               beforeSend: function () {
