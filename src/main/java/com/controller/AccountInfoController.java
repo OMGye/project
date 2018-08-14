@@ -86,4 +86,13 @@ public class AccountInfoController {
         return accountInfoService.userConfirm(accountInfoId);
     }
 
+    @RequestMapping(value = "getaccountbyid.do",method = RequestMethod.GET)
+    @ResponseBody
+    public ServerResponse getAccountById(HttpSession session,Integer accountInfoId){
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        if(user == null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登入");
+        }
+        return accountInfoService.getAccountById(accountInfoId);
+    }
 }

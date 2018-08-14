@@ -23,4 +23,6 @@ public interface AccountInfoService {
     ServerResponse<PageInfo<AccountInfo>> checkUserList(int pageSize, int pageNum);
 
     ServerResponse<PageInfo<AccountInfo>> userList(int pageSize, int pageNum,Integer userId);
+
+    ServerResponse<AccountInfo> getAccountById(Integer accountInfoId);
 }

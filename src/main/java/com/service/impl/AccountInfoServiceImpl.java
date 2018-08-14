@@ -181,4 +181,13 @@ public class AccountInfoServiceImpl implements AccountInfoService{
             return ServerResponse.createBySuccess("确认成功");
         return ServerResponse.createByErrorMessage("确认失败");
     }
+
+    public ServerResponse<AccountInfo> getAccountById(Integer accountInfoId){
+        if (accountInfoId == null)
+            return ServerResponse.createByErrorMessage("参数错误");
+        AccountInfo accountInfo = accountInfoMapper.selectByPrimaryKey(accountInfoId);
+        if (accountInfo == null)
+            return ServerResponse.createByErrorMessage("找不到信息");
+        return ServerResponse.createBySuccess(accountInfo);
+    }
 }
