@@ -287,7 +287,7 @@
                              formData.append('state',"0");
                              formData.append('userId',GetQueryString("userId") );
                              $.ajax({
-                                     url: "http://localhost:8080/project/user/updateuser.do",
+                                     url: "/project/user/updateuser.do",
                                      cache: false,
                                      type:"post",
                                      data: formData,
@@ -324,7 +324,7 @@
                              formData.append('phone', $('#phone').val());
                              formData.append('userId',GetQueryString("userId") );
                              $.ajax({
-                                     url: "http://localhost:8080/project/user/updateuser.do",
+                                     url: "/project/user/updateuser.do",
                                      cache: false,
                                      type:"post",
                                      data: formData,
@@ -415,7 +415,7 @@ function myFadeout(ele){
                                     userId=1;
                                 }
                                 $.ajax({
-                              url: "http://localhost:8080/project/user/getuserinfo.do",
+                              url: "/project/user/getuserinfo.do",
                               type:"GET",
                               xhrFields: {
                                    withCredentials: true

@@ -446,7 +446,7 @@
                              formData.append('phone', $('#phone').val());
                              formData.append('accountInfoCode', $('#accountInfoCode').val());
                              $.ajax({
-                                     url: "http://127.0.0.1:8080/project/user/adduser.do",
+                                     url: "/project/user/adduser.do",
                                      cache: false,
                                      type:"post",
                                      data: formData,
@@ -501,7 +501,7 @@
                                     pageid=1;
                                 }
                                 $.ajax({
-                              url: "http://127.0.0.1:8080/project/user/listableuser.do",
+                              url: "/project/user/listableuser.do",
                               type:"GET",
                               xhrFields: {
            withCredentials: true
