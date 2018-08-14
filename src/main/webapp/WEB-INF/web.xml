@@ -25,19 +25,6 @@
 
 
 
-    <filter>
-        <filter-name>CorsFilter</filter-name>
-        <filter-class>com.common.CorsFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>CorsFilter</filter-name>
-        <url-pattern>*.do</url-pattern>
-
-    </filter-mapping>
-
-
-
-
     <listener>
         <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
     </listener>
