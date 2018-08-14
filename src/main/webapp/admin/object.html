@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>工程财务管理系统——主面板</title>
+    <!-- Bootstrap Styles-->
+    <link href="assets/css/bootstrap.css" rel="stylesheet" />
+    <!-- FontAwesome Styles-->
+    <link href="assets/css/font-awesome.css" rel="stylesheet" />
+    <!-- Morris Chart Styles-->
+    <link href="assets/js/morris/morris-0.4.3.min.css" rel="stylesheet" />
+    <!-- Custom Styles-->
+    <link href="assets/css/custom-styles.css" rel="stylesheet" />
+    <!-- Google Fonts-->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+</head>
+
+<body>
+     <div class="modal fade" id="myModal12" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myModalLabel">
+                            警告！
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>获取不到登陆信息！非法访问！请登陆！</p>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="../index.html" type="button" class="btn btn-danger">
+                            登陆页面
+                        </a>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+        </div>
+<!-- 创建新项目 -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">创建新的项目</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>项目名</label>
+                    <input type="text" id="itemName" class="form-control">
+                </div>
+                <br>
+                <div class="form-group">
+                    <label>项目负责人</label>
+                    <select id="userId" class="form-control">
+                        
+                    </select>
+                </div>
+                <br>
+                <div>
+                    <label>项目描述</label>
+                    <textarea class="form-control" id="itemDec"> 
+                        
+                    </textarea>
+                </div>
+                <br>
+                <div>
+                    <label>项目工期</label>
+                    <input type="number" id="endtime" class="form-control">
+                    <p class="help-block">自创建项目之日起计算</p>
+                </div>
+                <br>
+                <div>
+                    <label>项目材料员</label>
+                    <select id="materialUserId" class="form-control">
+                        <option value="null">请选择</option>   
+                    </select>
+                </div>
+                <br>
+                <div>
+                    <label>项目材料审核员</label>
+                    <select id="materialCheckUserId" class="form-control">
+                        <option value="null">请选择</option>   
+                    </select>
+                </div>
+                <br>
+                <div>
+                    <label>项目财务员</label>
+                    <select id="accountUserId" class="form-control">
+                        <option value="null">请选择</option>   
+                    </select>
+                </div>
+                <br>
+                <div>
+                    <label>项目财务审核员</label>
+                    <select id="accountCheckUserId" class="form-control">
+                        <option value="null">请选择</option>   
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="createitembtn">确定</button>
+            </div>
+                                    </form>
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+        <!-- 材料流水记录 -->
+<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+               <img src="loading.gif" style="width: 100%">
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+    <div id="wrapper">
+        <div id="navfromout"> </div>
+        <!--/. NAV TOP  -->
+        <div id="navshow"></div>
+        <!-- /. NAV SIDE  -->
+        <div id="page-wrapper">
+            <div id="page-inner">
+
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <h1 class="page-header">
+                            项目<small>项目列表</small>
+                                            <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal" style="margin: 10px">创建新项目</button>
+                        </h1>
+						<ol class="breadcrumb">
+  <li><a href="index.html">主面板</a></li>
+  <li class="active">项目列表</li>
+</ol>
+                    </div>
+                </div>
+				
+				
+                <!-- /. ROW  -->
+
+               
+			
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12" id="itemshow">
+                        
+                    </div>
+                </div>
+                <!-- /. ROW  -->
+				<footer><p>Copyright &copy; 2018.Company name All rights reserved <a href=" target="_blank" title="力禹">力禹</a></p></footer>
+            </div>
+            <!-- /. PAGE INNER  -->
+        </div>
+        <!-- /. PAGE WRAPPER  -->
+    </div>
+    <!-- /. WRAPPER  -->
+    <!-- JS Scripts-->
+    <!-- jQuery Js -->
+    <script src="assets/js/jquery-1.10.2.js"></script>
+    <!-- Bootstrap Js -->
+    <script src="assets/js/bootstrap.min.js"></script>
+	 
+    <!-- Metis Menu Js -->
+    <script src="assets/js/jquery.metisMenu.js"></script>
+    <!-- Morris Chart Js -->
+    <!-- <script src="assets/js/morris/raphael-2.1.0.min.js"></script> -->
+    <!-- <script src="assets/js/morris/morris.js"></script> -->
+	
+	
+	<!-- <script src="assets/js/easypiechart.js"></script> -->
+	<!-- <script src="assets/js/easypiechart-data.js"></script> -->
+	
+	
+    <!-- Custom Js -->
+    <!-- <script src="assets/js/custom-scripts.js"></script>  -->
+    <script src="https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+
+    <script type="text/javascript" src="assets/js/dataformat.js"></script>
+    <script>
+          $("#navfromout").load("common/nav.html");
+          $("#navshow").load("common/topnav.html");
+    </script>
+    <script type="text/javascript">
+
+         $(document).ready(function(){
+            var userinfo=JSON.parse($.cookie('userinfo'));
+            userinfo = userinfo[0];
+            if(userinfo.userType==0){
+                getuser();
+                getobject(userinfo.userType,0);
+            }else if(userinfo.userType==1){
+                console.log("当前用户权限：项目经理");
+                getobject1();
+                getobject(userinfo.userType,userinfo.itemId);
+            }else if(userinfo.userType==2){
+                console.log("当前用户权限：公司财务管理员");
+                $("#people").hide();
+            }else if(userinfo.userType==3){
+                console.log("当前用户权限：记账员");
+                getobject1();
+
+                getobject(userinfo.userType,userinfo.itemId);
+                $("#material").hide();
+                $("#people").hide();
+            }else if(userinfo.userType==4){
+                console.log("当前用户权限：财务审核员");
+                getobject1();
+
+                getobject(userinfo.userType,userinfo.itemId);
+                $("#material").hide();
+                $("#people").hide();
+            }else if(userinfo.userType==5){
+                console.log("当前用户权限：材料员");
+                getobject1();
+
+                getobject(userinfo.userType,userinfo.itemId);
+                $("#money").hide();
+                $("#people").hide();
+            }else if(userinfo.userType==6){
+                console.log("当前用户权限：材料审核员");
+                getobject1();
+
+                getobject(userinfo.userType,userinfo.itemId);
+                $("#money").hide();
+                $("#people").hide();
+            }
+
+                 $("button#createitembtn").click(
+                        function createUser(){
+                            var formData = new FormData();
+                             formData.append('itemName', $('#itemName').val());
+                             formData.append('itemDec', $('#itemDec').val());
+                             formData.append('userId', $('#userId').val());
+                             if($("#accountCheckUserId").val()!="null"){
+                               formData.append('accountCheckUserId', $("#accountCheckUserId").val());
+                             }
+                             if($("#accountUserId").val()!="null"){
+                               formData.append('accountUserId', $("#accountUserId").val());
+                             }
+                             if($("#materialUserId").val()!="null"){
+                               formData.append('materialUserId', $("#materialUserId").val());
+                             }
+                             if($("#materialCheckUserId").val()!="null"){
+                               formData.append('materialCheckUserId', $("#materialCheckUserId").val());
+                             }
+                             var time=Date.parse(new Date())+($("#endtime").val()*24*60*60*1000);
+                             time = new Date(time);
+                             var y = time.getFullYear();//年
+                             var m = time.getMonth() + 1;//月
+                             m=m+"";
+                             if(m.length==1){
+                                m="0"+m;
+                             }
+                             var d = time.getDate();//日
+                             formData.append('endTime',y+"-"+m+"-"+d);
+                           $.ajax({
+                                     url: "http://193.112.26.167:8080/project/item/additem.do",
+                                     cache: false,
+                                     data: formData,
+                                     type:"POST",
+                                     processData: false,
+                                     contentType: false,
+                                     beforeSend: function () {
+                                    ShowDiv();
+                              },
+                              complete: function () {
+                                    HiddenDiv();
+                              },
+                                     success:function(data){      //ajax返回的数据
+                                       if(data.status == '0'){
+                                        alert("success");
+                                       }else{
+                                            var ele=document.getElementById('change_fail');
+                                            ele.style.display="block";  
+                                            myFadeout(ele);
+                                            var t1 = window.setTimeout("alertfail()",4000);
+                                       }
+                                     }
+                                });
+                            return false;
+                          }
+                    );  
+
+            });
+
+         function timeforma(time) {
+         	// body...
+                             time = new Date(time);
+                             var y = time.getFullYear();//年
+                             var m = time.getMonth() + 1;//月
+                             m=m+"";
+                             if(m.length==1){
+                                m="0"+m;
+                             }
+                             var d = time.getDate();//日
+
+                             return y+"-"+m+"-"+d;
+         }
+            function getobject(type) {
+                // body...
+                                var pageid=1;
+                 $.ajax({
+                              url: "http://193.112.26.167:8080/project/item/listitem.do",
+                              type:"GET",
+                              xhrFields: {
+                               withCredentials: true
+                                },
+                            crossDomain: true,
+                              data:{
+                                "pageNum":1,
+                                "pageSize":500
+                              },
+                              beforeSend: function () {
+                                    ShowDiv();
+                              },
+                              complete: function () {
+                                    HiddenDiv();
+                              },
+                              success:function(data){
+                                    if(data.status==0){
+                                        console.log("获取项目信息成功");
+                                        //处理数据
+                                        var timestamp = Date.parse(new Date());
+                                        for (var i =  0; i < data.data.list.length; i++) {
+                                            var value=data.data.list[i];
+                                            var bt=Math.ceil((value.endTime-timestamp)/(value.endTime-value.createTime));
+                                                if(type==0){
+                                                    $("#itemshow").append(
+                                                    	'<a href="objectinfo.html?itemId='+value.itemId+'"><div class="panel panel-default"><div class="panel-heading">项目名：'+value.itemName+'<br>工期：'+timeforma(value.createTime)+'->'+timeforma(value.endTime)+'<br>'+bt+'% 时间进度</div><div class="panel-body"><div class="progress progress-striped"><div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="'+bt+'" aria-valuemin="0" aria-valuemax="100" style="width: '+bt+'%"><span class="sr-only">'+bt+'% 时间进度</span></div></div></div></div></a>'
+                                                    );   
+                                                }else if(value.itemId==itemId){
+                                                	$("#itemshow").append(
+                                                    	'<a href="objectinfo.html?itemId='+value.itemId+'"><div class="panel panel-default"><div class="panel-heading">项目名：'+value.itemName+'<br>工期：'+timeforma(value.createTime)+'->'+timeforma(value.endTime)+' <br>'+bt+'% 时间进度</div><div class="panel-body"><div class="progress progress-striped"><div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="'+bt+'" aria-valuemin="0" aria-valuemax="100" style="width: '+bt+'%"><span class="sr-only">'+bt+'% 时间进度</span></div></div></div></div></a>'
+                                                    );   
+                                                }
+                                        }
+                                    }else if(data.status==10){
+                                        console.log("用户未登陆");
+                                        logininform();
+                                    }else{
+                                        console.log("获取员工信息失败");
+                                    }
+                                },
+                            });   
+            }
+            
+
+             function getuser() {
+                                var pageid=1;
+                                $.ajax({
+                              url: "http://193.112.26.167:8080/project/user/listableuser.do",
+                              type:"GET",
+                              xhrFields: {
+                               withCredentials: true
+                                },
+                            crossDomain: true,
+                              data:{
+                                "pageNum":1,
+                                "pageSize":500
+                              },
+                              // beforeSend: function () {
+                              //       ShowDiv();
+                              // },
+                              // complete: function () {
+                              //       HiddenDiv();
+                              // },
+                              success:function(data){
+                                    if(data.status==0){
+                                        console.log("获取员工信息成功");
+                                        //处理数据
+                                        for (var i =  0; i < data.data.list.length; i++) {
+                                            var value=data.data.list[i];
+                                            if(value['itemId']==null){                                              
+                                                if(value['userType']==1){
+                                                    $("#userId").append(
+                                                        '<option value="'+value['userId']+'">'+value['userName']+'</option>'
+                                                    );   
+                                                }
+                                                if(value['userType']==3){
+                                                  $("#accountUserId").append(
+                                                        '<option value="'+value['userId']+'">'+value['userName']+'</option>'
+                                                    );   
+                                                }
+                                                if(value['userType']==4){
+                                                  $("#accountCheckUserId").append(
+                                                        '<option value="'+value['userId']+'">'+value['userName']+'</option>'
+                                                    );   
+                                                }
+                                                if(value['userType']==5){
+                                                  $("#materialUserId").append(
+                                                        '<option value="'+value['userId']+'">'+value['userName']+'</option>'
+                                                    );   
+                                                }
+                                                if(value['userType']==6){
+                                                  $("#materialCheckUserId").append(
+                                                        '<option value="'+value['userId']+'">'+value['userName']+'</option>'
+                                                    );   
+                                                }
+                                            }
+                                        }
+                                    }else if(data.status==10){
+                                        console.log("用户未登陆");
+                                        logininform();
+                                    }else{
+                                        console.log("获取员工信息失败");
+                                    }
+                                },
+                            });
+                }
+
+                 function logininform(){
+                /*alert("准备开启");
+                $("#myModal1").modal('show');  //手动开启
+                alert("准备关闭");
+                $("#myModal1").modal('hide');  //手动关闭
+                alert("准备开启");
+                $("#myModal1").modal();  //手动开启*/
+                    $("#myModal12").modal({backdrop: 'static', keyboard: false});  //手动开启
+                }
+                 function formatDate(now) {
+　　var year = now.getFullYear();
+　　month = now.getMonth() + 1;
+　　date = now.getDate();
+ 
+　　return year + "-" + month + "-" + date;
+}
+
+                
+                function ShowDiv(){
+                    $('#myModal2').modal('show');
+                }
+
+                function HiddenDiv(){
+                    $('#myModal2').modal('hide');
+                }
+    </script>
+
+</body>
+
+</html>

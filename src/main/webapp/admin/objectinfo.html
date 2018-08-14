@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>工程财务管理系统——主面板</title>
+    <!-- Bootstrap Styles-->
+    <link href="assets/css/bootstrap.css" rel="stylesheet" />
+    <!-- FontAwesome Styles-->
+    <link href="assets/css/font-awesome.css" rel="stylesheet" />
+    <!-- Morris Chart Styles-->
+    <link href="assets/js/morris/morris-0.4.3.min.css" rel="stylesheet" />
+    <!-- Custom Styles-->
+    <link href="assets/css/custom-styles.css" rel="stylesheet" />
+    <!-- Google Fonts-->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+</head>
+
+<body>
+    <div class="modal fade" id="myModal12" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myModalLabel">
+                            警告！
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>获取不到登陆信息！非法访问！请登陆！</p>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="../index.html" type="button" class="btn btn-danger">
+                            登陆页面
+                        </a>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+        </div>
+          <!-- 加载 -->
+<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+               <img src="loading.gif" style="width: 100%">
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+    <div id="wrapper">
+          <div id="navshow">
+          
+      </div>
+        <!--/. NAV TOP  -->
+        <div id="navfromout">
+            
+        </div>
+        <!-- /. NAV SIDE  -->
+        <div id="page-wrapper">
+            <div id="page-inner">
+
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <h1 class="page-header">
+                            XXX大桥人防工程<small>项目梗概</small>
+                        </h1>
+						<ol class="breadcrumb">
+  <li><a href="index.html">主面板</a></li>
+  <li><a href="object.html">项目列表</a></li>
+  <li class="active">XXX大桥人防工程</li>
+</ol>
+                    </div>
+                </div>
+				
+				<!-- /. ROW  -->
+                <div class="row">
+                   <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            XXX大桥人防工程
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <form role="form">
+                                        <div class="form-group">
+                                            <label>项目名</label>
+                                            <input class="form-control" value="XXX大桥人防工程">
+                                            <!-- <p class="help-block">在此输入您的项目名.</p> -->
+                                        </div>
+                                        <div class="form-group">
+                                            <label>项目负责人</label>
+                                            <p class="form-control-static">王磊   <a href="">更换</a></p>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>开启日期</label>
+                                            <p class="form-control-static">2017-1-1  <a href="">调整</a></p>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>结束日期</label>
+                                            <p class="form-control-static">2017-1-1 <a href="">调整</a></p>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>项目描述</label>
+                                            <textarea class="form-control" rows="3">本项目为xxx人防工程，由ww负责设计，xxx负责施工，xxx负责是第三方士大夫大师傅大师傅士大夫似的</textarea>
+                                        </div>
+                                        <div class="form-group has-success">
+                                            <label class="control-label" for="inputSuccess">材料员</label>
+                                            <p class="form-control-static">王磊   <a href="">更换</a></p>
+                                        </div>
+                                        <div class="form-group has-warning">
+                                            <label class="control-label" for="inputWarning">材料审核员</label>
+                                            <p class="form-control-static">李力持   <a href="">更换</a></p>
+                                        </div>
+                                        <button type="submit" class="btn btn-default">确认修改</button>
+                                    </form>
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                                <div class="col-lg-6">
+                                    <h4>功能专区</h4>
+                                        <fieldset>
+                                            <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal" style="margin: 10px">创建新项目</button>
+                                            <button data-toggle="modal" data-target="#myModal2"  class="btn btn-primary btn-lg" style="margin: 10px">新的本项目下材料流水记录</button>
+                                            <button data-toggle="modal" data-target="#myModal3"  class="btn btn-primary btn-lg" style="margin: 10px">新的本项目下财务流水记录</button>
+                                            <a href="caiwu.html" class="btn btn-primary btn-lg" style="margin: 10px">本项目财务详情页</a>
+                                            <a href="cailiao.html" class="btn btn-primary btn-lg" style="margin: 10px">本项目材料详情页</a>
+                                        </fieldset>
+                                    <h4>项目财务总览</h4>
+                        <div class="panel-body">
+
+                                         <table class="table table-hover">
+                                <tr class="success">
+                                    <th>收</th>
+                                    <th>1000</th>
+                                </tr>
+                                <tr class="danger">
+                                    <th>支</th>
+                                    <th>10000</th>
+                                </tr>
+                                <tr class="danger">
+                                    <th>差额</th>
+                                    <th>9000</th>
+                                </tr>
+                            </table>
+                        </div>
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                            </div>
+                            <!-- /.row (nested) -->
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->
+                </div>
+                <!-- /. ROW  -->
+
+               
+			
+                <div class="row">
+                   <div class="col-md-6">
+                     <!--    Context Classes  -->
+                    <div class="panel panel-default">
+                       
+                        <div class="panel-heading">
+                            <a href="cailiao.html">最新材料流水</a>
+                        </div>
+                        
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>材料员</th>
+                                            <th>类型</th>
+                                            <th>数量</th>
+                                            <th>材料名</th>
+                                            <th>时间</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="success">
+                                            <td>1</td>
+                                            <td>王市</td>
+                                            <td>入</td>
+                                            <td>500</td>
+                                            <td>沙子（g）</td>
+                                            <td>2017-1-1 5:00</td>
+                                            <td>
+                                            <a href="clinfo.html" class="btn btn-default">
+                                                详情                                                
+                                            </a>
+                                            </td>
+                                        </tr>
+                                        <tr class="danger">
+                                            <td>1</td>
+                                            <td>王市</td>
+                                            <td>出</td>
+                                            <td>500</td>
+                                            <td>石头（g）</td>
+                                            <td>2017-1-1 5:00</td>
+                                                                                        <td>
+                                            <a href="clinfo.html" class="btn btn-default">
+                                                详情                                                
+                                            </a>
+                                            </td>
+                                        </tr>
+                                        <tr class="success">
+                                            <td>1</td>
+                                            <td>王市</td>
+                                            <td>入</td>
+                                            <td>500</td>
+                                            <td>沙子（g）</td>
+                                            <td>2017-1-1 5:00</td>
+                                                                                    <td>
+                                            <a href="clinfo.html" class="btn btn-default">
+                                                详情                                                
+                                            </a>
+                                            </td>
+                                        </tr>
+                                        <tr class="danger">
+                                            <td>1</td>
+                                            <td>王市</td>
+                                            <td>出</td>
+                                            <td>500</td>
+                                            <td>石头（g）</td>
+                                            <td>2017-1-1 5:00</td>
+                                                                                    <td>
+                                            <a href="clinfo.html" class="btn btn-default">
+                                                详情                                                
+                                            </a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="col-md-6">
+                     <!--    Context Classes  -->
+                    <div class="panel panel-default">
+                       
+                        <div class="panel-heading">
+                            <a href="caiwu.html">最新财务流水</a>
+                        </div>
+                        
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>经办人</th>
+                                            <th>审核人</th>
+                                            <th>类型</th>
+                                            <th>金额</th>
+                                            <th>开支类型</th>
+                                            <th>时间</th>
+                                        <th></th></tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="success">
+                                            <td>1</td>
+                                            <td>王市</td>
+                                            <td>刘申通</td>
+                                            <td>支</td>
+                                            <td>500</td>
+                                            <td>材料开销</td>
+                                            <td>2017-1-1 5:00</td>
+                                                                                    <td>
+                                            <a href="cwinfo.html" class="btn btn-default">
+                                                详情                                                
+                                            </a>
+                                            </td></tr>
+                                        <tr class="danger">
+                                            <td>1</td>
+                                            <td>王市</td>
+                                            <td>刘申通</td>
+                                            <td>收</td>
+                                            <td>500</td>
+                                            <td>资历挂靠</td>
+                                            <td>2017-1-1 5:00</td>
+                                                                                    <td>
+                                            <a href="cwinfo.html" class="btn btn-default">
+                                                详情                                                
+                                            </a>
+                                            </td></tr>
+                                        <tr class="success">
+                                            <td>1</td>
+                                            <td>王市</td>
+                                            <td>刘申通</td>
+                                            <td>支</td>
+                                            <td>500</td>
+                                            <td>个人差旅</td>
+                                            <td>2017-1-1 5:00</td>
+                                                                                    <td>
+                                            <a href="cwinfo.html" class="btn btn-default">
+                                                详情                                                
+                                            </a>
+                                            </td></tr>
+                                        <tr class="danger">
+                                            <td>1</td>
+                                            <td>王市</td>
+                                            <td>刘申通</td>
+                                            <td>收</td>
+                                            <td>500000</td>
+                                            <td>项目2期结算</td>
+                                            <td>2017-1-1 5:00</td>
+                                                                                    <td>
+                                            <a href="cwinfo.html" class="btn btn-default">
+                                                详情                                                
+                                            </a>
+                                            </td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+				<footer><p>Copyright &copy; 2018.Company name All rights reserved <a href=" target="_blank" title="力禹">力禹</a></p></footer>
+            </div>
+            <!-- /. PAGE INNER  -->
+        </div>
+        <!-- /. PAGE WRAPPER  -->
+    </div>
+    <!-- /. WRAPPER  -->
+    <!-- JS Scripts-->
+    <!-- jQuery Js -->
+    <script src="assets/js/jquery-1.10.2.js"></script>
+    <!-- Bootstrap Js -->
+    <script src="assets/js/bootstrap.min.js"></script>
+	 
+    <!-- Metis Menu Js -->
+    <script src="assets/js/jquery.metisMenu.js"></script>
+    <!-- Morris Chart Js -->
+   <script src="https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+
+ <script>
+          $("#navfromout").load("common/nav.html");
+          $("#navshow").load("common/topnav.html");
+    </script>
+
+    <script type="text/javascript">
+         $(document).ready(function(){
+            getmaterial();
+            getCompany();
+                
+            $("button#createshourubtn").click(
+                        function createUser(){
+                             var formData = new FormData();
+                             formData.append('categoryName', $("#materiallist").val());
+                             formData.append('offerId', $("#companylist").val());
+                             formData.append('itemId',GetQueryString('itemId'));
+                             formData.append('sellerName', $("#sellerName").val());
+                             formData.append('unitPrice', $("#unitPrice").val());
+                             formData.append('number', $("#number").val());
+                             formData.append('upload_file', $('#file')[0].files[0]);
+                             $.ajax({
+                                     url: "http://193.112.26.167:8080/project/material/buymaterial.do",
+                                     cache: false,
+                                     type:"post",
+                                     data: formData,
+                                     processData: false,
+                                     contentType: false,
+                              beforeSend: function () {
+                                    ShowDiv();
+                              },
+                              complete: function () {
+                                    HiddenDiv();
+                              },
+                                     success:function(data){      //ajax返回的数据
+                                       if(data.status == '0'){
+                                            // $("#materiallist").html("");
+                                            // $("#pages").html("");
+                                            // $('#myModal3').modal('hide');
+                                            // getmaterial()
+                                            alert('创建成功');
+                                            // getuser();
+                                       }else{
+                                            alert("创建失败！");
+                                       }
+                                     }
+                                });
+                            return false;
+                          }
+                    );  
+
+            function getCompany() {
+                                var pageid=GetQueryString("pageId");
+                                if(pageid==null){
+                                    pageid=1;
+                                }
+                                $.ajax({
+                              url: "http://193.112.26.167:8080/project/offerer/offererlist.do",
+                              type:"GET",
+                              xhrFields: {
+           withCredentials: true
+       },
+       crossDomain: true,
+                              data:{
+                                "pageNum":pageid,
+                                "pageSize":100
+                              },
+                              beforeSend: function () {
+                                    ShowDiv();
+                              },
+                              complete: function () {
+                                    HiddenDiv();
+                              },
+                              success:function(data){
+                                    if(data.status==0){
+                                        console.log("获取供货商信息成功");
+                                        //处理分页
+                                        if(!data.data.isFirstPage){
+                                            $("#pages").append('<li><a href="?pageId='+(pageid-1)+'">&laquo;</a></li>'); 
+                                        }
+                                        for (var i = 1; i <= data.data.pages; i++) {
+                                            $("#pages").append('<li><a href="?pageId='+i+'">'+i+'</a></li>');
+                                        }
+                                        if(!data.data.isLastPage){
+                                            $("#pages").append('<li><a href="?pageId='+data.data.nextPage+'">&raquo;</a></li>');
+                                        }
+                                        //处理数据
+                                        for (var i =  0; i < data.data.list.length; i++) {
+                                            var value=data.data.list[i];
+                                            value['createTime']=timeFormat(value['createTime']);
+                                            $("#companylist").append(
+                                                '<option value="'+value['offerId']+'">'+value['offerCompany']+'</option>'
+                                            );   
+                                        }
+                                    }else if(data.status==10){
+                                        console.log("用户未登陆");
+                                        logininform();
+                                    }else{
+                                        console.log("获取材料信息失败");
+                                    }
+                                },
+                            });
+                }
+
+
+            function getmaterial() {
+                                var pageid=GetQueryString("pageId");
+                                if(pageid==null){
+                                    pageid=1;
+                                }
+                                $.ajax({
+                              url: "http://193.112.26.167:8080/project/category/categorylist.do",
+                              type:"GET",
+                              xhrFields: {
+           withCredentials: true
+       },
+       crossDomain: true,
+                              data:{
+                                "pageNum":pageid,
+                                "pageSize":10
+                              },
+                              beforeSend: function () {
+                                    ShowDiv();
+                              },
+                              complete: function () {
+                                    HiddenDiv();
+                              },
+                              success:function(data){
+                                    if(data.status==0){
+                                        console.log("获取材料信息成功");
+                                        //处理分页
+                                        if(!data.data.isFirstPage){
+                                            $("#pages").append('<li><a href="?pageId='+(pageid-1)+'">&laquo;</a></li>'); 
+                                        }
+                                        for (var i = 1; i <= data.data.pages; i++) {
+                                            $("#pages").append('<li><a href="?pageId='+i+'">'+i+'</a></li>');
+                                        }
+                                        if(!data.data.isLastPage){
+                                            $("#pages").append('<li><a href="?pageId='+data.data.nextPage+'">&raquo;</a></li>');
+                                        }
+                                        //处理数据
+                                        for (var i =  0; i < data.data.list.length; i++) {
+                                            var value=data.data.list[i];
+                                            value['createTime']=timeFormat(value['createTime']);
+                                            $("#materiallist").append(
+                                                '<option value="'+value['categoryName']+'">'+value['categoryName']+'</option>'
+                                            );   
+                                        }
+                                    }else if(data.status==10){
+                                        console.log("用户未登陆");
+                                        logininform();
+                                    }else{
+                                        console.log("获取材料信息失败");
+                                    }
+                                },
+                            });
+                }
+
+                                function logininform(){
+                /*alert("准备开启");
+                $("#myModal1").modal('show');  //手动开启
+                alert("准备关闭");
+                $("#myModal1").modal('hide');  //手动关闭
+                alert("准备开启");
+                $("#myModal1").modal();  //手动开启*/
+                    $("#myModal12").modal({backdrop: 'static', keyboard: false});  //手动开启
+                
+                
+                }
+
+                                function timeFormat(nS) {     
+                    return new Date(parseInt(("/Date("+nS+")/").substr(6, 13))).toLocaleDateString();     
+                }
+
+                function GetQueryString(name)
+                {
+                     var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+                     var r = window.location.search.substr(1).match(reg);
+                     if(r!=null)return  unescape(r[2]); return null;
+                }
+
+                         function ShowDiv(){
+                    $('#myModal2').modal('show');
+                }
+
+                function HiddenDiv(){
+                    $('#myModal2').modal('hide');
+                }
+        });
+    </script>
+
+
+</body>
+
+</html>
