@@ -3,11 +3,10 @@ package com.controller;
 import com.common.Const;
 import com.common.ResponseCode;
 import com.common.ServerResponse;
-import com.common.UserAuth;
+import com.github.pagehelper.PageInfo;
 import com.pojo.AccountInfo;
 import com.pojo.User;
 import com.service.AccountInfoService;
-import com.service.CategoryService;
 import com.util.DBConnection;
 import com.util.PageBean;
 import com.vo.AccountItemVo;
@@ -108,5 +107,21 @@ public class AccountInfoController {
         PageBean<AccountItemVo> pageBean = DBConnection.getItemAccount(pageNum,pageSize);
         return ServerResponse.createBySuccess(pageBean);
     }
+
+    @RequestMapping(value = "getaccountlist.do",method = RequestMethod.GET)
+    @ResponseBody
+    public ServerResponse<PageInfo<AccountInfo>> getAccountList(HttpSession session, @RequestParam(value = "pageNum",defaultValue = "1") int pageNum, @RequestParam(value = "pageSize",defaultValue = "2")int pageSize, Integer itemId){
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        if(user == null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登入");
+        }
+        if (itemId == null)
+            return accountInfoService.getAccountList(pageSize,pageNum);
+        else
+            return accountInfoService.getItemAccountList(pageSize,pageNum,itemId);
+
+    }
+
+
 
 }

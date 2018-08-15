@@ -191,4 +191,18 @@ public class AccountInfoServiceImpl implements AccountInfoService{
         return ServerResponse.createBySuccess(accountInfo);
     }
 
+    public ServerResponse<PageInfo<AccountInfo>> getItemAccountList(int pageSize, int pageNum, Integer itemId){
+        PageHelper.startPage(pageNum,pageSize);
+        List<AccountInfo> list = accountInfoMapper.selectItemAccountList(itemId);
+        PageInfo<AccountInfo> pageInfo = new PageInfo<>(list);
+        return ServerResponse.createBySuccess(pageInfo);
+    }
+
+    public ServerResponse<PageInfo<AccountInfo>> getAccountList(int pageSize, int pageNum){
+        PageHelper.startPage(pageNum,pageSize);
+        List<AccountInfo> list = accountInfoMapper.selectAccountList();
+        PageInfo<AccountInfo> pageInfo = new PageInfo<>(list);
+        return ServerResponse.createBySuccess(pageInfo);
+    }
+
 }
