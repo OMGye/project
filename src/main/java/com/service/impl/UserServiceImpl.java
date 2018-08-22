@@ -181,7 +181,7 @@ public class UserServiceImpl implements UserService{
     @Override
     public ServerResponse<List<String>> unDeal(User user) {
         List<String> list = new ArrayList<>();
-        if (user.getUserId() == UserAuth.BOSS.getCode()){
+        if (user.getUserType() == UserAuth.BOSS.getCode()){
             Integer itemCount = itemMapper.count();
             Integer userCount = userMapper.selectCount();
             if (itemCount * 5 != userCount){
@@ -193,7 +193,7 @@ public class UserServiceImpl implements UserService{
                 return ServerResponse.createBySuccess();
             }
         }
-        if (user.getUserId() == UserAuth.MANAGER.getCode()){
+        if (user.getUserType() == UserAuth.MANAGER.getCode()){
             if (user.getItemId() == null){
                 int count = accountInfoMapper.selectCountByUserIdCheck(user.getUserId());
                 if (count > 0) {
@@ -219,7 +219,7 @@ public class UserServiceImpl implements UserService{
 
             }
         }
-        if (user.getUserId() == UserAuth.MATERIAL_UPLOAD.getCode() || user.getUserId() == UserAuth.EMPLOYEE.getCode() || user.getUserId() == UserAuth.ACCOUNT_UPLOAD.getCode()){
+        if (user.getUserType() == UserAuth.MATERIAL_UPLOAD.getCode() || user.getUserType() == UserAuth.EMPLOYEE.getCode() || user.getUserType() == UserAuth.ACCOUNT_UPLOAD.getCode()){
             int accountCount = accountInfoMapper.selectCountByUserIdCheck(user.getUserId());
             if (accountCount > 0){
                 list.add("您有财务记录需要确认");
@@ -230,7 +230,7 @@ public class UserServiceImpl implements UserService{
                 return ServerResponse.createBySuccess();
             }
         }
-        if (user.getUserId() == UserAuth.FINANCIAL.getCode() || user.getUserId() == UserAuth.ACCOUNT_CHECKED.getCode()){
+        if (user.getUserType() == UserAuth.FINANCIAL.getCode() || user.getUserType() == UserAuth.ACCOUNT_CHECKED.getCode()){
             int count = accountInfoMapper.selectCountByUserIdUncheck(user.getUserName());
             if (count > 0){
                 list.add("您有财务记录需要审核");
@@ -241,7 +241,7 @@ public class UserServiceImpl implements UserService{
                 return ServerResponse.createBySuccess(list);
             }
         }
-        if (user.getUserId() == UserAuth.MATERIAL_CHECKED.getCode()) {
+        if (user.getUserType() == UserAuth.MATERIAL_CHECKED.getCode()) {
             if (user.getItemId() != null) {
                 int countOne = materialBuyInfoMapper.count(user.getItemId());
                 int countTwo = materialUseInfoMapper.count(user.getItemId());
