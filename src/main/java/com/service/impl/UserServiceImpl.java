@@ -263,7 +263,7 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public ServerResponse<UserAccountVo> getAccountByUserId(User user) {
-        if (user.getUserId() == UserAuth.BOSS.getCode()){
+        if (user.getUserType() == UserAuth.BOSS.getCode()){
             UserAccountVo userAccountVo = new UserAccountVo();
              userAccountVo.setOneDayPayAccount(accountInfoMapper.selectAllPayAccountDay());
              userAccountVo.setOneDayIncomeAccount(accountInfoMapper.selectAllIncomeAccountDay());
@@ -272,7 +272,7 @@ public class UserServiceImpl implements UserService{
              return ServerResponse.createBySuccess(userAccountVo);
         }
 
-        if (user.getUserId() == UserAuth.MANAGER.getCode()){
+        if (user.getUserType() == UserAuth.MANAGER.getCode()){
             if (user.getItemId() != null) {
                 UserAccountVo userAccountVo = new UserAccountVo();
                 userAccountVo.setOneDayPayAccount(accountInfoMapper.selectAllPayAccountDayByItemId(user.getItemId()));
