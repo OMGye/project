@@ -261,7 +261,7 @@
     from account_info
     where state = 1
     and 0 > account_rel_price
-    and DATEDIFF(update_time,NOW()) = 0
+    and DATEDIFF(last_edit_time,NOW()) = 0
   </select>
 
   <select id="selectAllIncomeAccountDay" resultType="java.math.BigDecimal">
@@ -270,7 +270,7 @@
     from account_info
     where state = 1
     and account_rel_price > 0
-    and DATEDIFF(update_time,NOW()) = 0
+    and DATEDIFF(last_edit_time,NOW()) = 0
   </select>
 
   <select id="selectAllPayAccountMonth" resultType="java.math.BigDecimal">
@@ -279,8 +279,8 @@
     from account_info
     where state = 1
     and 0 > account_rel_price
-    and 0 >= DATEDIFF(create_time,NOW())
-    and DATEDIFF(update_time,NOW()) >= -30
+    and 0 >= DATEDIFF(last_edit_time,NOW())
+    and DATEDIFF(last_edit_time,NOW()) >= -30
   </select>
 
   <select id="selectAllIncomeAccountMonth" resultType="java.math.BigDecimal">
@@ -289,8 +289,8 @@
     from account_info
     where state = 1
     and  account_rel_price > 0
-    and 0 >= DATEDIFF(create_time,NOW())
-    and DATEDIFF(update_time,NOW()) >= -30
+    and 0 >= DATEDIFF(last_edit_time,NOW())
+    and DATEDIFF(last_edit_time,NOW()) >= -30
   </select>
 
 
@@ -301,7 +301,7 @@
     where state = 1
     and item_id = #{itemId}
     and 0 > account_rel_price
-    and DATEDIFF(update_time,NOW()) = 0
+    and DATEDIFF(last_edit_time,NOW()) = 0
   </select>
 
   <select id="selectAllIncomeAccountDayByItemId" resultType="java.math.BigDecimal" parameterType="java.lang.Integer">
@@ -311,7 +311,7 @@
     where state = 1
     and item_id = #{itemId}
     and account_rel_price > 0
-    and DATEDIFF(update_time,NOW()) = 0
+    and DATEDIFF(last_edit_time,NOW()) = 0
   </select>
 
   <select id="selectAllPayAccountMonthByItemId" resultType="java.math.BigDecimal" parameterType="java.lang.Integer">
@@ -321,8 +321,8 @@
     where state = 1
     and item_id = #{itemId}
     and 0 > account_rel_price
-    and 0 >= DATEDIFF(create_time,NOW())
-    and DATEDIFF(update_time,NOW()) >= -30
+    and 0 >= DATEDIFF(last_edit_time,NOW())
+    and DATEDIFF(last_edit_time,NOW()) >= -30
   </select>
 
   <select id="selectAllIncomeAccountMonthByItemId" resultType="java.math.BigDecimal" parameterType="java.lang.Integer">
@@ -332,8 +332,8 @@
     where state = 1
     and item_id = #{itemId}
     and  account_rel_price > 0
-    and 0 >= DATEDIFF(create_time,NOW())
-    and DATEDIFF(update_time,NOW()) >= -30
+    and 0 >= DATEDIFF(last_edit_time,NOW())
+    and DATEDIFF(last_edit_time,NOW()) >= -30
   </select>
 
 
@@ -345,7 +345,7 @@
     where state = 1
     and user_id = #{user_id}
     and 0 > account_rel_price
-    and DATEDIFF(update_time,NOW()) = 0
+    and DATEDIFF(last_edit_time,NOW()) = 0
   </select>
 
   <select id="selectAllIncomeAccountDayByUserId" resultType="java.math.BigDecimal" parameterType="java.lang.Integer">
@@ -355,7 +355,7 @@
     where state = 1
     and user_id = #{user_id}
     and account_rel_price > 0
-    and DATEDIFF(update_time,NOW()) = 0
+    and DATEDIFF(last_edit_time,NOW()) = 0
   </select>
 
   <select id="selectAllPayAccountMonthByUserId" resultType="java.math.BigDecimal" parameterType="java.lang.Integer">
@@ -365,8 +365,8 @@
     where state = 1
     and user_id = #{user_id}
     and 0 > account_rel_price
-    and 0 >= DATEDIFF(create_time,NOW())
-    and DATEDIFF(update_time,NOW()) >= -30
+    and 0 >= DATEDIFF(last_edit_time,NOW())
+    and DATEDIFF(last_edit_time,NOW()) >= -30
   </select>
 
   <select id="selectAllIncomeAccountMonthByUserId" resultType="java.math.BigDecimal" parameterType="java.lang.Integer">
@@ -376,8 +376,8 @@
     where state = 1
     and user_id = #{user_id}
     and  account_rel_price > 0
-    and 0 >= DATEDIFF(create_time,NOW())
-    and DATEDIFF(update_time,NOW()) >= -30
+    and 0 >= DATEDIFF(last_edit_time,NOW())
+    and DATEDIFF(last_edit_time,NOW()) >= -30
   </select>
 
 </mapper>

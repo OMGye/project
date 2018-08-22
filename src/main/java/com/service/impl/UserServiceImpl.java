@@ -196,28 +196,27 @@ public class UserServiceImpl implements UserService{
         if (user.getUserId() == UserAuth.MANAGER.getCode()){
             if (user.getItemId() == null){
                 int count = accountInfoMapper.selectCountByUserIdCheck(user.getUserId());
-                if (count > 0){
+                if (count > 0) {
                     list.add("您有财务记录需要确认");
                     return ServerResponse.createBySuccess(list);
                 }
                 else {
                     list.add("事件都已完成");
-                    return ServerResponse.createBySuccess();
+                    return ServerResponse.createBySuccess(list);
                 }
             }
             else {
                 int count = userMapper.selectCountByItem(user.getItemId());
                 if (count >= 5){
                     list.add("存在项目相应负责人没有创建");
-                    int accountCount = accountInfoMapper.selectCountByUserIdCheck(user.getUserId());
-                    if (accountCount > 0)
-                        list.add("您有财务记录需要确认");
-                    return ServerResponse.createBySuccess(list);
                 }
-                else {
+                int accountCount = accountInfoMapper.selectCountByUserIdCheck(user.getUserId());
+                if (accountCount > 0)
+                    list.add("您有财务记录需要确认");
+                if (list.size() == 0)
                     list.add("事件都已完成");
-                    return ServerResponse.createBySuccess();
-                }
+                return ServerResponse.createBySuccess(list);
+
             }
         }
         if (user.getUserId() == UserAuth.MATERIAL_UPLOAD.getCode() || user.getUserId() == UserAuth.EMPLOYEE.getCode() || user.getUserId() == UserAuth.ACCOUNT_UPLOAD.getCode()){
