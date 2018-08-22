@@ -23,5 +23,7 @@ public interface ItemMapper {
 
     Item selectByItemName(String itemName);
 
+    int count();
+
 
 }

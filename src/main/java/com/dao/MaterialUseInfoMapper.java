@@ -19,4 +19,6 @@ public interface MaterialUseInfoMapper {
     int updateByPrimaryKey(MaterialUseInfo record);
 
     List<MaterialUseInfo> selectByItemId(Integer itemId);
+
+    int count(Integer itemId);
 }

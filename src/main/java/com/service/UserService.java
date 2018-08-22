@@ -3,6 +3,7 @@ package com.service;
 import com.common.ServerResponse;
 import com.github.pagehelper.PageInfo;
 import com.pojo.User;
+import com.vo.UserAccountVo;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -25,6 +26,10 @@ public interface UserService {
     ServerResponse<User> getUserInfo(Integer userId);
 
     ServerResponse<User> update(User user, MultipartFile file, String path);
+
+    ServerResponse<List<String>> unDeal(User user);
+
+    ServerResponse<UserAccountVo> getAccountByUserId(User user);
 
 
 }

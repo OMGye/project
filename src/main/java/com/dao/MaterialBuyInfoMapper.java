@@ -20,4 +20,6 @@ public interface MaterialBuyInfoMapper {
     int updateByOfferId(Integer offerId);
 
     List<MaterialBuyInfo> selectByItemId(Integer itemId);
+
+    int count(Integer itemId);
 }

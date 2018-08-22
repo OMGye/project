@@ -221,5 +221,13 @@
     and state = 0
   </select>
 
+  <select id="count" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    SELECT
+    count(*)
+    from material_buy_info
+    where item_id = #{itemId}
+    and state = 0
+  </select>
+
 
 </mapper>

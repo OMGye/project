@@ -2,16 +2,19 @@ package com.service.impl;
 
 import com.common.Const;
 import com.common.ServerResponse;
-import com.dao.UserMapper;
+import com.common.UserAuth;
+import com.dao.*;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import com.pojo.Item;
 import com.pojo.User;
 import com.service.UserService;
+import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
 import com.util.DateTimeUtil;
 import com.util.FTPUtil;
 import com.util.PropertiesUtil;
+import com.vo.UserAccountVo;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +25,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -35,6 +40,18 @@ public class UserServiceImpl implements UserService{
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private ItemMapper itemMapper;
+
+    @Autowired
+    private AccountInfoMapper accountInfoMapper;
+
+    @Autowired
+    private MaterialBuyInfoMapper materialBuyInfoMapper;
+
+    @Autowired
+    private MaterialUseInfoMapper materialUseInfoMapper;
 
     @Override
     public ServerResponse<User> login(User user) {
@@ -159,5 +176,121 @@ public class UserServiceImpl implements UserService{
         int row = userMapper.updateByPrimaryKeySelective(user);
         User selectUser = userMapper.selectByPrimaryKey(user.getUserId());
         return ServerResponse.createBySuccess(selectUser);
+    }
+
+    @Override
+    public ServerResponse<List<String>> unDeal(User user) {
+        List<String> list = new ArrayList<>();
+        if (user.getUserId() == UserAuth.BOSS.getCode()){
+            Integer itemCount = itemMapper.count();
+            Integer userCount = userMapper.selectCount();
+            if (itemCount * 5 != userCount){
+                list.add("存在项目相应负责人没有创建");
+                return ServerResponse.createBySuccess(list);
+            }
+            else{
+                list.add("事件都已完成");
+                return ServerResponse.createBySuccess();
+            }
+        }
+        if (user.getUserId() == UserAuth.MANAGER.getCode()){
+            if (user.getItemId() == null){
+                int count = accountInfoMapper.selectCountByUserIdCheck(user.getUserId());
+                if (count > 0){
+                    list.add("您有财务记录需要确认");
+                    return ServerResponse.createBySuccess(list);
+                }
+                else {
+                    list.add("事件都已完成");
+                    return ServerResponse.createBySuccess();
+                }
+            }
+            else {
+                int count = userMapper.selectCountByItem(user.getItemId());
+                if (count >= 5){
+                    list.add("存在项目相应负责人没有创建");
+                    int accountCount = accountInfoMapper.selectCountByUserIdCheck(user.getUserId());
+                    if (accountCount > 0)
+                        list.add("您有财务记录需要确认");
+                    return ServerResponse.createBySuccess(list);
+                }
+                else {
+                    list.add("事件都已完成");
+                    return ServerResponse.createBySuccess();
+                }
+            }
+        }
+        if (user.getUserId() == UserAuth.MATERIAL_UPLOAD.getCode() || user.getUserId() == UserAuth.EMPLOYEE.getCode() || user.getUserId() == UserAuth.ACCOUNT_UPLOAD.getCode()){
+            int accountCount = accountInfoMapper.selectCountByUserIdCheck(user.getUserId());
+            if (accountCount > 0){
+                list.add("您有财务记录需要确认");
+                return ServerResponse.createBySuccess(list);
+            }
+            else {
+                list.add("事件都已完成");
+                return ServerResponse.createBySuccess();
+            }
+        }
+        if (user.getUserId() == UserAuth.FINANCIAL.getCode() || user.getUserId() == UserAuth.ACCOUNT_CHECKED.getCode()){
+            int count = accountInfoMapper.selectCountByUserIdUncheck(user.getUserName());
+            if (count > 0){
+                list.add("您有财务记录需要审核");
+                return ServerResponse.createBySuccess(list);
+            }
+            else {
+                list.add("事件都已完成");
+                return ServerResponse.createBySuccess(list);
+            }
+        }
+        if (user.getUserId() == UserAuth.MATERIAL_CHECKED.getCode()) {
+            if (user.getItemId() != null) {
+                int countOne = materialBuyInfoMapper.count(user.getItemId());
+                int countTwo = materialUseInfoMapper.count(user.getItemId());
+                if (countOne + countTwo > 0) {
+                    list.add("您有材料记录需要审核");
+                }
+            }
+            int accountCount = accountInfoMapper.selectCountByUserIdCheck(user.getUserId());
+            if (accountCount > 0) {
+                list.add("您有财务记录需要确认");
+            }
+            else if (list.size() == 0)
+                list.add("事件都已完成");
+            return ServerResponse.createBySuccess(list);
+
+        }
+        return null;
+    }
+
+    @Override
+    public ServerResponse<UserAccountVo> getAccountByUserId(User user) {
+        if (user.getUserId() == UserAuth.BOSS.getCode()){
+            UserAccountVo userAccountVo = new UserAccountVo();
+             userAccountVo.setOneDayPayAccount(accountInfoMapper.selectAllPayAccountDay());
+             userAccountVo.setOneDayIncomeAccount(accountInfoMapper.selectAllIncomeAccountDay());
+             userAccountVo.setMonthPayAccount(accountInfoMapper.selectAllPayAccountMonth());
+             userAccountVo.setMonthDayIncomeAccount(accountInfoMapper.selectAllIncomeAccountMonth());
+             return ServerResponse.createBySuccess(userAccountVo);
+        }
+
+        if (user.getUserId() == UserAuth.MANAGER.getCode()){
+            if (user.getItemId() != null) {
+                UserAccountVo userAccountVo = new UserAccountVo();
+                userAccountVo.setOneDayPayAccount(accountInfoMapper.selectAllPayAccountDayByItemId(user.getItemId()));
+                userAccountVo.setOneDayIncomeAccount(accountInfoMapper.selectAllIncomeAccountDayByItemId(user.getItemId()));
+                userAccountVo.setMonthPayAccount(accountInfoMapper.selectAllPayAccountMonthByItemId(user.getItemId()));
+                userAccountVo.setMonthDayIncomeAccount(accountInfoMapper.selectAllIncomeAccountMonthByItemId(user.getItemId()));
+                return ServerResponse.createBySuccess(userAccountVo);
+            }
+        }
+
+        UserAccountVo userAccountVo = new UserAccountVo();
+        userAccountVo.setOneDayPayAccount(accountInfoMapper.selectAllPayAccountDayByUserId(user.getUserId()));
+        userAccountVo.setOneDayIncomeAccount(accountInfoMapper.selectAllIncomeAccountDayByUserId(user.getUserId()));
+        userAccountVo.setMonthPayAccount(accountInfoMapper.selectAllPayAccountMonthByUserId(user.getUserId()));
+        userAccountVo.setMonthDayIncomeAccount(accountInfoMapper.selectAllIncomeAccountMonthByUserId(user.getUserId()));
+        return ServerResponse.createBySuccess(userAccountVo);
+
+
     }
 }

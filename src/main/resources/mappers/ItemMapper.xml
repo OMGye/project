@@ -162,4 +162,10 @@
     where item_name = #{itemName}
   </select>
 
+  <select id="count" resultType="java.lang.Integer">
+    select
+    COUNT
+    FROM project_item
+  </select>
+
 </mapper>

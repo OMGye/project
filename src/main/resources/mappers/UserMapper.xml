@@ -212,4 +212,16 @@
     and item_id = #{itemId}
   </select>
 
+  <select id="selectCount" resultType="java.lang.Integer">
+    SELECT
+    COUNT(*)
+    from project_user
+    where item_id is not NULL
+  </select>
+
+  <select id="selectCountByItem" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    select count(*)
+    from project_user
+    where item_id = #{itemId}
+  </select>
 </mapper>

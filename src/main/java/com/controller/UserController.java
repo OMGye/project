@@ -7,7 +7,6 @@ import com.common.UserAuth;
 import com.github.pagehelper.PageInfo;
 import com.pojo.User;
 import com.service.UserService;
-import com.util.DateTimeUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -131,6 +130,27 @@ public class UserController {
         updateUser.setUserType(user.getUserType());
         return userService.update(updateUser,file,request.getSession().getServletContext().getRealPath("upload"));
     }
+
+    @RequestMapping(value = "undeal.do",method = RequestMethod.GET)
+    @ResponseBody
+    public ServerResponse<List<String>> unDeal(HttpSession session){
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        if(user == null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");
+        }
+        return userService.unDeal(user);
+    }
+
+    @RequestMapping(value = "getaccountbyuserid.do",method = RequestMethod.GET)
+    @ResponseBody
+    public ServerResponse getAccountByUserId(HttpSession session){
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        if(user == null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");
+        }
+        return userService.getAccountByUserId(user);
+    }
+
 
 }
 

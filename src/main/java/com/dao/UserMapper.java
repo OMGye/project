@@ -29,4 +29,8 @@ public interface UserMapper {
     List<User> selectByUserType(Integer userType);
 
     User selectByUserTypeAndItemId(@Param("userType")Integer userType, @Param("itemId")Integer itemId);
+
+    int selectCountByItem(Integer itemId);
+
+    int selectCount();
 }

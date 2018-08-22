@@ -239,4 +239,145 @@
     where item_id is NULL
     and state = 1
   </select>
+
+  <select id="selectCountByUserIdCheck" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+    select count(*)
+    from account_info
+    where user_id = #{userId}
+    and state = 1
+    and 0 > account_rel_price
+  </select>
+
+  <select id="selectCountByUserIdUncheckCheck" resultType="java.lang.Integer" parameterType="java.lang.String">
+    select count(*)
+    from account_info
+    where check_user_name = #{checkUserName}
+    and state = 0
+  </select>
+
+  <select id="selectAllPayAccountDay" resultType="java.math.BigDecimal">
+    select
+    sum(account_rel_price)
+    from account_info
+    where state = 1
+    and 0 > account_rel_price
+    and DATEDIFF(update_time,NOW()) = 0
+  </select>
+
+  <select id="selectAllIncomeAccountDay" resultType="java.math.BigDecimal">
+    select
+    sum(account_rel_price)
+    from account_info
+    where state = 1
+    and account_rel_price > 0
+    and DATEDIFF(update_time,NOW()) = 0
+  </select>
+
+  <select id="selectAllPayAccountMonth" resultType="java.math.BigDecimal">
+    select
+    sum(account_rel_price)
+    from account_info
+    where state = 1
+    and 0 > account_rel_price
+    and 0 >= DATEDIFF(create_time,NOW())
+    and DATEDIFF(update_time,NOW()) >= -30
+  </select>
+
+  <select id="selectAllIncomeAccountMonth" resultType="java.math.BigDecimal">
+    select
+    sum(account_rel_price)
+    from account_info
+    where state = 1
+    and  account_rel_price > 0
+    and 0 >= DATEDIFF(create_time,NOW())
+    and DATEDIFF(update_time,NOW()) >= -30
+  </select>
+
+
+  <select id="selectAllPayAccountDayByItemId" resultType="java.math.BigDecimal" parameterType="java.lang.Integer">
+    select
+    sum(account_rel_price)
+    from account_info
+    where state = 1
+    and item_id = #{itemId}
+    and 0 > account_rel_price
+    and DATEDIFF(update_time,NOW()) = 0
+  </select>
+
+  <select id="selectAllIncomeAccountDayByItemId" resultType="java.math.BigDecimal" parameterType="java.lang.Integer">
+    select
+    sum(account_rel_price)
+    from account_info
+    where state = 1
+    and item_id = #{itemId}
+    and account_rel_price > 0
+    and DATEDIFF(update_time,NOW()) = 0
+  </select>
+
+  <select id="selectAllPayAccountMonthByItemId" resultType="java.math.BigDecimal" parameterType="java.lang.Integer">
+    select
+    sum(account_rel_price)
+    from account_info
+    where state = 1
+    and item_id = #{itemId}
+    and 0 > account_rel_price
+    and 0 >= DATEDIFF(create_time,NOW())
+    and DATEDIFF(update_time,NOW()) >= -30
+  </select>
+
+  <select id="selectAllIncomeAccountMonthByItemId" resultType="java.math.BigDecimal" parameterType="java.lang.Integer">
+    select
+    sum(account_rel_price)
+    from account_info
+    where state = 1
+    and item_id = #{itemId}
+    and  account_rel_price > 0
+    and 0 >= DATEDIFF(create_time,NOW())
+    and DATEDIFF(update_time,NOW()) >= -30
+  </select>
+
+
+
+  <select id="selectAllPayAccountDayByUserId" resultType="java.math.BigDecimal" parameterType="java.lang.Integer">
+    select
+    sum(account_rel_price)
+    from account_info
+    where state = 1
+    and user_id = #{user_id}
+    and 0 > account_rel_price
+    and DATEDIFF(update_time,NOW()) = 0
+  </select>
+
+  <select id="selectAllIncomeAccountDayByUserId" resultType="java.math.BigDecimal" parameterType="java.lang.Integer">
+    select
+    sum(account_rel_price)
+    from account_info
+    where state = 1
+    and user_id = #{user_id}
+    and account_rel_price > 0
+    and DATEDIFF(update_time,NOW()) = 0
+  </select>
+
+  <select id="selectAllPayAccountMonthByUserId" resultType="java.math.BigDecimal" parameterType="java.lang.Integer">
+    select
+    sum(account_rel_price)
+    from account_info
+    where state = 1
+    and user_id = #{user_id}
+    and 0 > account_rel_price
+    and 0 >= DATEDIFF(create_time,NOW())
+    and DATEDIFF(update_time,NOW()) >= -30
+  </select>
+
+  <select id="selectAllIncomeAccountMonthByUserId" resultType="java.math.BigDecimal" parameterType="java.lang.Integer">
+    select
+    sum(account_rel_price)
+    from account_info
+    where state = 1
+    and user_id = #{user_id}
+    and  account_rel_price > 0
+    and 0 >= DATEDIFF(create_time,NOW())
+    and DATEDIFF(update_time,NOW()) >= -30
+  </select>
+
 </mapper>
