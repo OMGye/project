@@ -248,7 +248,7 @@
     and 0 > account_rel_price
   </select>
 
-  <select id="selectCountByUserIdUncheckCheck" resultType="java.lang.Integer" parameterType="java.lang.String">
+  <select id="selectCountByUserIdUnchec" resultType="java.lang.Integer" parameterType="java.lang.String">
     select count(*)
     from account_info
     where check_user_name = #{checkUserName}
