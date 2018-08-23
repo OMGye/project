@@ -100,7 +100,7 @@ public class DBConnection {
             pageBean.setPageNum(pageNum);
             pageBean.setPageSize(pageSize);
             int begin = (pageNum - 1) * pageSize;
-            String sql3 = "SELECT material_info_id as id,item_id,user_id,category_name,check_user_name,number,create_time,last_edit_time,state from material_buy_info where state = 1 union all select material_use_id as id,item_id,user_id,category_name,check_user_name,number,create_time,last_edit_time ,state from material_use_info order by last_edit_time DESC limit " +  begin + "," + pageSize;
+            String sql3 = "SELECT material_info_id as id,item_id,user_id,category_name,check_user_name,number,create_time,last_edit_time,state from material_buy_info where state = 1  union all select material_use_id as id,item_id,user_id,category_name,check_user_name,number,create_time,last_edit_time ,state from material_use_info where state = 1 order by last_edit_time DESC limit " +  begin + "," + pageSize;
             ResultSet rs3 = stmt.executeQuery(sql3);
             List<MaterialListVo> listVos = new ArrayList<>();
             while (rs3.next()) {
@@ -228,7 +228,7 @@ public class DBConnection {
         }
         try {
 
-            String sql3 = "SELECT material_info_id as id,item_id,user_id,category_name,check_user_name,number,create_time,last_edit_time,state from material_buy_info where state = 1 union all select material_use_id as id,item_id,user_id,category_name,check_user_name,number,create_time,last_edit_time ,state from material_use_info where last_edit_time > "+startTime+"and  "+endTime+" > last_edit_time order by last_edit_time DESC ";
+            String sql3 = "SELECT material_info_id as id,item_id,user_id,category_name,check_user_name,number,create_time,last_edit_time,state from material_buy_info where state = 1 and last_edit_time > "+startTime+"and "+endTime+" > last_edit_time union all select material_use_id as id,item_id,user_id,category_name,check_user_name,number,create_time,last_edit_time ,state from material_use_info where last_edit_time > "+startTime+"and  "+endTime+" > last_edit_time and state = 1 order by last_edit_time DESC ";
             ResultSet rs3 = stmt.executeQuery(sql3);
             while (rs3.next()) {
                 MaterialListVo materialListVo = new MaterialListVo();
