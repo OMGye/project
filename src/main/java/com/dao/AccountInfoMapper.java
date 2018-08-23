@@ -70,4 +70,6 @@ public interface AccountInfoMapper {
 
     BigDecimal selectAllIncomeAccountMonthCompany();
 
+    List<AccountInfo> selectByTime(@Param("startTime") String startTime, @Param("endTime")String endTime);
+
 }

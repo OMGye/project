@@ -229,4 +229,13 @@ public class AccountInfoServiceImpl implements AccountInfoService{
         }
         return ServerResponse.createBySuccess(userAccountVo);
     }
+
+
+    @Override
+    public ServerResponse<List<AccountInfo>> getAccountListByTime(String startTime, String endTime) {
+        if (startTime == null || endTime == null)
+            return ServerResponse.createByErrorMessage("参数不能为空");
+        List<AccountInfo> list = accountInfoMapper.selectByTime(startTime,endTime);
+        return ServerResponse.createBySuccess(list);
+    }
 }

@@ -6,6 +6,8 @@ import com.pojo.AccountInfo;
 import com.vo.UserAccountVo;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 /**
  * Created by upupgogogo on 2018/8/12.下午12:49
  */
@@ -32,4 +34,6 @@ public interface AccountInfoService {
     ServerResponse<PageInfo<AccountInfo>> getAccountList(int pageSize, int pageNum);
 
     ServerResponse<UserAccountVo> getAccount();
+
+    ServerResponse<List<AccountInfo>> getAccountListByTime(String startTime ,String endTime);
 }

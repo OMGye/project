@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 /**
  * Created by upupgogogo on 2018/8/11.下午10:31
@@ -100,7 +101,7 @@ public class AccountInfoController {
 
     @RequestMapping(value = "getaccountitem.do",method = RequestMethod.GET)
     @ResponseBody
-    public ServerResponse<PageBean<AccountItemVo>> getAccountById(HttpSession session,@RequestParam(value = "pageNum",defaultValue = "1") int pageNum, @RequestParam(value = "pageSize",defaultValue = "2")int pageSize){
+    public ServerResponse<PageBean<AccountItemVo>> getAccountItem(HttpSession session,@RequestParam(value = "pageNum",defaultValue = "1") int pageNum, @RequestParam(value = "pageSize",defaultValue = "2")int pageSize){
         User user = (User)session.getAttribute(Const.CURRENT_USER);
         if(user == null){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登入");
@@ -133,4 +134,14 @@ public class AccountInfoController {
         return accountInfoService.getAccount();
     }
 
+    @RequestMapping(value = "getaccountlistbytime.do",method = RequestMethod.GET)
+    @ResponseBody
+    public ServerResponse<List<AccountInfo>> getAccountListByTime(HttpSession session,String startTime, String endTime){
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        if(user == null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登入");
+        }
+
+        return accountInfoService.getAccountListByTime(startTime, endTime);
+    }
 }
