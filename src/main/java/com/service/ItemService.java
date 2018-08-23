@@ -22,7 +22,7 @@ public interface ItemService {
 
     ServerResponse<UserAccountVo> getAccountByItemId(Integer itemId);
 
-    ServerResponse updateItemAllUser(Integer itemId,Integer accountUserId, Integer accountCheckUserId, Integer materialUserId, Integer materialCheckUserId);
+    ServerResponse updateItemAllUser(Integer itemId,Integer manageId,Integer accountUserId, Integer accountCheckUserId, Integer materialUserId, Integer materialCheckUserId);
 
 
 }

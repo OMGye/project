@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -117,17 +118,29 @@ public class ItemServiceImpl implements ItemService{
         userAccountVo.setDayIncomeAccount(accountInfoMapper.selectAllIncomeAccountDayByItemId(itemId));
         userAccountVo.setMonthPayAccount(accountInfoMapper.selectAllPayAccountMonthByItemId(itemId));
         userAccountVo.setMonthIncomeAccount(accountInfoMapper.selectAllIncomeAccountMonthByItemId(itemId));
+        if (userAccountVo.getDayIncomeAccount() == null){
+            userAccountVo.setDayIncomeAccount(new BigDecimal("0"));
+        }
+        if (userAccountVo.getDayPayAccount() == null){
+            userAccountVo.setDayPayAccount(new BigDecimal("0"));
+        }
+        if (userAccountVo.getMonthIncomeAccount() == null){
+            userAccountVo.setMonthIncomeAccount(new BigDecimal("0"));
+        }
+        if (userAccountVo.getMonthPayAccount() == null){
+            userAccountVo.setMonthPayAccount(new BigDecimal("0"));
+        }
         return ServerResponse.createBySuccess(userAccountVo);
     }
 
     @Override
-    public ServerResponse updateItemAllUser(Integer itemId, Integer accountUserId, Integer accountCheckUserId, Integer materialUserId, Integer materialCheckUserId) {
+    public ServerResponse updateItemAllUser(Integer itemId, Integer manageId,Integer accountUserId, Integer accountCheckUserId, Integer materialUserId, Integer materialCheckUserId) {
         if (itemId == null)
             return ServerResponse.createByErrorMessage("参数错误");
         Item item = new Item();
         item.setItemId(itemId);
         List<Integer> userIds = new ArrayList<>();
-        if (accountUserId != null){
+        if (manageId != null){
             item.setUserId(accountUserId);
             userIds.add(item.getUserId());
             itemMapper.updateByPrimaryKeySelective(item);

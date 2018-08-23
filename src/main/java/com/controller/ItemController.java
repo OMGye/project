@@ -100,13 +100,13 @@ public class ItemController {
 
     @RequestMapping(value = "updateitemalluser.do",method = RequestMethod.GET)
     @ResponseBody
-    public ServerResponse<UserAccountVo> updateItemAllUser(HttpSession session, Integer itemId, Integer accountUserId, Integer accountCheckUserId, Integer materialUserId, Integer materialCheckUserId){
+    public ServerResponse<UserAccountVo> updateItemAllUser(HttpSession session, Integer itemId, Integer manageId,Integer accountUserId, Integer accountCheckUserId, Integer materialUserId, Integer materialCheckUserId){
         User user = (User)session.getAttribute(Const.CURRENT_USER);
         if(user == null){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");
         }
 
-        return itemService.updateItemAllUser(itemId, accountUserId, accountCheckUserId, materialUserId, materialCheckUserId);
+        return itemService.updateItemAllUser(itemId, manageId,accountUserId, accountCheckUserId, materialUserId, materialCheckUserId);
     }
 
 
