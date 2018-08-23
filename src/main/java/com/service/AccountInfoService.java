@@ -3,6 +3,7 @@ package com.service;
 import com.common.ServerResponse;
 import com.github.pagehelper.PageInfo;
 import com.pojo.AccountInfo;
+import com.vo.UserAccountVo;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -29,4 +30,6 @@ public interface AccountInfoService {
     ServerResponse<PageInfo<AccountInfo>> getItemAccountList(int pageSize, int pageNum, Integer itemId);
 
     ServerResponse<PageInfo<AccountInfo>> getAccountList(int pageSize, int pageNum);
+
+    ServerResponse<UserAccountVo> getAccount();
 }

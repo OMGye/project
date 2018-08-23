@@ -33,4 +33,6 @@ public interface UserMapper {
     int selectCountByItem(Integer itemId);
 
     int selectCount();
+
+    List<User> selectByItemId(Integer itemId);
 }

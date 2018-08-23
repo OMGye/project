@@ -294,6 +294,7 @@
   </select>
 
 
+
   <select id="selectAllPayAccountDayByItemId" resultType="java.math.BigDecimal" parameterType="java.lang.Integer">
     select
     sum(account_rel_price)
@@ -379,5 +380,52 @@
     and 0 >= DATEDIFF(last_edit_time,NOW())
     and DATEDIFF(last_edit_time,NOW()) >= -30
   </select>
+
+
+
+
+  <select id="selectAllPayAccountDayCompany" resultType="java.math.BigDecimal">
+    select
+    sum(account_rel_price)
+    from account_info
+    where state = 1
+    and item_id is null
+    and 0 > account_rel_price
+    and DATEDIFF(last_edit_time,NOW()) = 0
+  </select>
+
+  <select id="selectAllIncomeAccountDayCompany" resultType="java.math.BigDecimal">
+    select
+    sum(account_rel_price)
+    from account_info
+    where state = 1
+    and item_id is null
+    and account_rel_price > 0
+    and DATEDIFF(last_edit_time,NOW()) = 0
+  </select>
+
+  <select id="selectAllPayAccountMonthCompany" resultType="java.math.BigDecimal">
+    select
+    sum(account_rel_price)
+    from account_info
+    where state = 1
+    and item_id is null
+    and 0 > account_rel_price
+    and 0 >= DATEDIFF(last_edit_time,NOW())
+    and DATEDIFF(last_edit_time,NOW()) >= -30
+  </select>
+
+  <select id="selectAllIncomeAccountMonthCompany" resultType="java.math.BigDecimal">
+    select
+    sum(account_rel_price)
+    from account_info
+    where state = 1
+    and item_id is null
+    and  account_rel_price > 0
+    and 0 >= DATEDIFF(last_edit_time,NOW())
+    and DATEDIFF(last_edit_time,NOW()) >= -30
+  </select>
+
+
 
 </mapper>

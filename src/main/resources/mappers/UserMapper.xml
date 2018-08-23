@@ -217,11 +217,21 @@
     COUNT(*)
     from project_user
     where item_id is not NULL
+    and state = 1
   </select>
 
   <select id="selectCountByItem" parameterType="java.lang.Integer" resultType="java.lang.Integer">
     select count(*)
     from project_user
     where item_id = #{itemId}
+    and state = 1
+  </select>
+
+  <select id="selectByItemId" parameterType="java.lang.Integer" resultType="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    from project_user
+    where item_id = #{itemId}
+    and state = 1
   </select>
 </mapper>

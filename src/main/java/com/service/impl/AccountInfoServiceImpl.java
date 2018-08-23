@@ -15,6 +15,7 @@ import com.pojo.User;
 import com.service.AccountInfoService;
 import com.util.FTPUtil;
 import com.util.PropertiesUtil;
+import com.vo.UserAccountVo;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -205,4 +207,26 @@ public class AccountInfoServiceImpl implements AccountInfoService{
         return ServerResponse.createBySuccess(pageInfo);
     }
 
+    @Override
+    public ServerResponse<UserAccountVo> getAccount() {
+
+        UserAccountVo userAccountVo = new UserAccountVo();
+        userAccountVo.setDayPayAccount(accountInfoMapper.selectAllPayAccountDayCompany());
+        userAccountVo.setDayIncomeAccount(accountInfoMapper.selectAllIncomeAccountDayCompany());
+        userAccountVo.setMonthPayAccount(accountInfoMapper.selectAllPayAccountMonthCompany());
+        userAccountVo.setMonthIncomeAccount(accountInfoMapper.selectAllIncomeAccountMonthCompany());
+        if (userAccountVo.getDayIncomeAccount() == null){
+            userAccountVo.setDayIncomeAccount(new BigDecimal("0"));
+        }
+        if (userAccountVo.getDayPayAccount() == null){
+            userAccountVo.setDayPayAccount(new BigDecimal("0"));
+        }
+        if (userAccountVo.getMonthIncomeAccount() == null){
+            userAccountVo.setMonthIncomeAccount(new BigDecimal("0"));
+        }
+        if (userAccountVo.getMonthPayAccount() == null){
+            userAccountVo.setMonthPayAccount(new BigDecimal("0"));
+        }
+        return ServerResponse.createBySuccess(userAccountVo);
+    }
 }

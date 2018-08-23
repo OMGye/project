@@ -61,4 +61,13 @@ public interface AccountInfoMapper {
 
     BigDecimal selectAllIncomeAccountMonthByUserId(Integer userId);
 
+
+    BigDecimal selectAllPayAccountDayCompany();
+
+    BigDecimal selectAllIncomeAccountDayCompany();
+
+    BigDecimal selectAllPayAccountMonthCompany();
+
+    BigDecimal selectAllIncomeAccountMonthCompany();
+
 }

@@ -10,6 +10,7 @@ import com.service.AccountInfoService;
 import com.util.DBConnection;
 import com.util.PageBean;
 import com.vo.AccountItemVo;
+import com.vo.UserAccountVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -121,7 +122,15 @@ public class AccountInfoController {
             return accountInfoService.getItemAccountList(pageSize,pageNum,itemId);
 
     }
+    @RequestMapping(value = "getaccount.do",method = RequestMethod.GET)
+    @ResponseBody
+    public ServerResponse<UserAccountVo> getAccount(HttpSession session){
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        if(user == null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登入");
+        }
 
-
+        return accountInfoService.getAccount();
+    }
 
 }

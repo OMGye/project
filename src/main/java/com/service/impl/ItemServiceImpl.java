@@ -12,8 +12,10 @@ import com.pojo.Item;
 import com.pojo.User;
 import com.service.ItemService;
 import com.vo.ItemListVo;
+import com.vo.ItemVo;
 import com.vo.UserAccountVo;
 import com.vo.UserVo;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -74,25 +76,41 @@ public class ItemServiceImpl implements ItemService{
     }
 
     @Override
-    public ServerResponse<PageInfo> listItemVo(User user,int pageNum, int pageSize) {
+    public ServerResponse<PageInfo<ItemVo>> listItemVo(User user, int pageNum, int pageSize) {
         PageHelper.startPage(pageNum,pageSize);
 
-        List<Item> list = new ArrayList<>();
-        list = itemMapper.select();
-        PageInfo pageInfo = new PageInfo(list);
+        List<Item> list = itemMapper.select();
+        PageInfo<ItemVo> pageInfo = new PageInfo(list);
         pageInfo.setList(assembleItemListVo(list));
         return ServerResponse.createBySuccess(pageInfo);
     }
 
-    private List<ItemListVo> assembleItemListVo(List<Item> list){
-        List<ItemListVo> listVos = new ArrayList<>();
+    private List<ItemVo> assembleItemListVo(List<Item> list){
+        List<ItemVo> listVos = new ArrayList<>();
         for (Item item : list){
-            ItemListVo listVo = new ItemListVo();
-            listVo.setItemId(item.getItemId());
-            listVo.setItemName(item.getItemName());
-            listVo.setCreateTime(item.getCreateTime());
-            listVo.setEndTime(item.getEndTime());
-            listVos.add(listVo);
+            ItemVo itemVo = new ItemVo();
+            BeanUtils.copyProperties(item,itemVo);
+            List<User> userList = userMapper.selectByItemId(item.getItemId());
+            if (userList.size() > 1){
+                for (User user : userList){
+                    if (user.getUserType() == UserAuth.ACCOUNT_CHECKED.getCode()){
+                        itemVo.setAccountCheckUser(user.getUserName());
+                        itemVo.setAccountCheckUserId(user.getUserId());
+                    }
+                    if (user.getUserType() == UserAuth.ACCOUNT_UPLOAD.getCode()){
+                        itemVo.setAccountUser(user.getUserName());
+                        itemVo.setAccountUserId(user.getUserId());
+                    }
+                    if (user.getUserType() == UserAuth.MATERIAL_CHECKED.getCode()){
+                        itemVo.setMaterialCheckUser(user.getUserName());
+                        itemVo.setMaterialCheckUserId(user.getUserId());
+                    }
+                    if (user.getUserType() == UserAuth.MATERIAL_UPLOAD.getCode()){
+                        itemVo.setMaterialUser(user.getUserName());
+                        itemVo.setMaterialUserId(user.getUserId());
+                    }
+                }
+            }
         }
         return listVos;
     }
