@@ -141,7 +141,7 @@ public class ItemServiceImpl implements ItemService{
         item.setItemId(itemId);
         List<Integer> userIds = new ArrayList<>();
         if (manageId != null){
-            item.setUserId(accountUserId);
+            item.setUserId(manageId);
             userIds.add(item.getUserId());
             itemMapper.updateByPrimaryKeySelective(item);
         }
