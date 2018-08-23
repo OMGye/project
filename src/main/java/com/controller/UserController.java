@@ -151,6 +151,17 @@ public class UserController {
         return userService.getAccountByUserId(user);
     }
 
+    @RequestMapping(value = "getuserbyname.do",method = RequestMethod.GET)
+    @ResponseBody
+    public ServerResponse<List<User>> getUserName(HttpSession session, String userName){
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        if(user == null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");
+        }
+        return userService.getUserByUserName(userName);
+    }
+
+
 
 }
 

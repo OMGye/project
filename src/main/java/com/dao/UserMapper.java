@@ -35,4 +35,6 @@ public interface UserMapper {
     int selectCount();
 
     List<User> selectByItemId(Integer itemId);
+
+    List<User> selectByUserName(String userName);
 }

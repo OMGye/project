@@ -229,9 +229,17 @@
 
   <select id="selectByItemId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     SELECT
-    <include refid="Base_Column_List"/>
+    user_id,user_name,user_type
     from project_user
     where item_id = #{itemId}
+    and state = 1
+  </select>
+
+  <select id="selectByUserName" resultMap="BaseResultMap" parameterType="java.lang.String">
+    SELECT
+    <include refid="Base_Column_List"/>
+    from project_user
+    where user_name like #{userName}
     and state = 1
   </select>
 </mapper>

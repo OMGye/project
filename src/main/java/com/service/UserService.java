@@ -31,5 +31,6 @@ public interface UserService {
 
     ServerResponse<UserAccountVo> getAccountByUserId(User user);
 
+    ServerResponse<List<User>> getUserByUserName(String userName);
 
 }

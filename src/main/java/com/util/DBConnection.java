@@ -217,6 +217,47 @@ public class DBConnection {
         }
         return pageBean;
     }
+
+
+    public static List<MaterialListVo> getMaterialByTime(String startTime, String endTime) {
+        List<MaterialListVo> listVos = new ArrayList<>();
+        try {
+            stmt = getConnection().createStatement();
+        } catch (Exception e) {
+
+        }
+        try {
+
+            String sql3 = "SELECT material_info_id as id,item_id,user_id,category_name,check_user_name,number,create_time,last_edit_time,state from material_buy_info where state = 1 union all select material_use_id as id,item_id,user_id,category_name,check_user_name,number,create_time,last_edit_time ,state from material_use_info where last_edit_time > "+startTime+"and  "+endTime+" > last_edit_time order by last_edit_time DESC ";
+            ResultSet rs3 = stmt.executeQuery(sql3);
+            while (rs3.next()) {
+                MaterialListVo materialListVo = new MaterialListVo();
+                materialListVo.setId(rs3.getInt(1));
+                materialListVo.setItemId(rs3.getInt(2));
+                materialListVo.setUserId(rs3.getInt(3));
+                materialListVo.setCategoryName(rs3.getString(4));
+                materialListVo.setCheckUserName(rs3.getString(5));
+                materialListVo.setNumber(rs3.getInt(6));
+                java.util.Date createTime = rs3.getTimestamp(7);
+                java.util.Date lastEidtTime = rs3.getTimestamp(8);
+                materialListVo.setCreateTime(DateTimeUtil.dateToStr(createTime));
+                materialListVo.setLastEditTime(DateTimeUtil.dateToStr(lastEidtTime));
+                materialListVo.setType(materialListVo.getNumber() > 0 ? 1 : 0);
+                listVos.add(materialListVo);
+            }
+
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+        finally {
+            try {
+                stmt.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return listVos;
+    }
     public static void main(String[] args) {
         PageBean<AccountItemVo> pageBean = getItemAccount(1,2);
         for (int i = 0; i < pageBean.getList().size(); i ++){

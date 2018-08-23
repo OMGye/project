@@ -298,6 +298,13 @@ public class UserServiceImpl implements UserService{
         }
         return ServerResponse.createBySuccess(userAccountVo);
 
+    }
 
+    @Override
+    public ServerResponse<List<User>> getUserByUserName(String userName) {
+        if (userName == null)
+            return ServerResponse.createByErrorMessage("参数不能为空");
+        List<User> list = userMapper.selectByUserName(userName);
+        return ServerResponse.createBySuccess(list);
     }
 }
