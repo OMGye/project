@@ -4,6 +4,7 @@ import com.common.ServerResponse;
 import com.github.pagehelper.PageInfo;
 import com.pojo.Item;
 import com.pojo.User;
+import com.vo.UserAccountVo;
 import com.vo.UserVo;
 
 import java.util.List;
@@ -19,6 +20,9 @@ public interface ItemService {
 
     ServerResponse<List<UserVo>> getUserForCheck(Integer userType);
 
+    ServerResponse<UserAccountVo> getAccountByItemId(Integer itemId);
+
+    ServerResponse updateItemAllUser(Integer itemId,Integer accountUserId, Integer accountCheckUserId, Integer materialUserId, Integer materialCheckUserId);
 
 
 }

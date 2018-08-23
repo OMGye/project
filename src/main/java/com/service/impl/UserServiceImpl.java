@@ -184,110 +184,118 @@ public class UserServiceImpl implements UserService{
         if (user.getUserType() == UserAuth.BOSS.getCode()){
             Integer itemCount = itemMapper.count();
             Integer userCount = userMapper.selectCount();
-            if (itemCount * 5 != userCount){
+            if (itemCount * 5 != userCount)
                 list.add("存在项目相应负责人没有创建");
-                return ServerResponse.createBySuccess(list);
-            }
-            else{
-                list.add("事件都已完成");
-                return ServerResponse.createBySuccess();
-            }
+
         }
         if (user.getUserType() == UserAuth.MANAGER.getCode()){
             if (user.getItemId() == null){
                 int count = accountInfoMapper.selectCountByUserIdCheck(user.getUserId());
-                if (count > 0) {
+                if (count > 0)
                     list.add("您有财务记录需要确认");
-                    return ServerResponse.createBySuccess(list);
-                }
-                else {
-                    list.add("事件都已完成");
-                    return ServerResponse.createBySuccess(list);
-                }
+
             }
             else {
                 int count = userMapper.selectCountByItem(user.getItemId());
-                if (count <= 5){
+                if (count <= 5)
                     list.add("存在项目相应负责人没有创建");
-                }
                 int accountCount = accountInfoMapper.selectCountByUserIdCheck(user.getUserId());
                 if (accountCount > 0)
                     list.add("您有财务记录需要确认");
-                if (list.size() == 0)
-                    list.add("事件都已完成");
-                return ServerResponse.createBySuccess(list);
 
             }
         }
         if (user.getUserType() == UserAuth.MATERIAL_UPLOAD.getCode() || user.getUserType() == UserAuth.EMPLOYEE.getCode() || user.getUserType() == UserAuth.ACCOUNT_UPLOAD.getCode()){
             int accountCount = accountInfoMapper.selectCountByUserIdCheck(user.getUserId());
-            if (accountCount > 0){
+            if (accountCount > 0)
                 list.add("您有财务记录需要确认");
-                return ServerResponse.createBySuccess(list);
-            }
-            else {
-                list.add("事件都已完成");
-                return ServerResponse.createBySuccess();
-            }
+
         }
         if (user.getUserType() == UserAuth.FINANCIAL.getCode() || user.getUserType() == UserAuth.ACCOUNT_CHECKED.getCode()){
             int count = accountInfoMapper.selectCountByUserIdUncheck(user.getUserName());
-            if (count > 0){
+            if (count > 0)
                 list.add("您有财务记录需要审核");
-                return ServerResponse.createBySuccess(list);
-            }
-            else {
-                list.add("事件都已完成");
-                return ServerResponse.createBySuccess(list);
-            }
+
         }
         if (user.getUserType() == UserAuth.MATERIAL_CHECKED.getCode()) {
             if (user.getItemId() != null) {
                 int countOne = materialBuyInfoMapper.count(user.getItemId());
                 int countTwo = materialUseInfoMapper.count(user.getItemId());
-                if (countOne + countTwo > 0) {
+                if (countOne + countTwo > 0)
                     list.add("您有材料记录需要审核");
-                }
             }
             int accountCount = accountInfoMapper.selectCountByUserIdCheck(user.getUserId());
-            if (accountCount > 0) {
+            if (accountCount > 0)
                 list.add("您有财务记录需要确认");
-            }
-            else if (list.size() == 0)
-                list.add("事件都已完成");
-            return ServerResponse.createBySuccess(list);
-
         }
-        return null;
+        if (list.size() == 0)
+            list.add("事件都以处理完毕");
+        return ServerResponse.createBySuccess(list);
     }
 
     @Override
     public ServerResponse<UserAccountVo> getAccountByUserId(User user) {
         if (user.getUserType() == UserAuth.BOSS.getCode()){
             UserAccountVo userAccountVo = new UserAccountVo();
-             userAccountVo.setOneDayPayAccount(accountInfoMapper.selectAllPayAccountDay());
-             userAccountVo.setOneDayIncomeAccount(accountInfoMapper.selectAllIncomeAccountDay());
+             userAccountVo.setDayPayAccount(accountInfoMapper.selectAllPayAccountDay());
+             userAccountVo.setDayIncomeAccount(accountInfoMapper.selectAllIncomeAccountDay());
              userAccountVo.setMonthPayAccount(accountInfoMapper.selectAllPayAccountMonth());
-             userAccountVo.setMonthDayIncomeAccount(accountInfoMapper.selectAllIncomeAccountMonth());
+             userAccountVo.setMonthIncomeAccount(accountInfoMapper.selectAllIncomeAccountMonth());
+            if (userAccountVo.getDayIncomeAccount() == null){
+                userAccountVo.setDayIncomeAccount(new BigDecimal("0"));
+            }
+            if (userAccountVo.getDayPayAccount() == null){
+                userAccountVo.setDayPayAccount(new BigDecimal("0"));
+            }
+            if (userAccountVo.getMonthIncomeAccount() == null){
+                userAccountVo.setMonthIncomeAccount(new BigDecimal("0"));
+            }
+            if (userAccountVo.getMonthPayAccount() == null){
+                userAccountVo.setMonthPayAccount(new BigDecimal("0"));
+            }
              return ServerResponse.createBySuccess(userAccountVo);
         }
 
         if (user.getUserType() == UserAuth.MANAGER.getCode()){
             if (user.getItemId() != null) {
                 UserAccountVo userAccountVo = new UserAccountVo();
-                userAccountVo.setOneDayPayAccount(accountInfoMapper.selectAllPayAccountDayByItemId(user.getItemId()));
-                userAccountVo.setOneDayIncomeAccount(accountInfoMapper.selectAllIncomeAccountDayByItemId(user.getItemId()));
+                userAccountVo.setDayPayAccount(accountInfoMapper.selectAllPayAccountDayByItemId(user.getItemId()));
+                userAccountVo.setDayIncomeAccount(accountInfoMapper.selectAllIncomeAccountDayByItemId(user.getItemId()));
                 userAccountVo.setMonthPayAccount(accountInfoMapper.selectAllPayAccountMonthByItemId(user.getItemId()));
-                userAccountVo.setMonthDayIncomeAccount(accountInfoMapper.selectAllIncomeAccountMonthByItemId(user.getItemId()));
+                userAccountVo.setMonthIncomeAccount(accountInfoMapper.selectAllIncomeAccountMonthByItemId(user.getItemId()));
+                if (userAccountVo.getDayIncomeAccount() == null){
+                    userAccountVo.setDayIncomeAccount(new BigDecimal("0"));
+                }
+                if (userAccountVo.getDayPayAccount() == null){
+                    userAccountVo.setDayPayAccount(new BigDecimal("0"));
+                }
+                if (userAccountVo.getMonthIncomeAccount() == null){
+                    userAccountVo.setMonthIncomeAccount(new BigDecimal("0"));
+                }
+                if (userAccountVo.getMonthPayAccount() == null){
+                    userAccountVo.setMonthPayAccount(new BigDecimal("0"));
+                }
                 return ServerResponse.createBySuccess(userAccountVo);
             }
         }
 
         UserAccountVo userAccountVo = new UserAccountVo();
-        userAccountVo.setOneDayPayAccount(accountInfoMapper.selectAllPayAccountDayByUserId(user.getUserId()));
-        userAccountVo.setOneDayIncomeAccount(accountInfoMapper.selectAllIncomeAccountDayByUserId(user.getUserId()));
+        userAccountVo.setDayPayAccount(accountInfoMapper.selectAllPayAccountDayByUserId(user.getUserId()));
+        userAccountVo.setDayIncomeAccount(accountInfoMapper.selectAllIncomeAccountDayByUserId(user.getUserId()));
         userAccountVo.setMonthPayAccount(accountInfoMapper.selectAllPayAccountMonthByUserId(user.getUserId()));
-        userAccountVo.setMonthDayIncomeAccount(accountInfoMapper.selectAllIncomeAccountMonthByUserId(user.getUserId()));
+        userAccountVo.setMonthIncomeAccount(accountInfoMapper.selectAllIncomeAccountMonthByUserId(user.getUserId()));
+        if (userAccountVo.getDayIncomeAccount() == null){
+            userAccountVo.setDayIncomeAccount(new BigDecimal("0"));
+        }
+        if (userAccountVo.getDayPayAccount() == null){
+            userAccountVo.setDayPayAccount(new BigDecimal("0"));
+        }
+        if (userAccountVo.getMonthIncomeAccount() == null){
+            userAccountVo.setMonthIncomeAccount(new BigDecimal("0"));
+        }
+        if (userAccountVo.getMonthPayAccount() == null){
+            userAccountVo.setMonthPayAccount(new BigDecimal("0"));
+        }
         return ServerResponse.createBySuccess(userAccountVo);
 
 

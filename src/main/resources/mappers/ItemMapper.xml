@@ -120,9 +120,9 @@
       <if test="createTime != null" >
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="lastEditTime != null" >
-        last_edit_time = #{lastEditTime,jdbcType=TIMESTAMP},
-      </if>
+
+        last_edit_time = now(),
+
       <if test="endTime != null" >
         end_time = #{endTime,jdbcType=TIMESTAMP},
       </if>

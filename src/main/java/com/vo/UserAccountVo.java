@@ -7,44 +7,44 @@ import java.math.BigDecimal;
  */
 public class UserAccountVo {
 
-    private BigDecimal oneDayPayAccount;
+    private BigDecimal dayPayAccount;
 
-    private BigDecimal oneDayIncomeAccount;
+    private BigDecimal dayIncomeAccount;
 
     private BigDecimal monthPayAccount;
 
-    private BigDecimal monthDayIncomeAccount;
+    private BigDecimal monthIncomeAccount;
 
-    public void setOneDayPayAccount(BigDecimal oneDayPayAccount) {
-        this.oneDayPayAccount = oneDayPayAccount;
+    public void setDayPayAccount(BigDecimal dayPayAccount) {
+        this.dayPayAccount = dayPayAccount;
     }
 
-    public void setOneDayIncomeAccount(BigDecimal oneDayIncomeAccount) {
-        this.oneDayIncomeAccount = oneDayIncomeAccount;
+    public void setDayIncomeAccount(BigDecimal dayIncomeAccount) {
+        this.dayIncomeAccount = dayIncomeAccount;
     }
 
     public void setMonthPayAccount(BigDecimal monthPayAccount) {
         this.monthPayAccount = monthPayAccount;
     }
 
-    public void setMonthDayIncomeAccount(BigDecimal monthDayIncomeAccount) {
-        this.monthDayIncomeAccount = monthDayIncomeAccount;
+    public void setMonthIncomeAccount(BigDecimal monthIncomeAccount) {
+        this.monthIncomeAccount = monthIncomeAccount;
     }
 
-    public BigDecimal getOneDayPayAccount() {
+    public BigDecimal getDayPayAccount() {
 
-        return oneDayPayAccount;
+        return dayPayAccount;
     }
 
-    public BigDecimal getOneDayIncomeAccount() {
-        return oneDayIncomeAccount;
+    public BigDecimal getDayIncomeAccount() {
+        return dayIncomeAccount;
     }
 
     public BigDecimal getMonthPayAccount() {
         return monthPayAccount;
     }
 
-    public BigDecimal getMonthDayIncomeAccount() {
-        return monthDayIncomeAccount;
+    public BigDecimal getMonthIncomeAccount() {
+        return monthIncomeAccount;
     }
 }

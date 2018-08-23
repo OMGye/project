@@ -3,6 +3,7 @@ package com.service.impl;
 import com.common.Const;
 import com.common.ServerResponse;
 import com.common.UserAuth;
+import com.dao.AccountInfoMapper;
 import com.dao.ItemMapper;
 import com.dao.UserMapper;
 import com.github.pagehelper.PageHelper;
@@ -11,6 +12,7 @@ import com.pojo.Item;
 import com.pojo.User;
 import com.service.ItemService;
 import com.vo.ItemListVo;
+import com.vo.UserAccountVo;
 import com.vo.UserVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,6 +34,9 @@ public class ItemServiceImpl implements ItemService{
 
     @Autowired
     private ItemMapper itemMapper;
+
+    @Autowired
+    private AccountInfoMapper accountInfoMapper;
 
     @Transactional
     public ServerResponse addNewItem(Item item, Integer accountUserId, Integer accountCheckUserId, Integer materialUserId, Integer materialCheckUserId, String endTime) throws Exception{
@@ -101,5 +106,46 @@ public class ItemServiceImpl implements ItemService{
             userVoList.add(userVo);
         }
         return ServerResponse.createBySuccess(userVoList);
+    }
+
+    @Override
+    public ServerResponse<UserAccountVo> getAccountByItemId(Integer itemId) {
+        if (itemId == null)
+            return ServerResponse.createByErrorMessage("参数错误");
+        UserAccountVo userAccountVo = new UserAccountVo();
+        userAccountVo.setDayPayAccount(accountInfoMapper.selectAllPayAccountDayByItemId(itemId));
+        userAccountVo.setDayIncomeAccount(accountInfoMapper.selectAllIncomeAccountDayByItemId(itemId));
+        userAccountVo.setMonthPayAccount(accountInfoMapper.selectAllPayAccountMonthByItemId(itemId));
+        userAccountVo.setMonthIncomeAccount(accountInfoMapper.selectAllIncomeAccountMonthByItemId(itemId));
+        return ServerResponse.createBySuccess(userAccountVo);
+    }
+
+    @Override
+    public ServerResponse updateItemAllUser(Integer itemId, Integer accountUserId, Integer accountCheckUserId, Integer materialUserId, Integer materialCheckUserId) {
+        if (itemId == null)
+            return ServerResponse.createByErrorMessage("参数错误");
+        Item item = new Item();
+        item.setItemId(itemId);
+        List<Integer> userIds = new ArrayList<>();
+        if (accountUserId != null){
+            item.setUserId(accountUserId);
+            userIds.add(item.getUserId());
+            itemMapper.updateByPrimaryKeySelective(item);
+        }
+
+        if (accountCheckUserId != null)
+            userIds.add(accountCheckUserId);
+        if (accountUserId != null)
+            userIds.add(accountUserId);
+        if (materialCheckUserId != null)
+            userIds.add(materialCheckUserId);
+        if (materialUserId != null)
+            userIds.add(materialUserId);
+        if (userIds.size() > 0){
+            int count = userMapper.updateItemId(userIds,item.getItemId());
+            if (count < userIds.size())
+                return ServerResponse.createByErrorMessage("修改失败");
+        }
+        return ServerResponse.createBySuccess("修改成功");
     }
 }

@@ -8,6 +8,7 @@ import com.github.pagehelper.PageInfo;
 import com.pojo.Item;
 import com.pojo.User;
 import com.service.ItemService;
+import com.vo.UserAccountVo;
 import com.vo.UserVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -85,4 +86,30 @@ public class ItemController {
             return itemService.listItemVo(user,pageNum,pageSize);
 
     }
+
+    @RequestMapping(value = "getaccountbyitemid.do",method = RequestMethod.GET)
+    @ResponseBody
+    public ServerResponse<UserAccountVo> getAccount(HttpSession session, Integer itemId){
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        if(user == null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");
+        }
+
+        return itemService.getAccountByItemId(itemId);
+    }
+
+    @RequestMapping(value = "updateitemalluser.do",method = RequestMethod.GET)
+    @ResponseBody
+    public ServerResponse<UserAccountVo> updateItemAllUser(HttpSession session, Integer itemId, Integer accountUserId, Integer accountCheckUserId, Integer materialUserId, Integer materialCheckUserId){
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        if(user == null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");
+        }
+
+        return itemService.updateItemAllUser(itemId, accountUserId, accountCheckUserId, materialUserId, materialCheckUserId);
+    }
+
+
+
+
 }
