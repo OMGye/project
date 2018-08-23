@@ -8,6 +8,7 @@ import com.github.pagehelper.PageInfo;
 import com.pojo.Item;
 import com.pojo.User;
 import com.service.ItemService;
+import com.vo.ItemVo;
 import com.vo.UserAccountVo;
 import com.vo.UserVo;
 import org.slf4j.Logger;
@@ -77,7 +78,7 @@ public class ItemController {
 
     @RequestMapping(value = "listitem.do",method = RequestMethod.GET)
     @ResponseBody
-    public ServerResponse<PageInfo> listitem(HttpSession session, @RequestParam(value = "pageNum",defaultValue = "1") int pageNum, @RequestParam(value = "pageSize",defaultValue = "5")int pageSize){
+    public ServerResponse<PageInfo<ItemVo>> listitem(HttpSession session, @RequestParam(value = "pageNum",defaultValue = "1") int pageNum, @RequestParam(value = "pageSize",defaultValue = "5")int pageSize){
         User user = (User)session.getAttribute(Const.CURRENT_USER);
         if(user == null){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");
