@@ -304,6 +304,7 @@ public class UserServiceImpl implements UserService{
     public ServerResponse<List<User>> getUserByUserName(String userName) {
         if (userName == null)
             return ServerResponse.createByErrorMessage("参数不能为空");
+        userName = "%" + userName + "%";
         List<User> list = userMapper.selectByUserName(userName);
         return ServerResponse.createBySuccess(list);
     }

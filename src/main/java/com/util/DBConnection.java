@@ -228,7 +228,7 @@ public class DBConnection {
         }
         try {
 
-            String sql3 = "SELECT material_info_id as id,item_id,user_id,category_name,check_user_name,number,create_time,last_edit_time,state from material_buy_info where state = 1 and last_edit_time > "+startTime+"and "+endTime+" > last_edit_time union all select material_use_id as id,item_id,user_id,category_name,check_user_name,number,create_time,last_edit_time ,state from material_use_info where last_edit_time > "+startTime+"and  "+endTime+" > last_edit_time and state = 1 order by last_edit_time DESC ";
+            String sql3 = "SELECT material_info_id as id,item_id,user_id,category_name,check_user_name,number,create_time,last_edit_time,state from material_buy_info where state = 1 and last_edit_time > "+"'"+startTime+"'"+" and "+"'"+endTime+"'"+" > last_edit_time union all select material_use_id as id,item_id,user_id,category_name,check_user_name,number,create_time,last_edit_time ,state from material_use_info where last_edit_time > "+"'"+startTime+"'"+" and  "+"'"+endTime+"'"+" > last_edit_time and state = 1 order by last_edit_time DESC ";
             ResultSet rs3 = stmt.executeQuery(sql3);
             while (rs3.next()) {
                 MaterialListVo materialListVo = new MaterialListVo();
@@ -259,13 +259,8 @@ public class DBConnection {
         return listVos;
     }
     public static void main(String[] args) {
-        PageBean<AccountItemVo> pageBean = getItemAccount(1,2);
-        for (int i = 0; i < pageBean.getList().size(); i ++){
-            System.out.println(pageBean.getList().get(i).getItemId());
-            System.out.println(pageBean.getList().get(i).getIncomeAccount());
-            System.out.println(pageBean.getList().get(i).getPayAccount());
-            System.out.println(pageBean.getList().get(i).getItemName());
-        }
+       List list = getMaterialByTime("2018-08-10","2018-08-14");
+        System.out.println(list.size());
 
     }
 }

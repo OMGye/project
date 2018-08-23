@@ -239,7 +239,7 @@
     SELECT
     <include refid="Base_Column_List"/>
     from project_user
-    where user_name like "%"#{userName}"%"
+    where user_name like #{userName}
     and state = 1
   </select>
 </mapper>
