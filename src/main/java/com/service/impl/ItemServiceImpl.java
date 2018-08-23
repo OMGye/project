@@ -111,6 +111,7 @@ public class ItemServiceImpl implements ItemService{
                     }
                 }
             }
+            listVos.add(itemVo);
         }
         return listVos;
     }
