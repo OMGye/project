@@ -229,7 +229,7 @@
 
   <select id="selectByItemId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     SELECT
-    user_id,user_name,user_type
+    <include refid="Base_Column_List"/>
     from project_user
     where item_id = #{itemId}
     and state = 1
