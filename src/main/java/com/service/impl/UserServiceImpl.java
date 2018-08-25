@@ -197,7 +197,7 @@ public class UserServiceImpl implements UserService{
             }
             else {
                 int count = userMapper.selectCountByItem(user.getItemId());
-                if (count <= 5)
+                if (count < 5)
                     list.add("存在项目相应负责人没有创建");
                 int accountCount = accountInfoMapper.selectCountByUserIdCheck(user.getUserId());
                 if (accountCount > 0)
