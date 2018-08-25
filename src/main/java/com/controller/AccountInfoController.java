@@ -136,13 +136,13 @@ public class AccountInfoController {
 
     @RequestMapping(value = "getaccountlistbytime.do",method = RequestMethod.GET)
     @ResponseBody
-    public ServerResponse<List<AccountInfo>> getAccountListByTime(HttpSession session,String startTime, String endTime){
+    public ServerResponse<List<AccountInfo>> getAccountListByTime(HttpSession session,String startTime, String endTime,Integer itemId){
         User user = (User)session.getAttribute(Const.CURRENT_USER);
         if(user == null){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登入");
         }
 
-        return accountInfoService.getAccountListByTime(startTime, endTime);
+        return accountInfoService.getAccountListByTime(startTime, endTime,itemId);
     }
 
 

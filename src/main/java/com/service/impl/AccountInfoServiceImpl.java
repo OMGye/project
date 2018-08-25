@@ -232,10 +232,14 @@ public class AccountInfoServiceImpl implements AccountInfoService{
 
 
     @Override
-    public ServerResponse<List<AccountInfo>> getAccountListByTime(String startTime, String endTime) {
+    public ServerResponse<List<AccountInfo>> getAccountListByTime(String startTime, String endTime,Integer itemId) {
         if (startTime == null || endTime == null)
             return ServerResponse.createByErrorMessage("参数不能为空");
-        List<AccountInfo> list = accountInfoMapper.selectByTime(startTime,endTime);
+        List<AccountInfo> list;
+        if (itemId == null)
+            list = accountInfoMapper.selectByTimeNotItemId(startTime,endTime);
+        else
+            list = accountInfoMapper.selectByTimeAndItemId(startTime,endTime,itemId);
         return ServerResponse.createBySuccess(list);
     }
 }

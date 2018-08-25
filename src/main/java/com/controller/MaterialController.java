@@ -160,14 +160,14 @@ public class MaterialController {
 
     @RequestMapping(value = "getmaterialbytime.do",method = RequestMethod.GET)
     @ResponseBody
-    public ServerResponse<List<MaterialListVo>> getMaterialByTime(HttpSession session,String startTime, String endTime){
+    public ServerResponse<List<MaterialListVo>> getMaterialByTime(HttpSession session,String startTime, String endTime,Integer itemId){
         User user = (User)session.getAttribute(Const.CURRENT_USER);
         if(user == null){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");
         }
         if (startTime == null || endTime == null)
             return ServerResponse.createByErrorMessage("参数不能为空");
-        return ServerResponse.createBySuccess(DBConnection.getMaterialByTime(startTime,endTime));
+        return ServerResponse.createBySuccess(DBConnection.getMaterialByTime(startTime,endTime,itemId));
     }
 
 

@@ -219,7 +219,7 @@ public class DBConnection {
     }
 
 
-    public static List<MaterialListVo> getMaterialByTime(String startTime, String endTime) {
+    public static List<MaterialListVo> getMaterialByTime(String startTime, String endTime,Integer itemId) {
         List<MaterialListVo> listVos = new ArrayList<>();
         try {
             stmt = getConnection().createStatement();
@@ -228,7 +228,7 @@ public class DBConnection {
         }
         try {
 
-            String sql3 = "SELECT material_info_id as id,item_id,user_id,category_name,check_user_name,number,create_time,last_edit_time,state from material_buy_info where state = 1 and last_edit_time > "+"'"+startTime+"'"+" and "+"'"+endTime+"'"+" > last_edit_time union all select material_use_id as id,item_id,user_id,category_name,check_user_name,number,create_time,last_edit_time ,state from material_use_info where last_edit_time > "+"'"+startTime+"'"+" and  "+"'"+endTime+"'"+" > last_edit_time and state = 1 order by last_edit_time DESC ";
+            String sql3 = "SELECT material_info_id as id,item_id,user_id,category_name,check_user_name,number,create_time,last_edit_time,state from material_buy_info where state = 1 and last_edit_time > "+"'"+startTime+"'"+" and "+"'"+endTime+"'"+" > last_edit_time and item_id = "+itemId+" union all select material_use_id as id,item_id,user_id,category_name,check_user_name,number,create_time,last_edit_time ,state from material_use_info where last_edit_time > "+"'"+startTime+"'"+" and  "+"'"+endTime+"'"+" > last_edit_time and state = 1 and item_id = "+itemId+" order by last_edit_time DESC ";
             ResultSet rs3 = stmt.executeQuery(sql3);
             while (rs3.next()) {
                 MaterialListVo materialListVo = new MaterialListVo();
@@ -259,7 +259,7 @@ public class DBConnection {
         return listVos;
     }
     public static void main(String[] args) {
-       List list = getMaterialByTime("2018-08-10","2018-08-14");
+       List list = getMaterialByTime("2018-08-10","2018-08-14",27);
         System.out.println(list.size());
 
     }

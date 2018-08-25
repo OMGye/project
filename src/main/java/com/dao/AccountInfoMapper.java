@@ -70,6 +70,9 @@ public interface AccountInfoMapper {
 
     BigDecimal selectAllIncomeAccountMonthCompany();
 
-    List<AccountInfo> selectByTime(@Param("startTime") String startTime, @Param("endTime")String endTime);
+    List<AccountInfo> selectByTimeNotItemId(@Param("startTime") String startTime, @Param("endTime")String endTime);
+
+    List<AccountInfo> selectByTimeAndItemId(@Param("startTime") String startTime, @Param("endTime")String endTime,@Param("itemId")Integer itemId);
+
 
 }

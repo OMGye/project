@@ -426,13 +426,25 @@
     and DATEDIFF(last_edit_time,NOW()) >= -30
   </select>
 
-  <select id="selectByTime" parameterType="map" resultMap="BaseResultMap">
+  <select id="selectByTimeNotItemId" parameterType="map" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List"/>
     from account_info
     where last_edit_time > #{startTime}
     and #{endTime} > last_edit_time
     and state = 1
+    and state is NULL
+    ORDER BY last_edit_time DESC
+  </select>
+
+  <select id="selectByTimeAndItemId" parameterType="map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from account_info
+    where last_edit_time > #{startTime}
+    and #{endTime} > last_edit_time
+    and state = 1
+    and state = #{itemId}
     ORDER BY last_edit_time DESC
   </select>
 

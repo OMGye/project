@@ -35,5 +35,5 @@ public interface AccountInfoService {
 
     ServerResponse<UserAccountVo> getAccount();
 
-    ServerResponse<List<AccountInfo>> getAccountListByTime(String startTime ,String endTime);
+    ServerResponse<List<AccountInfo>> getAccountListByTime(String startTime ,String endTime,Integer itemId);
 }
