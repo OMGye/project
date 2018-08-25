@@ -444,7 +444,7 @@
     where last_edit_time > #{startTime}
     and #{endTime} > last_edit_time
     and state = 1
-    and state = #{itemId}
+    and item_id = #{itemId}
     ORDER BY last_edit_time DESC
   </select>
 
