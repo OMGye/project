@@ -229,7 +229,7 @@ public class UserServiceImpl implements UserService{
                 list.add("您有财务记录需要确认");
         }
         if (list.size() == 0)
-            list.add("事件都以处理完毕");
+            list.add("事件都已处理完毕");
         return ServerResponse.createBySuccess(list);
     }
 
