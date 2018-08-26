@@ -66,7 +66,7 @@ public class DBConnection {
         return conn;
     }
 
-    public static PageBean<MaterialListVo> getMaterialVo(int pageNum, int pageSize) {
+    public static PageBean<MaterialListVo> getMaterialVo(int pageNum, int pageSize,Integer itemId) {
         PageBean pageBean = new PageBean();
         try {
             stmt = getConnection().createStatement();
@@ -76,13 +76,13 @@ public class DBConnection {
             return null;
         }
         try {
-            String sql = "select count(*) rec from material_buy_info ";
+            String sql = "select count(*) rec from material_buy_info where item_id = "+itemId;
             ResultSet rs = stmt.executeQuery(sql);
             int rowCount = 0;
             while (rs.next()) {
                 rowCount = rs.getInt("rec");
             }
-            String sql2 = "select count(*) rec from material_use_info ";
+            String sql2 = "select count(*) rec from material_use_info where item_id = "+itemId;
             ResultSet rs2 = stmt.executeQuery(sql2);
             int rowCount2 = 0;
             while (rs2.next()) {
@@ -100,7 +100,7 @@ public class DBConnection {
             pageBean.setPageNum(pageNum);
             pageBean.setPageSize(pageSize);
             int begin = (pageNum - 1) * pageSize;
-            String sql3 = "SELECT material_info_id as id,item_id,user_id,category_name,check_user_name,number,create_time,last_edit_time,state from material_buy_info where state = 1  union all select material_use_id as id,item_id,user_id,category_name,check_user_name,number,create_time,last_edit_time ,state from material_use_info where state = 1 order by last_edit_time DESC limit " +  begin + "," + pageSize;
+            String sql3 = "SELECT material_info_id as id,item_id,user_id,category_name,check_user_name,number,create_time,last_edit_time,state from material_buy_info where state = 1 and item_id = "+itemId+"  union all select material_use_id as id,item_id,user_id,category_name,check_user_name,number,create_time,last_edit_time ,state from material_use_info where state = 1 and item_id = "+itemId+" order by last_edit_time DESC limit " +  begin + "," + pageSize;
             ResultSet rs3 = stmt.executeQuery(sql3);
             List<MaterialListVo> listVos = new ArrayList<>();
             while (rs3.next()) {

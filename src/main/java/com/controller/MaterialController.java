@@ -129,12 +129,14 @@ public class MaterialController {
 
     @RequestMapping(value = "materiallist.do",method = RequestMethod.GET)
     @ResponseBody
-    public ServerResponse<PageBean<MaterialListVo>> materialList(HttpSession session, @RequestParam(value = "pageNum",defaultValue = "1") int pageNum, @RequestParam(value = "pageSize",defaultValue = "5")int pageSize){
+    public ServerResponse<PageBean<MaterialListVo>> materialList(HttpSession session, @RequestParam(value = "pageNum",defaultValue = "1") int pageNum, @RequestParam(value = "pageSize",defaultValue = "5")int pageSize, Integer itemId){
         User user = (User)session.getAttribute(Const.CURRENT_USER);
         if(user == null){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");
         }
-        PageBean<MaterialListVo> pageBean = DBConnection.getMaterialVo(pageNum,pageSize);
+        if (itemId == null)
+            return ServerResponse.createByErrorMessage("项目id不能为空");
+        PageBean<MaterialListVo> pageBean = DBConnection.getMaterialVo(pageNum,pageSize,itemId);
         return ServerResponse.createBySuccess(pageBean);
     }
 
