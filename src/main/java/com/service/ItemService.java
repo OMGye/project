@@ -25,5 +25,7 @@ public interface ItemService {
 
     ServerResponse updateItemAllUser(Integer itemId,Integer manageId,Integer accountUserId, Integer accountCheckUserId, Integer materialUserId, Integer materialCheckUserId);
 
+    ServerResponse<List<ItemVo>> getItemByName(String itemName);
+
 
 }

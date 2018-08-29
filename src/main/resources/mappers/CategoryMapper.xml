@@ -112,4 +112,11 @@
     where category_name = #{categoryName}
     and category_id != #{categoryId}
   </select>
+
+  <select id="selectByCategoryName" parameterType="java.lang.String" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    from project_category
+    where category_name LIKE #{categoryName}
+  </select>
 </mapper>

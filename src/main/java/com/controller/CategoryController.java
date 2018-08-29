@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 /**
  * Created by upupgogogo on 2018/8/6.下午12:46
@@ -81,5 +82,14 @@ public class CategoryController {
         }
 
         return ServerResponse.createByErrorMessage("请登入管理员账户");
+    }
+    @RequestMapping(value = "getcategorybyname.do",method = RequestMethod.GET)
+    @ResponseBody
+    public ServerResponse<List<Category>> getCategoryByName(String categoryName, HttpSession session){
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        if(user == null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");
+        }
+        return categoryService.getCategoryByName(categoryName);
     }
 }

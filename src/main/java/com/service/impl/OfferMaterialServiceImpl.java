@@ -73,4 +73,13 @@ public class OfferMaterialServiceImpl implements OfferMaterialService{
             return ServerResponse.createBySuccess("修改成功");
         return ServerResponse.createByErrorMessage("修改失败");
     }
+
+    @Override
+    public ServerResponse<List<OfferMaterial>> getOffererByName(String offererName) {
+        if (offererName == null)
+            return ServerResponse.createByErrorMessage("参数不能为空");
+        offererName = "%" + offererName + "%";
+        List<OfferMaterial> list = offerMaterialMapper.selectByOffererName(offererName);
+        return ServerResponse.createBySuccess(list);
+    }
 }

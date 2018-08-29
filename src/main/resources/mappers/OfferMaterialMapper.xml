@@ -126,4 +126,11 @@
     where offer_company = #{offerCompany}
     and offer_id != #{offerId}
   </select>
+
+  <select id="selectByOffererName" parameterType="java.lang.String" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    from project_material
+    where offer_company LIKE #{offererName}
+  </select>
 </mapper>

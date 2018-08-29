@@ -64,4 +64,13 @@ public class CategoryServiceImpl implements CategoryService{
             return ServerResponse.createBySuccess("修改成功");
         return ServerResponse.createByErrorMessage("修改失败");
     }
+
+    @Override
+    public ServerResponse<List<Category>> getCategoryByName(String categoryName) {
+        if (categoryName == null)
+            return ServerResponse.createByErrorMessage("参数不能为空");
+        categoryName = "%" + categoryName + "%";
+        List<Category> list = categoryMapper.selectByCategoryName(categoryName);
+        return ServerResponse.createBySuccess(list);
+    }
 }

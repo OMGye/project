@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 /**
  * Created by upupgogogo on 2018/8/6.下午2:20
@@ -78,5 +79,15 @@ public class OfferMaterialContorller {
         }
 
         return ServerResponse.createByErrorMessage("请登入管理员账户");
+    }
+
+    @RequestMapping(value = "getoffererbyname.do",method = RequestMethod.GET)
+    @ResponseBody
+    public ServerResponse<List<OfferMaterial>> getOffererByName(String offerCompany, HttpSession session){
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        if(user == null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");
+        }
+        return offerMaterialService.getOffererByName(offerCompany);
     }
 }

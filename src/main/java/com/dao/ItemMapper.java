@@ -25,5 +25,7 @@ public interface ItemMapper {
 
     int count();
 
+    List<Item> selectByName(String itemName);
+
 
 }

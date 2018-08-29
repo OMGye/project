@@ -1,5 +1,6 @@
 package com.dao;
 
+import com.pojo.Category;
 import com.pojo.OfferMaterial;
 import org.apache.ibatis.annotations.Param;
 
@@ -23,4 +24,6 @@ public interface OfferMaterialMapper {
     int selectCountByNameAndId(@Param("offerCompany") String offerCompany, @Param("offerId") Integer offerId);
 
     List<OfferMaterial> selectList();
+
+    List<OfferMaterial> selectByOffererName(String offererName);
 }

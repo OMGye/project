@@ -168,4 +168,12 @@
     FROM project_item
   </select>
 
+
+  <select id="selectByName" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    from project_item
+    where item_name LIKE #{itemName}
+  </select>
+
 </mapper>

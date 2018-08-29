@@ -180,4 +180,14 @@ public class ItemServiceImpl implements ItemService{
         }
         return ServerResponse.createBySuccess("修改成功");
     }
+
+    @Override
+    public ServerResponse<List<ItemVo>> getItemByName(String itemName) {
+        if (itemName == null)
+            return ServerResponse.createByErrorMessage("参数不能为空");
+        itemName = "%" + itemName + "%";
+        List<Item> list = itemMapper.selectByName(itemName);
+        List<ItemVo> itemVoList = assembleItemListVo(list);
+        return ServerResponse.createBySuccess(itemVoList);
+    }
 }
