@@ -27,6 +27,10 @@ public interface AccountInfoMapper {
 
     List<AccountInfo> selectCheckListNotItemId(Integer userId);
 
+    List<AccountInfo> selectUserAccountList(@Param("itemId") Integer itemId, @Param("userId")Integer userId);
+
+    List<AccountInfo> selectUserAccountListNotItemId(Integer userId);
+
     List<AccountInfo> selectItemAccountList(Integer itemId);
 
     List<AccountInfo> selectAccountList();

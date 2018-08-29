@@ -224,6 +224,26 @@
     and 0 > account_rel_price
   </select>
 
+
+  <select id="selectUserAccountList" parameterType="map" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    from account_info
+    where item_id = #{itemId}
+    and state >= 1
+    and user_id = #{userId}
+  </select>
+
+  <select id="selectUserAccountListNotItemId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    from account_info
+    where item_id is NULL
+    and state = 1
+    and user_id = #{userId}
+  </select>
+
+
   <select id="selectItemAccountList" resultMap="BaseResultMap" parameterType="java.lang.Integer">
    SELECT
    <include refid="Base_Column_List"/>

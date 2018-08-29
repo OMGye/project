@@ -145,5 +145,17 @@ public class AccountInfoController {
         return accountInfoService.getAccountListByTime(startTime, endTime,itemId);
     }
 
+    @RequestMapping(value = "getuseraccountlist.do",method = RequestMethod.GET)
+    @ResponseBody
+    public ServerResponse userAccountList(HttpSession session, Integer itemId,@RequestParam(value = "pageNum",defaultValue = "1") int pageNum, @RequestParam(value = "pageSize",defaultValue = "5")int pageSize){
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        if(user == null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登入");
+        }
+        if (itemId == null)
+            return accountInfoService.userAccountList(pageSize,pageNum,user.getUserId());
+        return accountInfoService.userAccountList(pageSize,pageNum,user.getUserId(),itemId);
+    }
+
 
 }

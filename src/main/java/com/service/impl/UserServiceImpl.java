@@ -15,9 +15,11 @@ import com.util.DateTimeUtil;
 import com.util.FTPUtil;
 import com.util.PropertiesUtil;
 import com.vo.UserAccountVo;
+import com.vo.UserPersonInfoVo;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -133,11 +135,17 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public ServerResponse<User> getUserInfo(Integer userId) {
+    public ServerResponse<UserPersonInfoVo> getUserInfo(Integer userId) {
         User user = userMapper.selectByPrimaryKey(userId);
         if (user == null)
             return ServerResponse.createByErrorMessage("没有该用户");
-        return ServerResponse.createBySuccess(user);
+        UserPersonInfoVo userPersonInfoVo = new UserPersonInfoVo();
+        BeanUtils.copyProperties(user,userPersonInfoVo);
+        if(user.getItemId() != null){
+            Item item = itemMapper.selectByPrimaryKey(user.getItemId());
+            userPersonInfoVo.setItemName(item.getItemName());
+        }
+        return ServerResponse.createBySuccess(userPersonInfoVo);
     }
 
     @Override

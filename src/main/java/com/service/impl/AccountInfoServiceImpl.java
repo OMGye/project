@@ -177,7 +177,7 @@ public class AccountInfoServiceImpl implements AccountInfoService{
             return ServerResponse.createByErrorMessage("参数错误");
         AccountInfo accountInfo = new AccountInfo();
         accountInfo.setAccountInfoId(accountInfoId);
-        accountInfo.setState(Const.Account.FINISHED);
+        accountInfo.setState(Const.Account.CHECK_AUDITING);
         int row = accountInfoMapper.updateByPrimaryKeySelective(accountInfo);
         if (row > 0)
             return ServerResponse.createBySuccess("确认成功");
@@ -241,5 +241,20 @@ public class AccountInfoServiceImpl implements AccountInfoService{
         else
             list = accountInfoMapper.selectByTimeAndItemId(startTime,endTime,itemId);
         return ServerResponse.createBySuccess(list);
+    }
+
+
+    public ServerResponse<PageInfo<AccountInfo>> userAccountList(int pageSize, int pageNum,Integer userId, Integer itemId){
+        PageHelper.startPage(pageNum,pageSize);
+        List<AccountInfo> list = accountInfoMapper.selectUserAccountList(itemId,userId);
+        PageInfo<AccountInfo> pageInfo = new PageInfo<>(list);
+        return ServerResponse.createBySuccess(pageInfo);
+    }
+
+    public ServerResponse<PageInfo<AccountInfo>> userAccountList(int pageSize, int pageNum,Integer userId){
+        PageHelper.startPage(pageNum,pageSize);
+        List<AccountInfo> list = accountInfoMapper.selectUserAccountListNotItemId(userId);
+        PageInfo<AccountInfo> pageInfo = new PageInfo<>(list);
+        return ServerResponse.createBySuccess(pageInfo);
     }
 }

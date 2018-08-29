@@ -8,6 +8,7 @@ import com.github.pagehelper.PageInfo;
 import com.pojo.User;
 import com.service.UserService;
 import com.util.UserListener;
+import com.vo.UserPersonInfoVo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -106,7 +107,7 @@ public class UserController {
 
     @RequestMapping(value = "getuserinfo.do",method = RequestMethod.GET)
     @ResponseBody
-    public ServerResponse getUserInfo(HttpSession session, Integer userId){
+    public ServerResponse<UserPersonInfoVo> getUserInfo(HttpSession session, Integer userId){
         User user = (User)session.getAttribute(Const.CURRENT_USER);
         if(user == null){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");

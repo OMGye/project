@@ -4,6 +4,7 @@ import com.common.ServerResponse;
 import com.github.pagehelper.PageInfo;
 import com.pojo.User;
 import com.vo.UserAccountVo;
+import com.vo.UserPersonInfoVo;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -23,7 +24,7 @@ public interface UserService {
 
     ServerResponse<String> updateUser(User user);
 
-    ServerResponse<User> getUserInfo(Integer userId);
+    ServerResponse<UserPersonInfoVo> getUserInfo(Integer userId);
 
     ServerResponse<User> update(User user, MultipartFile file, String path);
 
