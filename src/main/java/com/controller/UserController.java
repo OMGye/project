@@ -7,6 +7,7 @@ import com.common.UserAuth;
 import com.github.pagehelper.PageInfo;
 import com.pojo.User;
 import com.service.UserService;
+import com.util.UserListener;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -37,7 +38,12 @@ public class UserController {
             return ServerResponse.createByErrorMessage("请输入用户名或密码");
         ServerResponse<User> response = userService.login(user);
         if(response.isSuccess()){
+            User cur = (User)session.getAttribute(Const.CURRENT_USER);
+            if( cur != null){
+                UserListener.CURUSERLIST.remove(cur);
+            }
             session.setAttribute(Const.CURRENT_USER,response.getData());
+            UserListener.CURUSERLIST.add(response.getData());
         }
         return response;
     }
@@ -114,7 +120,7 @@ public class UserController {
     @RequestMapping(value = "logout.do",method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<String> logout(HttpSession session){
-        session.removeAttribute(Const.CURRENT_USER);
+        session.invalidate();
         return ServerResponse.createBySuccess("注销成功");
     }
 
@@ -161,7 +167,15 @@ public class UserController {
         return userService.getUserByUserName(userName);
     }
 
-
+    @RequestMapping(value = "getcuruser.do",method = RequestMethod.GET)
+    @ResponseBody
+    public ServerResponse<List<User>> getUserName(HttpSession session){
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        if(user == null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");
+        }
+        return ServerResponse.createBySuccess(UserListener.CURUSERLIST);
+    }
 
 }
 
