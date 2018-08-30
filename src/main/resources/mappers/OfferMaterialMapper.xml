@@ -130,7 +130,7 @@
   <select id="selectByOffererName" parameterType="java.lang.String" resultMap="BaseResultMap">
     SELECT
     <include refid="Base_Column_List"/>
-    from project_material
+    from offer_material
     where offer_company LIKE #{offererName}
   </select>
 </mapper>
