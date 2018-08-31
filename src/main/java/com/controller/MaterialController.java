@@ -45,13 +45,10 @@ public class MaterialController {
         }
         if (materialBuyInfo.getItemId() == null)
             return ServerResponse.createByErrorMessage("没有传入项目");
-        if (UserAuth.MATERIAL_UPLOAD.getCode() == user.getUserType() && user.getItemId() == materialBuyInfo.getItemId()){
+
             materialBuyInfo.setUserId(user.getUserId());
             String path = request.getSession().getServletContext().getRealPath("upload");
-            return materialService.buyMaterial(materialBuyInfo,file,path);
-        }
-
-        return ServerResponse.createByErrorMessage("请登入管理员账户");
+        return materialService.buyMaterial(materialBuyInfo,file,path);
     }
 
     @RequestMapping(value = "getmaterialstock.do",method = RequestMethod.GET)
