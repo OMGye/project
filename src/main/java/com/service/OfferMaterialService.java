@@ -20,4 +20,6 @@ public interface OfferMaterialService {
     ServerResponse update(OfferMaterial offerMaterial);
 
     ServerResponse<List<OfferMaterial>> getOffererByName(String offererName);
+
+    ServerResponse<OfferMaterial> getOffererById(Integer offererId);
 }

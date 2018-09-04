@@ -11,7 +11,15 @@ public class Item {
 
     private Integer prority;
 
-    private Integer userId;
+    private Integer itemManagerId;
+
+    private String itemManagerName;
+
+    private Integer itemUploaderId;
+
+    private String itemUploaderName;
+
+    private String itemFile;
 
     private Integer state;
 
@@ -21,12 +29,16 @@ public class Item {
 
     private Date endTime;
 
-    public Item(Integer itemId, String itemName, String itemDec, Integer prority, Integer userId, Integer state, Date createTime, Date lastEditTime, Date endTime) {
+    public Item(Integer itemId, String itemName, String itemDec, Integer prority, Integer itemManagerId, String itemManagerName, Integer itemUploaderId, String itemUploaderName, String itemFile, Integer state, Date createTime, Date lastEditTime, Date endTime) {
         this.itemId = itemId;
         this.itemName = itemName;
         this.itemDec = itemDec;
         this.prority = prority;
-        this.userId = userId;
+        this.itemManagerId = itemManagerId;
+        this.itemManagerName = itemManagerName;
+        this.itemUploaderId = itemUploaderId;
+        this.itemUploaderName = itemUploaderName;
+        this.itemFile = itemFile;
         this.state = state;
         this.createTime = createTime;
         this.lastEditTime = lastEditTime;
@@ -69,12 +81,44 @@ public class Item {
         this.prority = prority;
     }
 
-    public Integer getUserId() {
-        return userId;
+    public Integer getItemManagerId() {
+        return itemManagerId;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setItemManagerId(Integer itemManagerId) {
+        this.itemManagerId = itemManagerId;
+    }
+
+    public String getItemManagerName() {
+        return itemManagerName;
+    }
+
+    public void setItemManagerName(String itemManagerName) {
+        this.itemManagerName = itemManagerName == null ? null : itemManagerName.trim();
+    }
+
+    public Integer getItemUploaderId() {
+        return itemUploaderId;
+    }
+
+    public void setItemUploaderId(Integer itemUploaderId) {
+        this.itemUploaderId = itemUploaderId;
+    }
+
+    public String getItemUploaderName() {
+        return itemUploaderName;
+    }
+
+    public void setItemUploaderName(String itemUploaderName) {
+        this.itemUploaderName = itemUploaderName == null ? null : itemUploaderName.trim();
+    }
+
+    public String getItemFile() {
+        return itemFile;
+    }
+
+    public void setItemFile(String itemFile) {
+        this.itemFile = itemFile == null ? null : itemFile.trim();
     }
 
     public Integer getState() {

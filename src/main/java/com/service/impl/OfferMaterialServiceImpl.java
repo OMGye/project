@@ -82,4 +82,10 @@ public class OfferMaterialServiceImpl implements OfferMaterialService{
         List<OfferMaterial> list = offerMaterialMapper.selectByOffererName(offererName);
         return ServerResponse.createBySuccess(list);
     }
+
+    @Override
+    public ServerResponse<OfferMaterial> getOffererById(Integer offererId) {
+        
+        return null;
+    }
 }

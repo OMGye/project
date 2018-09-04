@@ -17,15 +17,9 @@ public interface ItemMapper {
 
     int updateByPrimaryKey(Item record);
 
-    List<Item> selectByUserId(Integer userId);
+    Item selectByItemName(String itemName);
 
     List<Item> select();
 
-    Item selectByItemName(String itemName);
-
-    int count();
-
     List<Item> selectByName(String itemName);
-
-
 }

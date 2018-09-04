@@ -20,17 +20,11 @@ public interface UserService {
 
     ServerResponse<PageInfo> ableUserList(int pageNum, int pageSize);
 
-    ServerResponse<PageInfo> unAbleUserList(int pageNum, int pageSize);
-
     ServerResponse<String> updateUser(User user);
 
     ServerResponse<UserPersonInfoVo> getUserInfo(Integer userId);
 
     ServerResponse<User> update(User user, MultipartFile file, String path);
-
-    ServerResponse<List<String>> unDeal(User user);
-
-    ServerResponse<UserAccountVo> getAccountByUserId(User user);
 
     ServerResponse<List<User>> getUserByUserName(String userName);
 

@@ -9,59 +9,79 @@ public class Category {
 
     private Integer priority;
 
+    private String specifications;
+
+    private String unit;
+
     private Date createTime;
 
     private Date lastEditTime;
-
-    public Category(Integer categoryId, String categoryName, Integer priority, Date createTime, Date lastEditTime) {
-        this.categoryId = categoryId;
-        this.categoryName = categoryName;
-        this.priority = priority;
-        this.createTime = createTime;
-        this.lastEditTime = lastEditTime;
-    }
-
-    public Category() {
-        super();
-    }
-
-    public Integer getCategoryId() {
-        return categoryId;
-    }
 
     public void setCategoryId(Integer categoryId) {
         this.categoryId = categoryId;
     }
 
-    public String getCategoryName() {
-        return categoryName;
-    }
-
     public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName == null ? null : categoryName.trim();
-    }
-
-    public Integer getPriority() {
-        return priority;
+        this.categoryName = categoryName;
     }
 
     public void setPriority(Integer priority) {
         this.priority = priority;
     }
 
-    public Date getCreateTime() {
-        return createTime;
+    public void setSpecifications(String specifications) {
+        this.specifications = specifications;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
     }
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
 
+    public void setLastEditTime(Date lastEditTime) {
+        this.lastEditTime = lastEditTime;
+    }
+
+    public Integer getCategoryId() {
+
+        return categoryId;
+    }
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public Integer getPriority() {
+        return priority;
+    }
+
+    public String getSpecifications() {
+        return specifications;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
     public Date getLastEditTime() {
         return lastEditTime;
     }
 
-    public void setLastEditTime(Date lastEditTime) {
+    public Category(Integer categoryId, String categoryName, Integer priority, String specifications, String unit, Date createTime, Date lastEditTime) {
+
+        this.categoryId = categoryId;
+        this.categoryName = categoryName;
+        this.priority = priority;
+        this.specifications = specifications;
+        this.unit = unit;
+        this.createTime = createTime;
         this.lastEditTime = lastEditTime;
     }
 }

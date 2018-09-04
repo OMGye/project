@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.RecordMapper" >
+  <resultMap id="BaseResultMap" type="com.pojo.Record" >
+    <constructor >
+      <idArg column="record_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="user_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="user_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="item_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="item_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="record_type" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="record_dec" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="offer_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="unit_price" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <arg column="number" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="state" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="record_imgs" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="last_edit_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    record_id, user_id, user_name, item_id, item_name, record_type, record_dec, offer_id, 
+    unit_price, number, state, record_imgs, create_time, last_edit_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from project_record
+    where record_id = #{recordId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from project_record
+    where record_id = #{recordId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.pojo.Record" >
+    insert into project_record (record_id, user_id, user_name, 
+      item_id, item_name, record_type, 
+      record_dec, offer_id, unit_price, 
+      number, state,
+      record_imgs, create_time, last_edit_time
+      )
+    values (#{recordId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, 
+      #{itemId,jdbcType=INTEGER}, #{itemName,jdbcType=VARCHAR}, #{recordType,jdbcType=INTEGER}, 
+      #{recordDec,jdbcType=VARCHAR}, #{offerId,jdbcType=INTEGER}, #{unitPrice,jdbcType=DECIMAL}, 
+      #{number,jdbcType=INTEGER}, #{state,jdbcType=INTEGER},
+      #{recordImgs,jdbcType=VARCHAR}, now(), now()
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pojo.Record" >
+    insert into project_record
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="recordId != null" >
+        record_id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="userName != null" >
+        user_name,
+      </if>
+      <if test="itemId != null" >
+        item_id,
+      </if>
+      <if test="itemName != null" >
+        item_name,
+      </if>
+      <if test="recordType != null" >
+        record_type,
+      </if>
+      <if test="recordDec != null" >
+        record_dec,
+      </if>
+      <if test="offerId != null" >
+        offer_id,
+      </if>
+      <if test="unitPrice != null" >
+        unit_price,
+      </if>
+      <if test="number != null" >
+        number,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+      <if test="recordImgs != null" >
+        record_imgs,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="lastEditTime != null" >
+        last_edit_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="recordId != null" >
+        #{recordId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="userName != null" >
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="itemId != null" >
+        #{itemId,jdbcType=INTEGER},
+      </if>
+      <if test="itemName != null" >
+        #{itemName,jdbcType=VARCHAR},
+      </if>
+      <if test="recordType != null" >
+        #{recordType,jdbcType=INTEGER},
+      </if>
+      <if test="recordDec != null" >
+        #{recordDec,jdbcType=VARCHAR},
+      </if>
+      <if test="offerId != null" >
+        #{offerId,jdbcType=INTEGER},
+      </if>
+      <if test="unitPrice != null" >
+        #{unitPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="number != null" >
+        #{number,jdbcType=INTEGER},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=INTEGER},
+      </if>
+      <if test="recordImgs != null" >
+        #{recordImgs,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastEditTime != null" >
+        #{lastEditTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pojo.Record" >
+    update project_record
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="userName != null" >
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="itemId != null" >
+        item_id = #{itemId,jdbcType=INTEGER},
+      </if>
+      <if test="itemName != null" >
+        item_name = #{itemName,jdbcType=VARCHAR},
+      </if>
+      <if test="recordType != null" >
+        record_type = #{recordType,jdbcType=INTEGER},
+      </if>
+      <if test="recordDec != null" >
+        record_dec = #{recordDec,jdbcType=VARCHAR},
+      </if>
+      <if test="offerId != null" >
+        offer_id = #{offerId,jdbcType=INTEGER},
+      </if>
+      <if test="unitPrice != null" >
+        unit_price = #{unitPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="number != null" >
+        number = #{number,jdbcType=INTEGER},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=INTEGER},
+      </if>
+      <if test="recordImgs != null" >
+        record_imgs = #{recordImgs,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+        last_edit_time = now()
+    </set>
+    where record_id = #{recordId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pojo.Record" >
+    update project_record
+    set user_id = #{userId,jdbcType=INTEGER},
+      user_name = #{userName,jdbcType=VARCHAR},
+      item_id = #{itemId,jdbcType=INTEGER},
+      item_name = #{itemName,jdbcType=VARCHAR},
+      record_type = #{recordType,jdbcType=INTEGER},
+      record_dec = #{recordDec,jdbcType=VARCHAR},
+      offer_id = #{offerId,jdbcType=INTEGER},
+      unit_price = #{unitPrice,jdbcType=DECIMAL},
+      number = #{number,jdbcType=INTEGER},
+      state = #{state,jdbcType=INTEGER},
+      record_imgs = #{recordImgs,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      last_edit_time = now()
+    where record_id = #{recordId,jdbcType=INTEGER}
+  </update>
+</mapper>

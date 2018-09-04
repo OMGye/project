@@ -7,6 +7,7 @@ import com.pojo.User;
 import com.vo.ItemVo;
 import com.vo.UserAccountVo;
 import com.vo.UserVo;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -15,17 +16,16 @@ import java.util.List;
  */
 public interface ItemService {
 
-    ServerResponse addNewItem(Item item, Integer accountUserId, Integer accountCheckUserId, Integer materialUserId, Integer materialCheckUserId, String endTime)throws Exception;
+    ServerResponse addNewItem(Item item, MultipartFile file, String path, String endTime);
 
-    ServerResponse<PageInfo<ItemVo>> listItemVo(User user, int pageNum, int pageSize);
+    ServerResponse<PageInfo<Item>> listItem(int pageNum, int pageSize);
 
     ServerResponse<List<UserVo>> getUserForCheck(Integer userType);
 
-    ServerResponse<UserAccountVo> getAccountByItemId(Integer itemId);
 
-    ServerResponse updateItemAllUser(Integer itemId,Integer manageId,Integer accountUserId, Integer accountCheckUserId, Integer materialUserId, Integer materialCheckUserId);
+    ServerResponse updateItem(Item item, MultipartFile file, String path, String endTime);
 
-    ServerResponse<List<ItemVo>> getItemByName(String itemName);
+    ServerResponse<List<Item>> getItemByName(String itemName);
 
-
+    ServerResponse<Item> getItemById(Integer itemId);
 }

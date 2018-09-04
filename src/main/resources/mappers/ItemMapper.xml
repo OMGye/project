@@ -7,7 +7,11 @@
       <arg column="item_name" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="item_dec" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="prority" jdbcType="INTEGER" javaType="java.lang.Integer" />
-      <arg column="user_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="item_manager_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="item_manager_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="item_uploader_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="item_uploader_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="item_file" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="state" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
       <arg column="last_edit_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
@@ -15,8 +19,8 @@
     </constructor>
   </resultMap>
   <sql id="Base_Column_List" >
-    item_id, item_name, item_dec, prority, user_id, state, create_time, last_edit_time, 
-    end_time
+    item_id, item_name, item_dec, prority, item_manager_id, item_manager_name, item_uploader_id, 
+    item_uploader_name, item_file, state, create_time, last_edit_time, end_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -28,15 +32,17 @@
     delete from project_item
     where item_id = #{itemId,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" useGeneratedKeys="true" keyProperty="itemId" parameterType="com.pojo.Item" >
+  <insert id="insert" parameterType="com.pojo.Item" >
     insert into project_item (item_id, item_name, item_dec, 
-      prority, user_id, state, 
-      create_time, last_edit_time, end_time
-      )
+      prority, item_manager_id, item_manager_name, 
+      item_uploader_id, item_uploader_name, item_file, 
+      state, create_time, last_edit_time, 
+      end_time)
     values (#{itemId,jdbcType=INTEGER}, #{itemName,jdbcType=VARCHAR}, #{itemDec,jdbcType=VARCHAR}, 
-      #{prority,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{state,jdbcType=INTEGER}, 
-      now(), now(), #{endTime,jdbcType=TIMESTAMP}
-      )
+      #{prority,jdbcType=INTEGER}, #{itemManagerId,jdbcType=INTEGER}, #{itemManagerName,jdbcType=VARCHAR}, 
+      #{itemUploaderId,jdbcType=INTEGER}, #{itemUploaderName,jdbcType=VARCHAR}, #{itemFile,jdbcType=VARCHAR}, 
+      #{state,jdbcType=INTEGER}, now(), now(),
+      #{endTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.pojo.Item" >
     insert into project_item
@@ -53,8 +59,20 @@
       <if test="prority != null" >
         prority,
       </if>
-      <if test="userId != null" >
-        user_id,
+      <if test="itemManagerId != null" >
+        item_manager_id,
+      </if>
+      <if test="itemManagerName != null" >
+        item_manager_name,
+      </if>
+      <if test="itemUploaderId != null" >
+        item_uploader_id,
+      </if>
+      <if test="itemUploaderName != null" >
+        item_uploader_name,
+      </if>
+      <if test="itemFile != null" >
+        item_file,
       </if>
       <if test="state != null" >
         state,
@@ -82,8 +100,20 @@
       <if test="prority != null" >
         #{prority,jdbcType=INTEGER},
       </if>
-      <if test="userId != null" >
-        #{userId,jdbcType=INTEGER},
+      <if test="itemManagerId != null" >
+        #{itemManagerId,jdbcType=INTEGER},
+      </if>
+      <if test="itemManagerName != null" >
+        #{itemManagerName,jdbcType=VARCHAR},
+      </if>
+      <if test="itemUploaderId != null" >
+        #{itemUploaderId,jdbcType=INTEGER},
+      </if>
+      <if test="itemUploaderName != null" >
+        #{itemUploaderName,jdbcType=VARCHAR},
+      </if>
+      <if test="itemFile != null" >
+        #{itemFile,jdbcType=VARCHAR},
       </if>
       <if test="state != null" >
         #{state,jdbcType=INTEGER},
@@ -111,8 +141,20 @@
       <if test="prority != null" >
         prority = #{prority,jdbcType=INTEGER},
       </if>
-      <if test="userId != null" >
-        user_id = #{userId,jdbcType=INTEGER},
+      <if test="itemManagerId != null" >
+        item_manager_id = #{itemManagerId,jdbcType=INTEGER},
+      </if>
+      <if test="itemManagerName != null" >
+        item_manager_name = #{itemManagerName,jdbcType=VARCHAR},
+      </if>
+      <if test="itemUploaderId != null" >
+        item_uploader_id = #{itemUploaderId,jdbcType=INTEGER},
+      </if>
+      <if test="itemUploaderName != null" >
+        item_uploader_name = #{itemUploaderName,jdbcType=VARCHAR},
+      </if>
+      <if test="itemFile != null" >
+        item_file = #{itemFile,jdbcType=VARCHAR},
       </if>
       <if test="state != null" >
         state = #{state,jdbcType=INTEGER},
@@ -120,12 +162,12 @@
       <if test="createTime != null" >
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
-
-        last_edit_time = now(),
-
-      <if test="endTime != null" >
-        end_time = #{endTime,jdbcType=TIMESTAMP},
+      <if test="lastEditTime != null" >
+        last_edit_time = #{lastEditTime,jdbcType=TIMESTAMP},
       </if>
+
+        end_time = now(),
+
     </set>
     where item_id = #{itemId,jdbcType=INTEGER}
   </update>
@@ -134,26 +176,17 @@
     set item_name = #{itemName,jdbcType=VARCHAR},
       item_dec = #{itemDec,jdbcType=VARCHAR},
       prority = #{prority,jdbcType=INTEGER},
-      user_id = #{userId,jdbcType=INTEGER},
+      item_manager_id = #{itemManagerId,jdbcType=INTEGER},
+      item_manager_name = #{itemManagerName,jdbcType=VARCHAR},
+      item_uploader_id = #{itemUploaderId,jdbcType=INTEGER},
+      item_uploader_name = #{itemUploaderName,jdbcType=VARCHAR},
+      item_file = #{itemFile,jdbcType=VARCHAR},
       state = #{state,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP},
-      last_edit_time = #{lastEditTime,jdbcType=TIMESTAMP},
+      last_edit_time = now(),
       end_time = #{endTime,jdbcType=TIMESTAMP}
     where item_id = #{itemId,jdbcType=INTEGER}
   </update>
-
-  <select id="selectByUserId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    SELECT
-    <include refid="Base_Column_List"/>
-    from project_item
-    where user_id = #{userId}
-  </select>
-
-  <select id="select" resultMap="BaseResultMap">
-    SELECT
-    <include refid="Base_Column_List"/>
-    from project_item
-  </select>
 
   <select id="selectByItemName" resultMap="BaseResultMap" parameterType="java.lang.String">
     SELECT
@@ -162,12 +195,11 @@
     where item_name = #{itemName}
   </select>
 
-  <select id="count" resultType="java.lang.Integer">
-    select
-    COUNT(*)
-    FROM project_item
+  <select id="select" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    from project_item
   </select>
-
 
   <select id="selectByName" resultMap="BaseResultMap">
     SELECT

@@ -46,15 +46,6 @@ public class UserServiceImpl implements UserService{
     @Autowired
     private ItemMapper itemMapper;
 
-    @Autowired
-    private AccountInfoMapper accountInfoMapper;
-
-    @Autowired
-    private MaterialBuyInfoMapper materialBuyInfoMapper;
-
-    @Autowired
-    private MaterialUseInfoMapper materialUseInfoMapper;
-
     @Override
     public ServerResponse<User> login(User user) {
         User retUser = userMapper.selectByUserNameAndPassword(user.getUserName(),user.getPassword());
@@ -70,36 +61,39 @@ public class UserServiceImpl implements UserService{
 
         if (StringUtils.isBlank(user.getUserName()) | StringUtils.isBlank(user.getPassword()) | StringUtils.isBlank(user.getPhone() )| user.getUserType() == null )
             return ServerResponse.createByErrorMessage("参数错误");
-        String fileName = file.getOriginalFilename();
-        //扩展名
-        //abc.jpg
-        String fileExtensionName = fileName.substring(fileName.lastIndexOf(".")+1);
-        String uploadFileName = UUID.randomUUID().toString()+"."+fileExtensionName;
-        logger.info("开始上传文件,上传文件的文件名:{},上传的路径:{},新文件名:{}",fileName,path,uploadFileName);
+        if (file != null) {
+            String fileName = file.getOriginalFilename();
+            //扩展名
+            //abc.jpg
+            String fileExtensionName = fileName.substring(fileName.lastIndexOf(".") + 1);
+            String uploadFileName = UUID.randomUUID().toString() + "." + fileExtensionName;
+            logger.info("开始上传文件,上传文件的文件名:{},上传的路径:{},新文件名:{}", fileName, path, uploadFileName);
 
-        File fileDir = new File(path);
-        if(!fileDir.exists()){
-            fileDir.setWritable(true);
-            fileDir.mkdirs();
-        }
-        File targetFile = new File(path,uploadFileName);
-
-
-        try {
-            file.transferTo(targetFile);
-            //文件已经上传成功了
+            File fileDir = new File(path);
+            if (!fileDir.exists()) {
+                fileDir.setWritable(true);
+                fileDir.mkdirs();
+            }
+            File targetFile = new File(path, uploadFileName);
 
 
-            FTPUtil.uploadFile(Lists.newArrayList(targetFile));
-            //已经上传到ftp服务器上
+            try {
+                file.transferTo(targetFile);
+                //文件已经上传成功了
 
-            targetFile.delete();
-        } catch (IOException e) {
-            logger.error("上传文件异常",e);
-            return null;
+
+                FTPUtil.uploadFile(Lists.newArrayList(targetFile));
+                //已经上传到ftp服务器上
+
+                targetFile.delete();
+            } catch (IOException e) {
+                logger.error("上传文件异常", e);
+                return null;
+            }
+
+            user.setUserImg(PropertiesUtil.getProperty("ftp.server.http.prefix") + targetFile.getName());
         }
         user.setState(new Byte((byte) Const.User.ACTIVATE));
-        user.setUserImg(PropertiesUtil.getProperty("ftp.server.http.prefix")+targetFile.getName());
         int res = userMapper.insert(user);
         if (res <= 0)
             return ServerResponse.createByErrorMessage("创建用户失败");
@@ -116,15 +110,6 @@ public class UserServiceImpl implements UserService{
         return ServerResponse.createBySuccess(pageInfo);
     }
 
-    @Override
-    public ServerResponse<PageInfo> unAbleUserList(int pageNum, int pageSize) {
-        PageHelper.startPage(pageNum,pageSize);
-        PageHelper.orderBy("user_id desc");
-        List<User> list = userMapper.selectUnAbleUserList();
-        PageInfo pageInfo = new PageInfo(list);
-        pageInfo.setList(list);
-        return ServerResponse.createBySuccess(pageInfo);
-    }
 
     @Override
     public ServerResponse<String> updateUser(User user) {
@@ -184,128 +169,6 @@ public class UserServiceImpl implements UserService{
         int row = userMapper.updateByPrimaryKeySelective(user);
         User selectUser = userMapper.selectByPrimaryKey(user.getUserId());
         return ServerResponse.createBySuccess(selectUser);
-    }
-
-    @Override
-    public ServerResponse<List<String>> unDeal(User user) {
-        List<String> list = new ArrayList<>();
-        if (user.getUserType() == UserAuth.BOSS.getCode()){
-            Integer itemCount = itemMapper.count();
-            Integer userCount = userMapper.selectCount();
-            if (itemCount * 5 != userCount)
-                list.add("存在项目相应负责人没有创建");
-
-        }
-        if (user.getUserType() == UserAuth.MANAGER.getCode()){
-            if (user.getItemId() == null){
-                int count = accountInfoMapper.selectCountByUserIdCheck(user.getUserId());
-                if (count > 0)
-                    list.add("您有财务记录需要确认");
-
-            }
-            else {
-                int count = userMapper.selectCountByItem(user.getItemId());
-                if (count < 5)
-                    list.add("存在项目相应负责人没有创建");
-                int accountCount = accountInfoMapper.selectCountByUserIdCheck(user.getUserId());
-                if (accountCount > 0)
-                    list.add("您有财务记录需要确认");
-
-            }
-        }
-        if (user.getUserType() == UserAuth.MATERIAL_UPLOAD.getCode() || user.getUserType() == UserAuth.EMPLOYEE.getCode() || user.getUserType() == UserAuth.ACCOUNT_UPLOAD.getCode()){
-            int accountCount = accountInfoMapper.selectCountByUserIdCheck(user.getUserId());
-            if (accountCount > 0)
-                list.add("您有财务记录需要确认");
-
-        }
-        if (user.getUserType() == UserAuth.FINANCIAL.getCode() || user.getUserType() == UserAuth.ACCOUNT_CHECKED.getCode()){
-            int count = accountInfoMapper.selectCountByUserIdUncheck(user.getUserName());
-            if (count > 0)
-                list.add("您有财务记录需要审核");
-
-        }
-        if (user.getUserType() == UserAuth.MATERIAL_CHECKED.getCode()) {
-            if (user.getItemId() != null) {
-                int countOne = materialBuyInfoMapper.count(user.getItemId());
-                int countTwo = materialUseInfoMapper.count(user.getItemId());
-                if (countOne + countTwo > 0)
-                    list.add("您有材料记录需要审核");
-            }
-            int accountCount = accountInfoMapper.selectCountByUserIdCheck(user.getUserId());
-            if (accountCount > 0)
-                list.add("您有财务记录需要确认");
-        }
-        if (list.size() == 0)
-            list.add("事件都已处理完毕");
-        return ServerResponse.createBySuccess(list);
-    }
-
-    @Override
-    public ServerResponse<UserAccountVo> getAccountByUserId(User user) {
-        if (user.getUserType() == UserAuth.BOSS.getCode()){
-            UserAccountVo userAccountVo = new UserAccountVo();
-             userAccountVo.setDayPayAccount(accountInfoMapper.selectAllPayAccountDay());
-             userAccountVo.setDayIncomeAccount(accountInfoMapper.selectAllIncomeAccountDay());
-             userAccountVo.setMonthPayAccount(accountInfoMapper.selectAllPayAccountMonth());
-             userAccountVo.setMonthIncomeAccount(accountInfoMapper.selectAllIncomeAccountMonth());
-            if (userAccountVo.getDayIncomeAccount() == null){
-                userAccountVo.setDayIncomeAccount(new BigDecimal("0"));
-            }
-            if (userAccountVo.getDayPayAccount() == null){
-                userAccountVo.setDayPayAccount(new BigDecimal("0"));
-            }
-            if (userAccountVo.getMonthIncomeAccount() == null){
-                userAccountVo.setMonthIncomeAccount(new BigDecimal("0"));
-            }
-            if (userAccountVo.getMonthPayAccount() == null){
-                userAccountVo.setMonthPayAccount(new BigDecimal("0"));
-            }
-             return ServerResponse.createBySuccess(userAccountVo);
-        }
-
-        if (user.getUserType() == UserAuth.MANAGER.getCode()){
-            if (user.getItemId() != null) {
-                UserAccountVo userAccountVo = new UserAccountVo();
-                userAccountVo.setDayPayAccount(accountInfoMapper.selectAllPayAccountDayByItemId(user.getItemId()));
-                userAccountVo.setDayIncomeAccount(accountInfoMapper.selectAllIncomeAccountDayByItemId(user.getItemId()));
-                userAccountVo.setMonthPayAccount(accountInfoMapper.selectAllPayAccountMonthByItemId(user.getItemId()));
-                userAccountVo.setMonthIncomeAccount(accountInfoMapper.selectAllIncomeAccountMonthByItemId(user.getItemId()));
-                if (userAccountVo.getDayIncomeAccount() == null){
-                    userAccountVo.setDayIncomeAccount(new BigDecimal("0"));
-                }
-                if (userAccountVo.getDayPayAccount() == null){
-                    userAccountVo.setDayPayAccount(new BigDecimal("0"));
-                }
-                if (userAccountVo.getMonthIncomeAccount() == null){
-                    userAccountVo.setMonthIncomeAccount(new BigDecimal("0"));
-                }
-                if (userAccountVo.getMonthPayAccount() == null){
-                    userAccountVo.setMonthPayAccount(new BigDecimal("0"));
-                }
-                return ServerResponse.createBySuccess(userAccountVo);
-            }
-        }
-
-        UserAccountVo userAccountVo = new UserAccountVo();
-        userAccountVo.setDayPayAccount(accountInfoMapper.selectAllPayAccountDayByUserId(user.getUserId()));
-        userAccountVo.setDayIncomeAccount(accountInfoMapper.selectAllIncomeAccountDayByUserId(user.getUserId()));
-        userAccountVo.setMonthPayAccount(accountInfoMapper.selectAllPayAccountMonthByUserId(user.getUserId()));
-        userAccountVo.setMonthIncomeAccount(accountInfoMapper.selectAllIncomeAccountMonthByUserId(user.getUserId()));
-        if (userAccountVo.getDayIncomeAccount() == null){
-            userAccountVo.setDayIncomeAccount(new BigDecimal("0"));
-        }
-        if (userAccountVo.getDayPayAccount() == null){
-            userAccountVo.setDayPayAccount(new BigDecimal("0"));
-        }
-        if (userAccountVo.getMonthIncomeAccount() == null){
-            userAccountVo.setMonthIncomeAccount(new BigDecimal("0"));
-        }
-        if (userAccountVo.getMonthPayAccount() == null){
-            userAccountVo.setMonthPayAccount(new BigDecimal("0"));
-        }
-        return ServerResponse.createBySuccess(userAccountVo);
-
     }
 
     @Override

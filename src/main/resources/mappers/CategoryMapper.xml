@@ -6,12 +6,14 @@
       <idArg column="category_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="category_name" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="priority" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="specifications" jdbcType="INTEGER" javaType="java.lang.String" />
+      <arg column="unit" jdbcType="INTEGER" javaType="java.lang.String" />
       <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
       <arg column="last_edit_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List" >
-    category_id, category_name, priority, create_time, last_edit_time
+    category_id, category_name, priority, specifications,unit,create_time, last_edit_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -24,7 +26,7 @@
     where category_id = #{categoryId,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.pojo.Category" >
-    insert into project_category (category_id, category_name, priority, 
+    insert into project_category (category_id, category_name, priority, specifications,unit,
       create_time, last_edit_time)
     values (#{categoryId,jdbcType=INTEGER}, #{categoryName,jdbcType=VARCHAR}, #{priority,jdbcType=INTEGER}, 
       now(), now())
@@ -40,6 +42,12 @@
       </if>
       <if test="priority != null" >
         priority,
+      </if>
+      <if test="specifications != null" >
+        specifications,
+      </if>
+      <if test="unit != null" >
+        unit,
       </if>
       <if test="createTime != null" >
         create_time,
@@ -58,6 +66,12 @@
       <if test="priority != null" >
         #{priority,jdbcType=INTEGER},
       </if>
+      <if test="specifications != null" >
+        #{specifications},
+      </if>
+      <if test="unit != null" >
+        #{unit},
+      </if>
       <if test="createTime != null" >
         #{createTime,jdbcType=TIMESTAMP},
       </if>
@@ -75,6 +89,12 @@
       <if test="priority != null" >
         priority = #{priority,jdbcType=INTEGER},
       </if>
+      <if test="specifications != null" >
+        specifications = #{specifications},
+      </if>
+      <if test="unit != null" >
+        unit = #{unit},
+      </if>
       <if test="createTime != null" >
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
@@ -87,6 +107,8 @@
     update project_category
     set category_name = #{categoryName,jdbcType=VARCHAR},
       priority = #{priority,jdbcType=INTEGER},
+      specifications = #{specifications},
+      unit = #{unit},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       last_edit_time = #{lastEditTime,jdbcType=TIMESTAMP}
     where category_id = #{categoryId,jdbcType=INTEGER}

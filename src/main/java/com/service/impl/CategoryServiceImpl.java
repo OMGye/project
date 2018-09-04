@@ -22,6 +22,8 @@ public class CategoryServiceImpl implements CategoryService{
 
     @Override
     public ServerResponse add(Category category) {
+        if (category.getCategoryName() == null)
+            return ServerResponse.createByErrorMessage("名字不能为空");
         int count = categoryMapper.selectCountByName(category.getCategoryName());
         if (count > 0)
             return ServerResponse.createByErrorMessage("分类名存在");

@@ -22,19 +22,11 @@ public interface UserMapper {
 
     List<User> selectUserList();
 
-    List<User> selectUnAbleUserList();
+    List<User> selectByUserName(String userName);
 
     int updateItemId(@Param("userIds") List<Integer> userIds, @Param("itemId") Integer itemId);
 
     List<User> selectByUserType(Integer userType);
 
-    User selectByUserTypeAndItemId(@Param("userType")Integer userType, @Param("itemId")Integer itemId);
-
-    int selectCountByItem(Integer itemId);
-
-    int selectCount();
-
-    List<User> selectByItemId(Integer itemId);
-
-    List<User> selectByUserName(String userName);
+    int updateSetItemBeNullByItemId(Integer itemId);
 }

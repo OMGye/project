@@ -9,7 +9,7 @@ public class User {
 
     private String password;
 
-    private String accountInfoCode;
+    private String userImg;
 
     private String phone;
 
@@ -23,29 +23,17 @@ public class User {
 
     private Date lastEditTime;
 
-    private String userImg;
-
-    public User(Integer userId, String userName, String password, String accountInfoCode, String phone, Byte state, Integer userType, Integer itemId, Date createTime, Date lastEditTime, String userImg) {
+    public User(Integer userId, String userName, String password, String userImg, String phone, Byte state, Integer userType, Integer itemId, Date createTime, Date lastEditTime) {
         this.userId = userId;
         this.userName = userName;
         this.password = password;
-        this.accountInfoCode = accountInfoCode;
+        this.userImg = userImg;
         this.phone = phone;
         this.state = state;
         this.userType = userType;
         this.itemId = itemId;
         this.createTime = createTime;
         this.lastEditTime = lastEditTime;
-        this.userImg = userImg;
-    }
-
-    public void setAccountInfoCode(String accountInfoCode) {
-        this.accountInfoCode = accountInfoCode;
-    }
-
-    public String getAccountInfoCode() {
-
-        return accountInfoCode;
     }
 
     public User() {
@@ -74,6 +62,14 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password == null ? null : password.trim();
+    }
+
+    public String getUserImg() {
+        return userImg;
+    }
+
+    public void setUserImg(String userImg) {
+        this.userImg = userImg == null ? null : userImg.trim();
     }
 
     public String getPhone() {
@@ -122,13 +118,5 @@ public class User {
 
     public void setLastEditTime(Date lastEditTime) {
         this.lastEditTime = lastEditTime;
-    }
-
-    public String getUserImg() {
-        return userImg;
-    }
-
-    public void setUserImg(String userImg) {
-        this.userImg = userImg == null ? null : userImg.trim();
     }
 }
