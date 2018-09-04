@@ -35,7 +35,7 @@ public class UploaderController {
         if(user == null){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");
         }
-        if (UserAuth.BOSS.getCode() == user.getUserType() && user.getItemId() != null){
+        if (UserAuth.ITEM_UPLOAD.getCode() == user.getUserType() && user.getItemId() != null){
             String path = request.getSession().getServletContext().getRealPath("upload");
             return recordService.addRecord(user,record,path,files);
         }
