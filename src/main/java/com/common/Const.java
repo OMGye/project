@@ -27,4 +27,10 @@ public class Const {
         int CHECK_AUDITING = 1;
         int FINISHED = 2;
     }
+
+    public interface RecordConst{
+        int UNCHECK = 0;
+        int FIRST_CHECK = 1;
+        int Last_CHECK = 2;
+    }
 }
