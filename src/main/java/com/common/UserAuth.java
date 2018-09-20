@@ -20,6 +20,9 @@ public enum  UserAuth {
         return code;
     }
     public String getDesc(){
+
         return desc;
     }
+
+
 }

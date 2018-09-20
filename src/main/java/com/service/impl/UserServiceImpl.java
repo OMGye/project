@@ -128,7 +128,8 @@ public class UserServiceImpl implements UserService{
         BeanUtils.copyProperties(user,userPersonInfoVo);
         if(user.getItemId() != null){
             Item item = itemMapper.selectByPrimaryKey(user.getItemId());
-            userPersonInfoVo.setItemName(item.getItemName());
+            if (item != null)
+                userPersonInfoVo.setItemName(item.getItemName());
         }
         return ServerResponse.createBySuccess(userPersonInfoVo);
     }

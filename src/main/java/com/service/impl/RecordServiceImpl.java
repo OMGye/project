@@ -2,6 +2,7 @@ package com.service.impl;
 
 import com.common.Const;
 import com.common.ServerResponse;
+import com.common.UserAuth;
 import com.dao.ItemMapper;
 import com.dao.RecordMapper;
 import com.google.common.collect.Lists;
@@ -94,7 +95,10 @@ public class RecordServiceImpl implements RecordService{
         record.setItemId(user.getItemId());
         Item item = itemMapper.selectByPrimaryKey(user.getItemId());
         record.setItemName(item.getItemName());
-        record.setState(Const.RecordConst.UNCHECK);
+        if(user.getUserType() == UserAuth.ITEM_UPLOAD.getCode())
+            record.setState(Const.RecordConst.UNCHECK);
+        else
+            record.setState(Const.RecordConst.FIRST_CHECK);
         int rowCount = recordMapper.insert(record);
         if (rowCount > 0)
             return ServerResponse.createBySuccessMessage("上传成功");

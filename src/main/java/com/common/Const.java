@@ -33,4 +33,24 @@ public class Const {
         int FIRST_CHECK = 1;
         int Last_CHECK = 2;
     }
+
+    private int i = 1;
+
+    public void test(){
+        i = 2;
+    }
+
+    public void test(Const aConst){
+        aConst = new Const();
+    }
+
+    public static void main(String[] args) {
+        Const c = new Const();
+        System.out.println(c.i);
+        c.test();
+        System.out.println(c.i);
+        System.out.println(c);
+        c.test(c);
+        System.out.println(c);
+    }
 }
