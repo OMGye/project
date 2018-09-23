@@ -84,4 +84,7 @@ public class Category {
         this.createTime = createTime;
         this.lastEditTime = lastEditTime;
     }
+
+    public Category() {
+    }
 }
