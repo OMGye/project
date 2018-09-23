@@ -26,10 +26,10 @@
     where category_id = #{categoryId,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.pojo.Category" >
-    insert into project_category (category_id, category_name, priority, specifications,unit,
-      ,create_time, last_edit_time)
-    values (#{categoryId,jdbcType=INTEGER}, #{categoryName,jdbcType=VARCHAR}, #{priority,jdbcType=INTEGER}, #{specifications,jdbcType=VARCHAR},#{unit,jdbcType=VARCHAR},
-      now(), now())
+    insert into project_category (category_id, category_name, priority, specifications,
+    unit, create_time, last_edit_time)
+    values (#{categoryId,jdbcType=INTEGER}, #{categoryName,jdbcType=VARCHAR}, #{priority,jdbcType=INTEGER}, #{specifications,jdbcType=VARCHAR}, #{unit,jdbcType=VARCHAR},
+      now(),now())
   </insert>
   <insert id="insertSelective" parameterType="com.pojo.Category" >
     insert into project_category
