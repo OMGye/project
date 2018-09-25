@@ -106,9 +106,11 @@ public class ItemServiceImpl implements ItemService{
             userIds.add(item.getItemManagerId());
         if (item.getItemUploaderId() != null)
             userIds.add(item.getItemUploaderId());
-        int row = userMapper.updateItemId(userIds,item.getItemId());
-        if (row < userIds.size()){
-            itemMapper.deleteByPrimaryKey(item.getItemId());
+        if (userIds.size() > 0) {
+            int row = userMapper.updateItemId(userIds, item.getItemId());
+            if (row < userIds.size()) {
+                itemMapper.deleteByPrimaryKey(item.getItemId());
+            }
         }
 
         return ServerResponse.createBySuccess("新建项目成功",item);
