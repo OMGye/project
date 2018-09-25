@@ -111,7 +111,7 @@ public class ItemServiceImpl implements ItemService{
             itemMapper.deleteByPrimaryKey(item.getItemId());
         }
 
-        return ServerResponse.createBySuccess("新建项目成功");
+        return ServerResponse.createBySuccess("新建项目成功",item);
     }
 
     @Override

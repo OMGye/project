@@ -32,7 +32,7 @@
     delete from project_item
     where item_id = #{itemId,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.pojo.Item" >
+  <insert id="insert" parameterType="com.pojo.Item"  useGeneratedKeys="true" keyProperty="itemId">
     insert into project_item (item_id, item_name, item_dec, 
       prority, item_manager_id, item_manager_name, 
       item_uploader_id, item_uploader_name, item_file, 
