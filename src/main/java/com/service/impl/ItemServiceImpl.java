@@ -50,7 +50,7 @@ public class ItemServiceImpl implements ItemService{
     private Logger logger = LoggerFactory.getLogger(ItemServiceImpl.class);
 
     @Transactional
-    public ServerResponse addNewItem(Item item, MultipartFile file, String path, String endTime){
+    public ServerResponse addNewItem(Item item, MultipartFile file, String path, String endTimeString){
         if(StringUtils.isBlank(item.getItemName()) || StringUtils.isBlank(item.getItemDec()))
             return ServerResponse.createByErrorMessage("参数错误");
         Item selectItem = itemMapper.selectByItemName(item.getItemName());
@@ -58,10 +58,10 @@ public class ItemServiceImpl implements ItemService{
             return ServerResponse.createByErrorMessage("项目名已经存在");
         }
         item.setState(Const.Item.WORKING);
-        if(StringUtils.isNotBlank(endTime)) {
+        if(StringUtils.isNotBlank(endTimeString)) {
             try {
                 SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                Date date = sDateFormat.parse(endTime);
+                Date date = sDateFormat.parse(endTimeString);
                 item.setEndTime(date);
             } catch (Exception ex) {
                 return ServerResponse.createByErrorMessage("endTime参数错误");

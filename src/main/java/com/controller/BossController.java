@@ -128,13 +128,13 @@ public class BossController {
 
     @RequestMapping(value = "item/additem.do",method = RequestMethod.POST)
     @ResponseBody
-    public ServerResponse addItem(HttpSession session, Item item, String endTime,HttpServletRequest request,@RequestParam(value = "upload_file",required = false) MultipartFile file){
+    public ServerResponse addItem(HttpSession session, Item item, String endTimeString,HttpServletRequest request,@RequestParam(value = "upload_file",required = false) MultipartFile file){
         User user = (User)session.getAttribute(Const.CURRENT_USER);
         if(user == null){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");
         }
         if (UserAuth.BOSS.getCode() == user.getUserType()){
-            return itemService.addNewItem(item,file,request.getSession().getServletContext().getRealPath("upload"),endTime);
+            return itemService.addNewItem(item,file,request.getSession().getServletContext().getRealPath("upload"),endTimeString);
         }
 
         return ServerResponse.createByErrorMessage("请登入管理员账户");
