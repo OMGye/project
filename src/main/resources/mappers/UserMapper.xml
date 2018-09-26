@@ -184,6 +184,7 @@
     from project_user
     where user_type = #{userType}
     and item_id IS NULL
+    and state = 1
   </select>
 
   <select id="selectByUserName" resultMap="BaseResultMap" parameterType="java.lang.String">
