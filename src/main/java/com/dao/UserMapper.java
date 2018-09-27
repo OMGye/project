@@ -29,4 +29,8 @@ public interface UserMapper {
     List<User> selectByUserType(Integer userType);
 
     int updateSetItemBeNullByItemId(Integer itemId);
+
+    int updateManagerByItemId(Integer itemId);
+
+    int updateUploadByItemId(Integer itemId);
 }

@@ -202,4 +202,20 @@
     where item_id = #{itemId}
   </update>
 
+  <update id="updateManagerByItemId" parameterType="java.lang.Integer">
+    UPDATE
+    project_user
+    set item_id = NULL
+    where item_id = #{itemId}
+    and user_type = 2
+  </update>
+
+  <update id="updateUploadByItemId" parameterType="java.lang.Integer">
+    UPDATE
+    project_user
+    set item_id = NULL
+    where item_id = #{itemId}
+    and user_type = 3
+  </update>
+
 </mapper>

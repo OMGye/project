@@ -189,14 +189,22 @@ public class ItemServiceImpl implements ItemService{
 
 
         itemMapper.updateByPrimaryKeySelective(item);
-        userMapper.updateSetItemBeNullByItemId(item.getItemId());
-        Item curItem = itemMapper.selectByPrimaryKey(item.getItemId());
         List<Integer> userIds = new ArrayList<>();
         if (item.getItemManagerId() != null)
             userIds.add(item.getItemManagerId());
         if (item.getItemUploaderId() != null)
             userIds.add(item.getItemUploaderId());
-        if (userIds.size() > 0){
+        if (userIds.size() > 1){
+            userMapper.updateSetItemBeNullByItemId(item.getItemId());
+            int count = userMapper.updateItemId(userIds,item.getItemId());
+            if (count < userIds.size())
+                return ServerResponse.createByErrorMessage("修改失败");
+        }
+        if (userIds.size() == 1){
+            if (item.getItemUploaderId() != null)
+                userMapper.updateUploadByItemId(item.getItemId());
+            if (item.getItemManagerId() != null)
+                userMapper.updateManagerByItemId(item.getItemId());
             int count = userMapper.updateItemId(userIds,item.getItemId());
             if (count < userIds.size())
                 return ServerResponse.createByErrorMessage("修改失败");
