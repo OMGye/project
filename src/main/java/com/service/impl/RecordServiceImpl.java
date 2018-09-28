@@ -191,7 +191,10 @@ public class RecordServiceImpl implements RecordService{
     public ServerResponse<PageInfo> list(User user, Integer state, Integer type, int pageSize, int pageNum) {
         PageHelper.startPage(pageNum,pageSize);
         PageHelper.orderBy("record_id desc");
-        List<Record> list = recordMapper.selectlist(state,type,user.getItemId());
+        Integer userId = null;
+        if (user.getUserType() == UserAuth.ITEM_UPLOAD.getCode())
+            userId = user.getUserId();
+        List<Record> list = recordMapper.selectlist(state,type,user.getItemId(),userId);
         PageInfo pageInfo = new PageInfo(list);
         return ServerResponse.createBySuccess(pageInfo);
     }

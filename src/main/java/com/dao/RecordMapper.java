@@ -18,5 +18,5 @@ public interface RecordMapper {
 
     int updateByPrimaryKey(Record record);
 
-    List<Record> selectlist(@Param("state")Integer state, @Param("type")Integer type, @Param("itemId")Integer itemId);
+    List<Record> selectlist(@Param("state")Integer state, @Param("type")Integer type, @Param("itemId")Integer itemId,@Param("userId")Integer userId);
 }
