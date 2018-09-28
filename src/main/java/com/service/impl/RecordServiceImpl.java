@@ -102,6 +102,80 @@ public class RecordServiceImpl implements RecordService{
         int rowCount = recordMapper.insert(record);
         if (rowCount > 0)
             return ServerResponse.createBySuccessMessage("上传成功");
-        return ServerResponse.createBySuccessMessage("上传失败");
+        return ServerResponse.createByErrorMessage("上传失败");
     }
+
+    @Override
+    public ServerResponse addRecordImg(Integer recordId, String path, MultipartFile file) {
+        if (recordId == null || file == null)
+            return ServerResponse.createByErrorMessage("没有传递参数");
+        Record record = recordMapper.selectByPrimaryKey(recordId);
+        if (record == null)
+            return ServerResponse.createByErrorMessage("没有该条记录");
+        if(file != null){
+            String fileName = file.getOriginalFilename();
+            //扩展名
+            //abc.jpg
+            String fileExtensionName = fileName.substring(fileName.lastIndexOf(".")+1);
+            String uploadFileName = UUID.randomUUID().toString()+"."+fileExtensionName;
+            logger.info("开始上传文件,上传文件的文件名:{},上传的路径:{},新文件名:{}",fileName,path,uploadFileName);
+
+            File fileDir = new File(path);
+            if(!fileDir.exists()){
+                fileDir.setWritable(true);
+                fileDir.mkdirs();
+            }
+            File targetFile = new File(path,uploadFileName);
+
+
+            try {
+                file.transferTo(targetFile);
+                //文件已经上传成功了
+
+
+                FTPUtil.uploadFile(Lists.newArrayList(targetFile));
+                //已经上传到ftp服务器上
+
+                targetFile.delete();
+            } catch (IOException e) {
+                logger.error("上传文件异常",e);
+                return null;
+            }
+            record.setRecordImgs(record.getRecordImgs()+","+PropertiesUtil.getProperty("ftp.server.http.prefix")+targetFile.getName());
+        }
+        int rowCount = recordMapper.updateByPrimaryKeySelective(record);
+        if (rowCount > 0)
+            return ServerResponse.createBySuccessMessage("上传成功");
+        return ServerResponse.createByErrorMessage("上传失败");
+    }
+
+    @Override
+    public ServerResponse deleteRecordImg(Integer recordId, String fileName) {
+        if (recordId == null && fileName == null)
+            return ServerResponse.createByErrorMessage("没有传递参数");
+        Record record = recordMapper.selectByPrimaryKey(recordId);
+        if (record == null)
+            return ServerResponse.createByErrorMessage("没有该条记录");
+        if (record.getRecordImgs() == null || record.getRecordImgs().isEmpty())
+            return ServerResponse.createByErrorMessage("没有该文件");
+        String[] imgs = record.getRecordImgs().split(",");
+        for (int i = 0; i < imgs.length; i++)
+            if (imgs[i].equals(fileName)) {
+                imgs[i] = "";
+                break;
+            }
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < imgs.length; i++){
+            sb.append(imgs[i]);
+            if (i != imgs.length - 1)
+                sb.append(",");
+        }
+        record.setRecordImgs(sb.toString());
+        int rowCount = recordMapper.updateByPrimaryKeySelective(record);
+        if (rowCount > 0)
+            return ServerResponse.createBySuccessMessage("删除成功");
+        return ServerResponse.createByErrorMessage("删除失败");
+    }
+
+
 }

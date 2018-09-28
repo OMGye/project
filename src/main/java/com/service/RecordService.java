@@ -11,4 +11,8 @@ import org.springframework.web.multipart.MultipartFile;
 public interface RecordService {
 
     ServerResponse addRecord(User user, Record record, String path, MultipartFile[] files);
+
+    ServerResponse addRecordImg(Integer recordId, String path, MultipartFile file);
+
+    ServerResponse deleteRecordImg(Integer recordId, String fileName);
 }

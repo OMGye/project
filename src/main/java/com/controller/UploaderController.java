@@ -41,4 +41,35 @@ public class UploaderController {
         }
         return ServerResponse.createByErrorMessage("请登入管理员账户");
     }
+
+    @RequestMapping(value = "record/addrecordimg.do",method = RequestMethod.POST)
+    @ResponseBody
+    public ServerResponse addRecorImg(HttpSession session, Integer recordId, @RequestParam(value = "upload_file",required = false) MultipartFile file, HttpServletRequest request){
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        if(user == null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");
+        }
+        if (UserAuth.ITEM_UPLOAD.getCode() == user.getUserType() && user.getItemId() != null){
+            String path = request.getSession().getServletContext().getRealPath("upload");
+            return recordService.addRecordImg(recordId,path,file);
+        }
+        return ServerResponse.createByErrorMessage("请登入管理员账户");
+    }
+
+    @RequestMapping(value = "record/deleterecordimg.do",method = RequestMethod.POST)
+    @ResponseBody
+    public ServerResponse deleteRecorImg(HttpSession session, Integer recordId, String fileName, HttpServletRequest request){
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        if(user == null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");
+        }
+        if (UserAuth.ITEM_UPLOAD.getCode() == user.getUserType() && user.getItemId() != null){
+            String path = request.getSession().getServletContext().getRealPath("upload");
+            return recordService.deleteRecordImg(recordId,fileName);
+        }
+        return ServerResponse.createByErrorMessage("请登入管理员账户");
+    }
+
+
+
 }
