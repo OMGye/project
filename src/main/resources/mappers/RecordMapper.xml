@@ -198,4 +198,15 @@
       last_edit_time = now()
     where record_id = #{recordId,jdbcType=INTEGER}
   </update>
+
+  <select id="selectlist" parameterType="map" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    from project_record
+    <where>      　　　　　　
+      <if test="itemId != null ">itemId=#{itemId}</if>
+      <if test="type != null">and type=#{type}</if>
+      <if test="state != null">and state = #{state}</if>  　　　　
+    </where>
+  </select>
 </mapper>

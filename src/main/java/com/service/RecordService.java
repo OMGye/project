@@ -1,6 +1,7 @@
 package com.service;
 
 import com.common.ServerResponse;
+import com.github.pagehelper.PageInfo;
 import com.pojo.Record;
 import com.pojo.User;
 import org.springframework.web.multipart.MultipartFile;
@@ -16,5 +17,5 @@ public interface RecordService {
 
     ServerResponse deleteRecordImg(Integer recordId, String fileName);
 
-    ServerResponse list(User user, Integer state, Integer type);
+    ServerResponse<PageInfo<Record>> list(User user, Integer state, Integer type, int pageSize, int pageNum);
 }

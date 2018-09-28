@@ -5,6 +5,8 @@ import com.common.ServerResponse;
 import com.common.UserAuth;
 import com.dao.ItemMapper;
 import com.dao.RecordMapper;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import com.pojo.Item;
 import com.pojo.Record;
@@ -182,8 +184,11 @@ public class RecordServiceImpl implements RecordService{
     }
 
     @Override
-    public ServerResponse list(User user, Integer state, Integer type) {
-
-        return null;
+    public ServerResponse<PageInfo<Record>> list(User user, Integer state, Integer type, int pageSize, int pageNum) {
+        PageHelper.startPage(pageNum,pageSize);
+        PageHelper.orderBy("record_id desc");
+        List<Record> list = recordMapper.selectlist(state,type,user.getItemId());
+        PageInfo pageInfo = new PageInfo(list);
+        return ServerResponse.createBySuccess(pageInfo);
     }
 }
