@@ -162,4 +162,7 @@ public class Record {
         this.createTime = createTime;
         this.lastEditTime = lastEditTime;
     }
+
+    public Record() {
+    }
 }
