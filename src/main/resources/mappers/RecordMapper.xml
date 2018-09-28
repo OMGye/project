@@ -204,8 +204,8 @@
     <include refid="Base_Column_List"/>
     from project_record
     <where>      　　　　　　
-      <if test="itemId != null ">itemId=#{itemId}</if>
-      <if test="type != null">and type=#{type}</if>
+      <if test="itemId != null ">item_id = #{itemId}</if>
+      <if test="type != null">and record_type = #{type}</if>
       <if test="state != null">and state = #{state}</if>  　　　　
     </where>
   </select>
