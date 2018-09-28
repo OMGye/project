@@ -61,7 +61,7 @@ public class UploaderController {
         }
         if (UserAuth.ITEM_UPLOAD.getCode() == user.getUserType() && user.getItemId() != null){
             String path = request.getSession().getServletContext().getRealPath("upload");
-            return recordService.addRecordImg(recordId,path,file);
+            return recordService.addRecordImg(user,recordId,path,file);
         }
         return ServerResponse.createByErrorMessage("请登入管理员账户");
     }
@@ -75,7 +75,7 @@ public class UploaderController {
         }
         if (UserAuth.ITEM_UPLOAD.getCode() == user.getUserType() && user.getItemId() != null){
             String path = request.getSession().getServletContext().getRealPath("upload");
-            return recordService.deleteRecordImg(recordId,fileName);
+            return recordService.deleteRecordImg(user,recordId,fileName);
         }
         return ServerResponse.createByErrorMessage("请登入管理员账户");
     }
@@ -83,7 +83,7 @@ public class UploaderController {
 
     @RequestMapping(value = "record/list.do",method = RequestMethod.GET)
     @ResponseBody
-    public ServerResponse<PageInfo<Record>> list(HttpSession session, Integer state, Integer type , @RequestParam(value = "pageNum",defaultValue = "1") int pageNum, @RequestParam(value = "pageSize",defaultValue = "5")int pageSize){
+    public ServerResponse<PageInfo> list(HttpSession session, Integer state, Integer type , @RequestParam(value = "pageNum",defaultValue = "1") int pageNum, @RequestParam(value = "pageSize",defaultValue = "5")int pageSize){
         User user = (User)session.getAttribute(Const.CURRENT_USER);
         if(user == null){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");

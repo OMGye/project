@@ -17,16 +17,6 @@ public class Const {
         int FINISHED = 1;
     }
 
-    public interface Material{
-        int AUDITING = 0;
-        int FINISHED = 1;
-    }
-
-    public interface Account{
-        int UPLOAD_AUDITING = 0;
-        int CHECK_AUDITING = 1;
-        int FINISHED = 2;
-    }
 
     public interface RecordConst{
         int UNCHECK = 0;
@@ -34,23 +24,4 @@ public class Const {
         int Last_CHECK = 2;
     }
 
-    private int i = 1;
-
-    public void test(){
-        i = 2;
-    }
-
-    public void test(Const aConst){
-        aConst = new Const();
-    }
-
-    public static void main(String[] args) {
-        Const c = new Const();
-        System.out.println(c.i);
-        c.test();
-        System.out.println(c.i);
-        System.out.println(c);
-        c.test(c);
-        System.out.println(c);
-    }
 }

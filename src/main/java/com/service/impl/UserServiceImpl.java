@@ -10,7 +10,6 @@ import com.google.common.collect.Lists;
 import com.pojo.Item;
 import com.pojo.User;
 import com.service.UserService;
-import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
 import com.util.DateTimeUtil;
 import com.util.FTPUtil;
 import com.util.PropertiesUtil;

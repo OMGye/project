@@ -108,7 +108,7 @@ public class RecordServiceImpl implements RecordService{
     }
 
     @Override
-    public ServerResponse addRecordImg(Integer recordId, String path, MultipartFile file) {
+    public ServerResponse addRecordImg(User user, Integer recordId, String path, MultipartFile file) {
         if (recordId == null || file == null)
             return ServerResponse.createByErrorMessage("没有传递参数");
         Record record = recordMapper.selectByPrimaryKey(recordId);
@@ -116,6 +116,8 @@ public class RecordServiceImpl implements RecordService{
             return ServerResponse.createByErrorMessage("没有该条记录");
         if (record.getState() == Const.RecordConst.Last_CHECK)
             return ServerResponse.createByErrorMessage("审核完成，不能再次进行修改");
+        if (record.getUserId() != user.getUserId())
+            return ServerResponse.createByErrorMessage("您不是此条记录的上传者，不能进行修改");
         if(file != null){
             String fileName = file.getOriginalFilename();
             //扩展名
@@ -154,7 +156,7 @@ public class RecordServiceImpl implements RecordService{
     }
 
     @Override
-    public ServerResponse deleteRecordImg(Integer recordId, String fileName) {
+    public ServerResponse deleteRecordImg(User user, Integer recordId, String fileName) {
         if (recordId == null && fileName == null)
             return ServerResponse.createByErrorMessage("没有传递参数");
         Record record = recordMapper.selectByPrimaryKey(recordId);
@@ -162,6 +164,8 @@ public class RecordServiceImpl implements RecordService{
             return ServerResponse.createByErrorMessage("没有该条记录");
         if (record.getState() == Const.RecordConst.Last_CHECK)
             return ServerResponse.createByErrorMessage("审核完成，不能再次进行修改");
+        if (record.getUserId() != user.getUserId())
+            return ServerResponse.createByErrorMessage("您不是此条记录的上传者，不能进行修改");
         if (record.getRecordImgs() == null || record.getRecordImgs().isEmpty())
             return ServerResponse.createByErrorMessage("没有该文件");
         String[] imgs = record.getRecordImgs().split(",");
@@ -184,7 +188,7 @@ public class RecordServiceImpl implements RecordService{
     }
 
     @Override
-    public ServerResponse<PageInfo<Record>> list(User user, Integer state, Integer type, int pageSize, int pageNum) {
+    public ServerResponse<PageInfo> list(User user, Integer state, Integer type, int pageSize, int pageNum) {
         PageHelper.startPage(pageNum,pageSize);
         PageHelper.orderBy("record_id desc");
         List<Record> list = recordMapper.selectlist(state,type,user.getItemId());
