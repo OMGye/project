@@ -112,6 +112,8 @@ public class RecordServiceImpl implements RecordService{
         Record record = recordMapper.selectByPrimaryKey(recordId);
         if (record == null)
             return ServerResponse.createByErrorMessage("没有该条记录");
+        if (record.getState() == Const.RecordConst.Last_CHECK)
+            return ServerResponse.createByErrorMessage("审核完成，不能再次进行修改");
         if(file != null){
             String fileName = file.getOriginalFilename();
             //扩展名
@@ -156,6 +158,8 @@ public class RecordServiceImpl implements RecordService{
         Record record = recordMapper.selectByPrimaryKey(recordId);
         if (record == null)
             return ServerResponse.createByErrorMessage("没有该条记录");
+        if (record.getState() == Const.RecordConst.Last_CHECK)
+            return ServerResponse.createByErrorMessage("审核完成，不能再次进行修改");
         if (record.getRecordImgs() == null || record.getRecordImgs().isEmpty())
             return ServerResponse.createByErrorMessage("没有该文件");
         String[] imgs = record.getRecordImgs().split(",");
@@ -177,5 +181,9 @@ public class RecordServiceImpl implements RecordService{
         return ServerResponse.createByErrorMessage("删除失败");
     }
 
+    @Override
+    public ServerResponse list(User user, Integer state, Integer type) {
 
+        return null;
+    }
 }

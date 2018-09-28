@@ -6,6 +6,7 @@ import com.common.ServerResponse;
 import com.common.UserAuth;
 import com.pojo.Record;
 import com.pojo.User;
+import com.service.ItemService;
 import com.service.RecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,6 +28,9 @@ public class UploaderController {
 
     @Autowired
     private RecordService recordService;
+
+    @Autowired
+    private ItemService itemService;
 
     @RequestMapping(value = "record/addrecord.do",method = RequestMethod.POST)
     @ResponseBody
@@ -66,6 +70,33 @@ public class UploaderController {
         if (UserAuth.ITEM_UPLOAD.getCode() == user.getUserType() && user.getItemId() != null){
             String path = request.getSession().getServletContext().getRealPath("upload");
             return recordService.deleteRecordImg(recordId,fileName);
+        }
+        return ServerResponse.createByErrorMessage("请登入管理员账户");
+    }
+
+    @RequestMapping(value = "record/list.do",method = RequestMethod.GET)
+    @ResponseBody
+    public ServerResponse list(HttpSession session, Integer state, Integer type){
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        if(user == null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");
+        }
+        if (UserAuth.ITEM_UPLOAD.getCode() == user.getUserType() && user.getItemId() != null){
+            return itemService.getItemById(user.getItemId());
+        }
+        return ServerResponse.createByErrorMessage("请登入管理员账户");
+    }
+
+
+    @RequestMapping(value = "item/itemdetail.do",method = RequestMethod.GET)
+    @ResponseBody
+    public ServerResponse itemDetail(HttpSession session){
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        if(user == null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");
+        }
+        if (UserAuth.ITEM_UPLOAD.getCode() == user.getUserType() && user.getItemId() != null){
+            return itemService.getItemById(user.getItemId());
         }
         return ServerResponse.createByErrorMessage("请登入管理员账户");
     }

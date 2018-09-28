@@ -6,6 +6,7 @@ import com.common.ServerResponse;
 import com.common.UserAuth;
 import com.pojo.Record;
 import com.pojo.User;
+import com.service.ItemService;
 import com.service.RecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,6 +29,9 @@ public class ManagerController {
     @Autowired
     private RecordService recordService;
 
+    @Autowired
+    private ItemService itemService;
+
     @RequestMapping(value = "record/addrecord.do",method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse addRecor(HttpSession session, Record record, @RequestParam(value = "upload_file",required = false) MultipartFile[] files, HttpServletRequest request){
@@ -38,6 +42,48 @@ public class ManagerController {
         if (UserAuth.MANAGER.getCode() == user.getUserType() && user.getItemId() != null){
             String path = request.getSession().getServletContext().getRealPath("upload");
             return recordService.addRecord(user,record,path,files);
+        }
+        return ServerResponse.createByErrorMessage("请登入管理员账户");
+    }
+
+
+    @RequestMapping(value = "record/addrecordimg.do",method = RequestMethod.POST)
+    @ResponseBody
+    public ServerResponse addRecorImg(HttpSession session, Integer recordId, @RequestParam(value = "upload_file",required = false) MultipartFile file, HttpServletRequest request){
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        if(user == null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");
+        }
+        if (UserAuth.MANAGER.getCode() == user.getUserType() && user.getItemId() != null){
+            String path = request.getSession().getServletContext().getRealPath("upload");
+            return recordService.addRecordImg(recordId,path,file);
+        }
+        return ServerResponse.createByErrorMessage("请登入管理员账户");
+    }
+
+    @RequestMapping(value = "record/deleterecordimg.do",method = RequestMethod.POST)
+    @ResponseBody
+    public ServerResponse deleteRecorImg(HttpSession session, Integer recordId, String fileName, HttpServletRequest request){
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        if(user == null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");
+        }
+        if (UserAuth.MANAGER.getCode() == user.getUserType() && user.getItemId() != null){
+            String path = request.getSession().getServletContext().getRealPath("upload");
+            return recordService.deleteRecordImg(recordId,fileName);
+        }
+        return ServerResponse.createByErrorMessage("请登入管理员账户");
+    }
+
+    @RequestMapping(value = "item/itemdetail.do",method = RequestMethod.GET)
+    @ResponseBody
+    public ServerResponse itemDetail(HttpSession session){
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        if(user == null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");
+        }
+        if (UserAuth.MANAGER.getCode() == user.getUserType() && user.getItemId() != null){
+            return itemService.getItemById(user.getItemId());
         }
         return ServerResponse.createByErrorMessage("请登入管理员账户");
     }
