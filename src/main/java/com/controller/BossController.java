@@ -8,10 +8,7 @@ import com.pojo.Category;
 import com.pojo.Item;
 import com.pojo.OfferMaterial;
 import com.pojo.User;
-import com.service.CategoryService;
-import com.service.ItemService;
-import com.service.OfferMaterialService;
-import com.service.UserService;
+import com.service.*;
 import com.vo.ItemVo;
 import com.vo.UserAccountVo;
 import com.vo.UserPersonInfoVo;
@@ -337,6 +334,22 @@ public class BossController {
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");
         }
         return offerMaterialService.getOffererByName(offerCompany);
+    }
+
+    @Autowired
+    private RecordService recordService;
+
+    @RequestMapping(value = "record/list.do",method = RequestMethod.GET)
+    @ResponseBody
+    public ServerResponse<PageInfo> list( HttpSession session,Integer state, Integer type , Integer itemId,@RequestParam(value = "pageNum",defaultValue = "1") int pageNum, @RequestParam(value = "pageSize",defaultValue = "5")int pageSize){
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        if(user == null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");
+        }
+        if (UserAuth.BOSS.getCode() == user.getUserType()){
+            return recordService.AllList(itemId,state,type,pageSize,pageNum);
+        }
+        return ServerResponse.createByErrorMessage("请登入管理员账户");
     }
 
 

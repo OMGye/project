@@ -198,4 +198,64 @@ public class RecordServiceImpl implements RecordService{
         PageInfo pageInfo = new PageInfo(list);
         return ServerResponse.createBySuccess(pageInfo);
     }
+
+    @Override
+    public ServerResponse update(User user, Record record) {
+        if (record.getRecordId() == null)
+            return ServerResponse.createByErrorMessage("没有传递参数");
+        Record selectRecord = recordMapper.selectByPrimaryKey(record.getRecordId());
+        if (selectRecord == null)
+            return ServerResponse.createByErrorMessage("没有该条记录");
+        if (selectRecord.getState() == Const.RecordConst.Last_CHECK)
+            return ServerResponse.createByErrorMessage("审核完成，不能再次进行修改");
+        if (selectRecord.getUserId() != user.getUserId())
+            return ServerResponse.createByErrorMessage("您不是此条记录的上传者，不能进行修改");
+        record.setState(null);
+        record.setItemId(null);
+        int rowCount = recordMapper.updateByPrimaryKeySelective(record);
+        if (rowCount > 0)
+            return ServerResponse.createBySuccess("修改成功");
+        return ServerResponse.createBySuccess("修改失败");
+    }
+
+    @Override
+    public ServerResponse managerCheck(User user, Integer recordId) {
+        if (recordId == null)
+            return ServerResponse.createByErrorMessage("没有传递参数");
+        Record record = recordMapper.selectByPrimaryKey(recordId);
+        if (record == null)
+            return ServerResponse.createByErrorMessage("没有该条记录");
+        if (record.getItemId() != user.getItemId() || record.getState() != Const.RecordConst.UNCHECK)
+            return ServerResponse.createByErrorMessage("该条记录不能审核");
+        record.setState(Const.RecordConst.FIRST_CHECK);
+        int rowCount = recordMapper.updateByPrimaryKeySelective(record);
+        if (rowCount > 0)
+            return ServerResponse.createBySuccess("审核成功");
+        return ServerResponse.createByErrorMessage("审核失败");
+    }
+
+    @Override
+    public ServerResponse<PageInfo> AllList(Integer itemId, Integer state, Integer type, int pageSize, int pageNum) {
+        PageHelper.startPage(pageNum,pageSize);
+        PageHelper.orderBy("record_id desc");
+        List<Record> list = recordMapper.selectlist(state,type,itemId,null);
+        PageInfo pageInfo = new PageInfo(list);
+        return ServerResponse.createBySuccess(pageInfo);
+    }
+
+    @Override
+    public ServerResponse financialCheck(Integer recordId) {
+        if (recordId == null)
+            return ServerResponse.createByErrorMessage("没有传递参数");
+        Record record = recordMapper.selectByPrimaryKey(recordId);
+        if (record == null)
+            return ServerResponse.createByErrorMessage("没有该条记录");
+        if (record.getState() != Const.RecordConst.FIRST_CHECK)
+            return ServerResponse.createByErrorMessage("该条记录不能审核");
+        record.setState(Const.RecordConst.Last_CHECK);
+        int rowCount = recordMapper.updateByPrimaryKeySelective(record);
+        if (rowCount > 0)
+            return ServerResponse.createBySuccess("审核成功");
+        return ServerResponse.createByErrorMessage("审核失败");
+    }
 }

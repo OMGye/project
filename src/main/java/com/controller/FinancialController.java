@@ -1,10 +1,11 @@
 package com.controller;
+
 import com.common.Const;
 import com.common.ResponseCode;
 import com.common.ServerResponse;
 import com.common.UserAuth;
 import com.github.pagehelper.PageInfo;
-import com.pojo.Record;
+import com.pojo.Item;
 import com.pojo.User;
 import com.service.ItemService;
 import com.service.RecordService;
@@ -20,13 +21,14 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 /**
- * Created by upupgogogo on 2018/9/28.下午4:00
+ * Created by upupgogogo on 2018/9/30.下午1:53
  */
 @Controller
-@RequestMapping("/manager/")
-public class ManagerController {
+@RequestMapping("/financial/")
+public class FinancialController {
 
     @Autowired
     private RecordService recordService;
@@ -37,105 +39,74 @@ public class ManagerController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping(value = "record/addrecord.do",method = RequestMethod.POST)
-    @ResponseBody
-    public ServerResponse addRecor(HttpSession session, Record record, @RequestParam(value = "upload_file",required = false) MultipartFile[] files, HttpServletRequest request){
-        User user = (User)session.getAttribute(Const.CURRENT_USER);
-        if(user == null){
-            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");
-        }
-        if (UserAuth.MANAGER.getCode() == user.getUserType() && user.getItemId() != null){
-            String path = request.getSession().getServletContext().getRealPath("upload");
-            return recordService.addRecord(user,record,path,files);
-        }
-        return ServerResponse.createByErrorMessage("请登入管理员账户");
-    }
-
-
-    @RequestMapping(value = "record/addrecordimg.do",method = RequestMethod.POST)
-    @ResponseBody
-    public ServerResponse addRecorImg(HttpSession session, Integer recordId, @RequestParam(value = "upload_file",required = false) MultipartFile file, HttpServletRequest request){
-        User user = (User)session.getAttribute(Const.CURRENT_USER);
-        if(user == null){
-            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");
-        }
-        if (UserAuth.MANAGER.getCode() == user.getUserType() && user.getItemId() != null){
-            String path = request.getSession().getServletContext().getRealPath("upload");
-            return recordService.addRecordImg(user,recordId,path,file);
-        }
-        return ServerResponse.createByErrorMessage("请登入管理员账户");
-    }
-
-    @RequestMapping(value = "record/deleterecordimg.do",method = RequestMethod.POST)
-    @ResponseBody
-    public ServerResponse deleteRecorImg(HttpSession session, Integer recordId, String fileName, HttpServletRequest request){
-        User user = (User)session.getAttribute(Const.CURRENT_USER);
-        if(user == null){
-            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");
-        }
-        if (UserAuth.MANAGER.getCode() == user.getUserType() && user.getItemId() != null){
-            String path = request.getSession().getServletContext().getRealPath("upload");
-            return recordService.deleteRecordImg(user,recordId,fileName);
-        }
-        return ServerResponse.createByErrorMessage("请登入管理员账户");
-    }
-
     @RequestMapping(value = "record/list.do",method = RequestMethod.GET)
     @ResponseBody
-    public ServerResponse<PageInfo> list(HttpSession session, Integer state, Integer type , @RequestParam(value = "pageNum",defaultValue = "1") int pageNum, @RequestParam(value = "pageSize",defaultValue = "5")int pageSize){
+    public ServerResponse<PageInfo> list(HttpSession session, Integer state, Integer type , Integer itemId, @RequestParam(value = "pageNum",defaultValue = "1") int pageNum, @RequestParam(value = "pageSize",defaultValue = "5")int pageSize){
         User user = (User)session.getAttribute(Const.CURRENT_USER);
         if(user == null){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");
         }
-        if (UserAuth.MANAGER.getCode() == user.getUserType() && user.getItemId() != null){
-           return recordService.list(user,state,type,pageSize,pageNum);
+        if (UserAuth.FINANCIAL.getCode() == user.getUserType()){
+            return recordService.AllList(itemId,state,type,pageSize,pageNum);
         }
         return ServerResponse.createByErrorMessage("请登入管理员账户");
     }
 
-    @RequestMapping(value = "record/update.do",method = RequestMethod.GET)
-    @ResponseBody
-    public ServerResponse<PageInfo> list(HttpSession session,Record record){
-        User user = (User)session.getAttribute(Const.CURRENT_USER);
-        if(user == null){
-            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");
-        }
-        if (UserAuth.MANAGER.getCode() == user.getUserType() && user.getItemId() != null){
-            return recordService.update(user,record);
-        }
-        return ServerResponse.createByErrorMessage("请登入管理员账户");
-    }
-
-
-    @RequestMapping(value = "record/check.do",method = RequestMethod.POST)
+    @RequestMapping(value = "record/check.do",method = RequestMethod.GET)
     @ResponseBody
     public ServerResponse<PageInfo> check(HttpSession session, Integer recordId){
         User user = (User)session.getAttribute(Const.CURRENT_USER);
         if(user == null){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");
         }
-        if (UserAuth.MANAGER.getCode() == user.getUserType() && user.getItemId() != null){
-            return recordService.managerCheck(user,recordId);
+        if (UserAuth.FINANCIAL.getCode() == user.getUserType()){
+            return recordService.financialCheck(recordId);
         }
         return ServerResponse.createByErrorMessage("请登入管理员账户");
     }
 
-    @RequestMapping(value = "item/itemdetail.do",method = RequestMethod.GET)
+    @RequestMapping(value = "item/listitem.do",method = RequestMethod.GET)
     @ResponseBody
-    public ServerResponse itemDetail(HttpSession session){
+    public ServerResponse<PageInfo<Item>> listitem(HttpSession session, @RequestParam(value = "pageNum",defaultValue = "1") int pageNum, @RequestParam(value = "pageSize",defaultValue = "5")int pageSize){
         User user = (User)session.getAttribute(Const.CURRENT_USER);
         if(user == null){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");
         }
-        if (UserAuth.MANAGER.getCode() == user.getUserType() && user.getItemId() != null){
-            return itemService.getItemById(user.getItemId());
+        if (UserAuth.FINANCIAL.getCode() == user.getUserType()){
+            return itemService.listItem(pageNum,pageSize);
+        }
+        return ServerResponse.createByErrorMessage("请登入管理员账户");
+    }
+
+    @RequestMapping(value = "item/getitembyname.do",method = RequestMethod.GET)
+    @ResponseBody
+    public ServerResponse<List<Item>> getItembyName(String itemName, HttpSession session){
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        if(user == null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");
+        }
+        if (UserAuth.FINANCIAL.getCode() == user.getUserType()){
+            return itemService.getItemByName(itemName);
+        }
+        return ServerResponse.createByErrorMessage("请登入管理员账户");
+    }
+
+    @RequestMapping(value = "item/getitembyid.do",method = RequestMethod.GET)
+    @ResponseBody
+    public ServerResponse<Item> getItemById(HttpSession session, Integer itemId){
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        if(user == null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");
+        }
+        if (UserAuth.FINANCIAL.getCode() == user.getUserType() ){
+            return itemService.getItemById(itemId);
         }
         return ServerResponse.createByErrorMessage("请登入管理员账户");
     }
 
     @RequestMapping(value = "user/updatemyself.do",method = RequestMethod.POST)
     @ResponseBody
-    public ServerResponse update(HttpSession session,HttpServletRequest request, User updateUser,@RequestParam(value = "upload_file",required = false) MultipartFile file){
+    public ServerResponse update(HttpSession session, HttpServletRequest request, User updateUser, @RequestParam(value = "upload_file",required = false) MultipartFile file){
         User user = (User)session.getAttribute(Const.CURRENT_USER);
         if(user == null){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");

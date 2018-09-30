@@ -18,4 +18,12 @@ public interface RecordService {
     ServerResponse deleteRecordImg(User user, Integer recordId, String fileName);
 
     ServerResponse<PageInfo> list(User user, Integer state, Integer type, int pageSize, int pageNum);
+
+   ServerResponse update(User user, Record record);
+
+    ServerResponse managerCheck(User user, Integer recordId);
+
+    ServerResponse<PageInfo> AllList(Integer itemId, Integer state, Integer type, int pageSize, int pageNum);
+
+    ServerResponse financialCheck(Integer recordId);
 }
