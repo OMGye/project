@@ -272,7 +272,9 @@ public class RecordServiceImpl implements RecordService{
         if (user.getUserType() == UserAuth.ITEM_UPLOAD.getCode())
             if (record.getUserId() != user.getUserId())
                 return ServerResponse.createByErrorMessage("您无权访问该条记录");
-
+        if (user.getUserType() == UserAuth.MANAGER.getCode())
+            if (record.getItemId() != user.getItemId())
+                return ServerResponse.createByErrorMessage("您无权访问该条记录");
         return ServerResponse.createBySuccess(record);
     }
 }
