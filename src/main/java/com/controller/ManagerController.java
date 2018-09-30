@@ -155,6 +155,17 @@ public class ManagerController {
         }
         return userService.getUserInfo(user.getUserId());
     }
-
+    @RequestMapping(value = "record/getrecordbyid.do",method = RequestMethod.GET)
+    @ResponseBody
+    public ServerResponse<PageInfo> getRecordById( HttpSession session,Integer recordId){
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        if(user == null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");
+        }
+        if (UserAuth.MANAGER.getCode() == user.getUserType()){
+            return recordService.getByRecordId(user,recordId);
+        }
+        return ServerResponse.createByErrorMessage("请登入管理员账户");
+    }
 
 }

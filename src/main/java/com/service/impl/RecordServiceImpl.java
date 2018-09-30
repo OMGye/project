@@ -12,6 +12,7 @@ import com.pojo.Item;
 import com.pojo.Record;
 import com.pojo.User;
 import com.service.RecordService;
+import com.util.BigDecimalUtil;
 import com.util.FTPUtil;
 import com.util.PropertiesUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -92,6 +93,8 @@ public class RecordServiceImpl implements RecordService{
             }
             record.setRecordImgs(imgName);
         }
+        if (record.getUnitPrice() != null || record.getNumber() != null)
+            record.setSumPrice(BigDecimalUtil.mul(record.getUnitPrice().doubleValue(),record.getNumber()));
         record.setUserId(user.getUserId());
         record.setUserName(user.getUserName());
         record.setItemId(user.getItemId());
@@ -257,5 +260,19 @@ public class RecordServiceImpl implements RecordService{
         if (rowCount > 0)
             return ServerResponse.createBySuccess("审核成功");
         return ServerResponse.createByErrorMessage("审核失败");
+    }
+
+    @Override
+    public ServerResponse getByRecordId(User user,Integer recordId) {
+        if (recordId == null)
+            return ServerResponse.createByErrorMessage("没有传递参数");
+        Record record = recordMapper.selectByPrimaryKey(recordId);
+        if (record == null)
+            return ServerResponse.createByErrorMessage("没有该条记录");
+        if (user.getUserType() == UserAuth.ITEM_UPLOAD.getCode())
+            if (record.getUserId() != user.getUserId())
+                return ServerResponse.createByErrorMessage("您无权访问该条记录");
+
+        return ServerResponse.createBySuccess(record);
     }
 }

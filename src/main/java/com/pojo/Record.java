@@ -24,6 +24,8 @@ public class Record {
 
     private Integer number;
 
+    private BigDecimal sumPrice;
+
     private Integer state;
 
     private String recordImgs;
@@ -145,7 +147,16 @@ public class Record {
         return lastEditTime;
     }
 
-    public Record(Integer recordId, Integer userId, String userName, Integer itemId, String itemName, Integer recordType, String recordDec, Integer offerId, BigDecimal unitPrice, Integer number, Integer state, String recordImgs, Date createTime, Date lastEditTime) {
+    public void setSumPrice(BigDecimal sumPrice) {
+        this.sumPrice = sumPrice;
+    }
+
+    public BigDecimal getSumPrice() {
+
+        return sumPrice;
+    }
+
+    public Record(Integer recordId, Integer userId, String userName, Integer itemId, String itemName, Integer recordType, String recordDec, Integer offerId, BigDecimal unitPrice, Integer number, BigDecimal sumPrice, Integer state, String recordImgs, Date createTime, Date lastEditTime) {
 
         this.recordId = recordId;
         this.userId = userId;
@@ -157,6 +168,7 @@ public class Record {
         this.offerId = offerId;
         this.unitPrice = unitPrice;
         this.number = number;
+        this.sumPrice = sumPrice;
         this.state = state;
         this.recordImgs = recordImgs;
         this.createTime = createTime;

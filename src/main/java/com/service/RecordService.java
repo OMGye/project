@@ -26,4 +26,6 @@ public interface RecordService {
     ServerResponse<PageInfo> AllList(Integer itemId, Integer state, Integer type, int pageSize, int pageNum);
 
     ServerResponse financialCheck(Integer recordId);
+
+    ServerResponse getByRecordId(User user,Integer recordId);
 }
