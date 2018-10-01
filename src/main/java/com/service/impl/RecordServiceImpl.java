@@ -4,20 +4,24 @@ import com.common.Const;
 import com.common.ServerResponse;
 import com.common.UserAuth;
 import com.dao.ItemMapper;
+import com.dao.OfferMaterialMapper;
 import com.dao.RecordMapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import com.pojo.Item;
+import com.pojo.OfferMaterial;
 import com.pojo.Record;
 import com.pojo.User;
 import com.service.RecordService;
 import com.util.BigDecimalUtil;
 import com.util.FTPUtil;
 import com.util.PropertiesUtil;
+import com.vo.RecordVo;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -41,6 +45,9 @@ public class RecordServiceImpl implements RecordService{
 
     @Autowired
     private RecordMapper recordMapper;
+
+    @Autowired
+    private OfferMaterialMapper offerMaterialMapper;
 
     @Override
     public ServerResponse addRecord(User user,Record record, String path, MultipartFile[] files) {
@@ -275,6 +282,39 @@ public class RecordServiceImpl implements RecordService{
         if (user.getUserType() == UserAuth.MANAGER.getCode())
             if (record.getItemId() != user.getItemId())
                 return ServerResponse.createByErrorMessage("您无权访问该条记录");
-        return ServerResponse.createBySuccess(record);
+        RecordVo recordVo = new RecordVo();
+        BeanUtils.copyProperties(record,recordVo);
+        if (record.getOfferId() != null){
+           OfferMaterial offerMaterial = offerMaterialMapper.selectByPrimaryKey(record.getOfferId());
+           recordVo.setOfferName(offerMaterial.getOfferCompany());
+        }
+        return ServerResponse.createBySuccess(recordVo);
     }
+
+    @Override
+    public ServerResponse refuseRecord(User user, Integer recordId, String recordRefuse) {
+        if (recordId == null)
+            return ServerResponse.createByErrorMessage("没有传递参数");
+        Record record = recordMapper.selectByPrimaryKey(recordId);
+        if (record == null)
+            return ServerResponse.createByErrorMessage("没有该条记录");
+        if (user.getUserType() == UserAuth.MANAGER.getCode())
+            if (record.getItemId() != user.getItemId())
+                return ServerResponse.createByErrorMessage("您无权限拒绝该条记录");
+        record.setState(Const.RecordConst.RECORD_REFUSE);
+        String str = "";
+        if (user.getUserType() == UserAuth.FINANCIAL.getCode()){
+             str = "审核职位：财务管理员 br/ 审核人："+user.getUserName()+ "br/" + recordRefuse;
+        }
+        if (user.getUserType() == UserAuth.MANAGER.getCode()){
+            str = "审核职位：项目经理 br/ 审核人："+user.getUserName()+ "br/" + recordRefuse;
+        }
+        record.setRecordRefuse(str);
+        int rowCount = recordMapper.updateByPrimaryKeySelective(record);
+        if (rowCount > 0)
+            return ServerResponse.createBySuccess("拒绝成功");
+        return ServerResponse.createByErrorMessage("拒绝失败");
+    }
+
+
 }

@@ -14,6 +14,7 @@
       <arg column="unit_price" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
       <arg column="number" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="sum_price" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <arg column="record_refuse" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="state" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="record_imgs" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
@@ -22,7 +23,7 @@
   </resultMap>
   <sql id="Base_Column_List" >
     record_id, user_id, user_name, item_id, item_name, record_type, record_dec, offer_id, 
-    unit_price, number,sum_price, state, record_imgs, create_time, last_edit_time
+    unit_price, number,sum_price,record_refuse, state, record_imgs, create_time, last_edit_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -38,13 +39,13 @@
     insert into project_record (record_id, user_id, user_name, 
       item_id, item_name, record_type, 
       record_dec, offer_id, unit_price, 
-      number,sum_price, state,
+      number,sum_price,record_refuse, state,
       record_imgs, create_time, last_edit_time
       )
     values (#{recordId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, 
       #{itemId,jdbcType=INTEGER}, #{itemName,jdbcType=VARCHAR}, #{recordType,jdbcType=INTEGER}, 
       #{recordDec,jdbcType=VARCHAR}, #{offerId,jdbcType=INTEGER}, #{unitPrice,jdbcType=DECIMAL}, 
-      #{number,jdbcType=INTEGER},#{sumPrice,jdbcType=DECIMAL}, #{state,jdbcType=INTEGER},
+      #{number,jdbcType=INTEGER},#{sumPrice,jdbcType=DECIMAL},#{recordRefuse,jdbcType=VARCHAR}, #{state,jdbcType=INTEGER},
       #{recordImgs,jdbcType=VARCHAR}, now(), now()
       )
   </insert>
@@ -83,6 +84,9 @@
       </if>
       <if test="sumPrice != null" >
         sum_price,
+      </if>
+      <if test="recordRefuse != null" >
+        record_refuse,
       </if>
       <if test="state != null" >
         state,
@@ -131,6 +135,9 @@
       <if test="sumPrice != null" >
         #{sumPrice,jdbcType=DECIMAL},
       </if>
+      <if test="recordRefuse != null" >
+        #{recordRefuse,jdbcType=VARCHAR},
+      </if>
       <if test="state != null" >
         #{state,jdbcType=INTEGER},
       </if>
@@ -178,6 +185,9 @@
       <if test="sumPrice != null" >
         sum_price = #{sumPrice,jdbcType=DECIMAL},
       </if>
+      <if test="recordRefuse != null" >
+        record_refuse = #{recordRefuse,jdbcType=VARCHAR},
+      </if>
       <if test="state != null" >
         state = #{state,jdbcType=INTEGER},
       </if>
@@ -203,6 +213,7 @@
       unit_price = #{unitPrice,jdbcType=DECIMAL},
       number = #{number,jdbcType=INTEGER},
        sum_price = #{sumPrice,jdbcType=DECIMAL},
+       record_refuse = #{recordRefuse,jdbcType = VARCHAR},
       state = #{state,jdbcType=INTEGER},
       record_imgs = #{recordImgs,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},

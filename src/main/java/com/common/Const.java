@@ -22,6 +22,8 @@ public class Const {
         int UNCHECK = 0;
         int FIRST_CHECK = 1;
         int Last_CHECK = 2;
+
+        int RECORD_REFUSE = 10;
     }
 
 }

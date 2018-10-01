@@ -168,4 +168,17 @@ public class ManagerController {
         return ServerResponse.createByErrorMessage("请登入管理员账户");
     }
 
+    @RequestMapping(value = "record/refuserecord.do",method = RequestMethod.POST)
+    @ResponseBody
+    public ServerResponse<PageInfo> recordRefuse( HttpSession session,Integer recordId,String recordRefuse){
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        if(user == null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");
+        }
+        if (UserAuth.MANAGER.getCode() == user.getUserType()){
+            return recordService.refuseRecord(user,recordId,recordRefuse);
+        }
+        return ServerResponse.createByErrorMessage("请登入管理员账户");
+    }
+
 }

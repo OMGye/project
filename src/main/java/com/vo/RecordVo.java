@@ -1,9 +1,13 @@
-package com.pojo;
+package com.vo;
 
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class Record {
+/**
+ * Created by upupgogogo on 2018/10/1.上午10:05
+ */
+public class RecordVo {
+
     private Integer recordId;
 
     private Integer userId;
@@ -26,11 +30,11 @@ public class Record {
 
     private BigDecimal sumPrice;
 
-    private String recordRefuse;
-
     private Integer state;
 
     private String recordImgs;
+
+    private String offerName;
 
     private Date createTime;
 
@@ -76,12 +80,20 @@ public class Record {
         this.number = number;
     }
 
+    public void setSumPrice(BigDecimal sumPrice) {
+        this.sumPrice = sumPrice;
+    }
+
     public void setState(Integer state) {
         this.state = state;
     }
 
     public void setRecordImgs(String recordImgs) {
         this.recordImgs = recordImgs;
+    }
+
+    public void setOfferName(String offerName) {
+        this.offerName = offerName;
     }
 
     public void setCreateTime(Date createTime) {
@@ -133,6 +145,10 @@ public class Record {
         return number;
     }
 
+    public BigDecimal getSumPrice() {
+        return sumPrice;
+    }
+
     public Integer getState() {
         return state;
     }
@@ -141,51 +157,15 @@ public class Record {
         return recordImgs;
     }
 
+    public String getOfferName() {
+        return offerName;
+    }
+
     public Date getCreateTime() {
         return createTime;
     }
 
     public Date getLastEditTime() {
         return lastEditTime;
-    }
-
-    public void setSumPrice(BigDecimal sumPrice) {
-        this.sumPrice = sumPrice;
-    }
-
-    public BigDecimal getSumPrice() {
-
-        return sumPrice;
-    }
-
-    public void setRecordRefuse(String recordRefuse) {
-        this.recordRefuse = recordRefuse;
-    }
-
-    public String getRecordRefuse() {
-
-        return recordRefuse;
-    }
-
-    public Record(Integer recordId, Integer userId, String userName, Integer itemId, String itemName, Integer recordType, String recordDec, Integer offerId, BigDecimal unitPrice, Integer number, BigDecimal sumPrice, String recordRefuse, Integer state, String recordImgs, Date createTime, Date lastEditTime) {
-        this.recordId = recordId;
-        this.userId = userId;
-        this.userName = userName;
-        this.itemId = itemId;
-        this.itemName = itemName;
-        this.recordType = recordType;
-        this.recordDec = recordDec;
-        this.offerId = offerId;
-        this.unitPrice = unitPrice;
-        this.number = number;
-        this.sumPrice = sumPrice;
-        this.recordRefuse = recordRefuse;
-        this.state = state;
-        this.recordImgs = recordImgs;
-        this.createTime = createTime;
-        this.lastEditTime = lastEditTime;
-    }
-
-    public Record() {
     }
 }

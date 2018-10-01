@@ -28,4 +28,6 @@ public interface RecordService {
     ServerResponse financialCheck(Integer recordId);
 
     ServerResponse getByRecordId(User user,Integer recordId);
+
+    ServerResponse refuseRecord(User user, Integer recordId, String recordRefuse);
 }
