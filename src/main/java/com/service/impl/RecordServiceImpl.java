@@ -51,7 +51,9 @@ public class RecordServiceImpl implements RecordService{
 
     @Override
     public ServerResponse addRecord(User user,Record record, String path, MultipartFile[] files) {
-        if (record.getRecordType() == null || StringUtils.isBlank(record.getRecordDec()) || record.getUnitPrice() == null || record.getNumber() == null)
+        if (record.getRecordType() == null || StringUtils.isBlank(record.getRecordDec()))
+            return ServerResponse.createByErrorMessage("参数不能为空");
+        if(record.getUnitPrice() == null && record.getNumber() == null && record.getSumPrice() == null)
             return ServerResponse.createByErrorMessage("参数不能为空");
         if (files != null && files.length > 0) {
             List<File> list = new ArrayList<>();
@@ -100,7 +102,7 @@ public class RecordServiceImpl implements RecordService{
             }
             record.setRecordImgs(imgName);
         }
-        if (record.getUnitPrice() != null || record.getNumber() != null)
+        if (record.getUnitPrice() != null && record.getNumber() != null)
             record.setSumPrice(BigDecimalUtil.mul(record.getUnitPrice().doubleValue(),record.getNumber()));
         record.setUserId(user.getUserId());
         record.setUserName(user.getUserName());
