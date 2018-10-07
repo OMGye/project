@@ -36,6 +36,17 @@ public class RecordVo {
 
     private String offerName;
 
+    public void setRecordRefuse(String recordRefuse) {
+        this.recordRefuse = recordRefuse;
+    }
+
+    public String getRecordRefuse() {
+
+        return recordRefuse;
+    }
+
+    private String recordRefuse;
+
     private Date createTime;
 
     private Date lastEditTime;
