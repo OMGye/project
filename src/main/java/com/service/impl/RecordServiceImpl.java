@@ -51,6 +51,7 @@ public class RecordServiceImpl implements RecordService{
 
     @Override
     public ServerResponse addRecord(User user,Record record, String path, MultipartFile[] files) {
+        logger.info(record.getRecordDec(),record.getRecordType(),record.getSumPrice());
         if (record.getRecordType() == null || StringUtils.isBlank(record.getRecordDec()))
             return ServerResponse.createByErrorMessage("参数不能为空");
         if(record.getUnitPrice() == null && record.getNumber() == null && record.getSumPrice() == null)

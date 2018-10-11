@@ -58,6 +58,7 @@ public class UserServiceImpl implements UserService{
     @Override
     public ServerResponse<String> addUser(User user, MultipartFile file, String path) {
 
+
         if (StringUtils.isBlank(user.getUserName()) | StringUtils.isBlank(user.getPassword()) | StringUtils.isBlank(user.getPhone() )| user.getUserType() == null )
             return ServerResponse.createByErrorMessage("参数错误");
         if (file != null) {
