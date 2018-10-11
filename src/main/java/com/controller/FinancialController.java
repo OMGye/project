@@ -52,7 +52,7 @@ public class FinancialController {
         return ServerResponse.createByErrorMessage("请登入管理员账户");
     }
 
-    @RequestMapping(value = "record/check.do",method = RequestMethod.GET)
+    @RequestMapping(value = "record/check.do",method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<PageInfo> check(HttpSession session, Integer recordId){
         User user = (User)session.getAttribute(Const.CURRENT_USER);
@@ -80,13 +80,13 @@ public class FinancialController {
 
     @RequestMapping(value = "item/getitembyname.do",method = RequestMethod.GET)
     @ResponseBody
-    public ServerResponse<List<Item>> getItembyName(String itemName, HttpSession session){
+    public ServerResponse<PageInfo> getItembyName(String itemName, HttpSession session, @RequestParam(value = "pageNum",defaultValue = "1") int pageNum, @RequestParam(value = "pageSize",defaultValue = "5")int pageSize){
         User user = (User)session.getAttribute(Const.CURRENT_USER);
         if(user == null){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");
         }
         if (UserAuth.FINANCIAL.getCode() == user.getUserType()){
-            return itemService.getItemByName(itemName);
+            return itemService.getItemByName(pageNum,pageSize,itemName);
         }
         return ServerResponse.createByErrorMessage("请登入管理员账户");
     }
@@ -149,6 +149,19 @@ public class FinancialController {
         }
         if (UserAuth.FINANCIAL.getCode() == user.getUserType()){
             return recordService.refuseRecord(user,recordId,recordRefuse);
+        }
+        return ServerResponse.createByErrorMessage("请登入管理员账户");
+    }
+
+    @RequestMapping(value = "record/listbydec.do",method = RequestMethod.GET)
+    @ResponseBody
+    public ServerResponse<PageInfo> listByRecordDec(HttpSession session, Integer state, String recordDec, @RequestParam(value = "pageNum",defaultValue = "1") int pageNum, @RequestParam(value = "pageSize",defaultValue = "5")int pageSize){
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        if(user == null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");
+        }
+        if (UserAuth.FINANCIAL.getCode() == user.getUserType()){
+            return recordService.listByDec(user,state,recordDec,pageSize,pageNum);
         }
         return ServerResponse.createByErrorMessage("请登入管理员账户");
     }

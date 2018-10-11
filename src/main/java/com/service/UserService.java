@@ -26,6 +26,6 @@ public interface UserService {
 
     ServerResponse<User> update(User user, MultipartFile file, String path);
 
-    ServerResponse<List<User>> getUserByUserName(String userName);
+    ServerResponse<PageInfo> getUserByUserName(int pageNum, int pageSize,String userName);
 
 }

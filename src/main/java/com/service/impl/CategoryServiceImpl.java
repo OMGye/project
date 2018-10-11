@@ -68,11 +68,13 @@ public class CategoryServiceImpl implements CategoryService{
     }
 
     @Override
-    public ServerResponse<List<Category>> getCategoryByName(String categoryName) {
+    public ServerResponse<PageInfo> getCategoryByName(int pageSize, int pageNum,String categoryName) {
+        PageHelper.startPage(pageNum,pageSize);
         if (categoryName == null)
             return ServerResponse.createByErrorMessage("参数不能为空");
         categoryName = "%" + categoryName + "%";
         List<Category> list = categoryMapper.selectByCategoryName(categoryName);
-        return ServerResponse.createBySuccess(list);
+        PageInfo pageInfo = new PageInfo(list);
+        return ServerResponse.createBySuccess(pageInfo);
     }
 }

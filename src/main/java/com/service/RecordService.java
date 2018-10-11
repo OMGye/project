@@ -30,4 +30,12 @@ public interface RecordService {
     ServerResponse getByRecordId(User user,Integer recordId);
 
     ServerResponse refuseRecord(User user, Integer recordId, String recordRefuse);
+
+    ServerResponse<PageInfo> listByDec(User user, Integer state, String recordDec , int pageSize, int pageNum);
+
+    ServerResponse deleteByRecordId(User user,Integer recordId);
+
+    ServerResponse<PageInfo> listByOfferId(User user, Integer state, Integer offerId , int pageSize, int pageNum);
+
+
 }

@@ -111,12 +111,12 @@ public class BossController {
 
     @RequestMapping(value = "user/getuserbyname.do",method = RequestMethod.GET)
     @ResponseBody
-    public ServerResponse<List<User>> getUserName(HttpSession session, String userName){
+    public ServerResponse<PageInfo> getUserName(HttpSession session, String userName, @RequestParam(value = "pageNum",defaultValue = "1") int pageNum, @RequestParam(value = "pageSize",defaultValue = "5")int pageSize){
         User user = (User)session.getAttribute(Const.CURRENT_USER);
         if(user == null){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");
         }
-        return userService.getUserByUserName(userName);
+        return userService.getUserByUserName(pageNum,pageSize,userName);
     }
 
 
@@ -166,13 +166,13 @@ public class BossController {
 
     @RequestMapping(value = "item/getitembyname.do",method = RequestMethod.GET)
     @ResponseBody
-    public ServerResponse<List<Item>> getItembyName(String itemName, HttpSession session){
+    public ServerResponse<PageInfo> getItembyName(String itemName, HttpSession session,@RequestParam(value = "pageNum",defaultValue = "1") int pageNum, @RequestParam(value = "pageSize",defaultValue = "5")int pageSize){
         User user = (User)session.getAttribute(Const.CURRENT_USER);
         if(user == null){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");
         }
         if (UserAuth.BOSS.getCode() == user.getUserType()){
-            return itemService.getItemByName(itemName);
+            return itemService.getItemByName(pageNum,pageSize,itemName);
         }
         return ServerResponse.createByErrorMessage("请登入管理员账户");
     }
@@ -261,12 +261,12 @@ public class BossController {
     }
     @RequestMapping(value = "category/getcategorybyname.do",method = RequestMethod.GET)
     @ResponseBody
-    public ServerResponse<List<Category>> getCategoryByName(String categoryName, HttpSession session){
+    public ServerResponse<PageInfo> getCategoryByName(String categoryName, HttpSession session,@RequestParam(value = "pageNum",defaultValue = "1") int pageNum, @RequestParam(value = "pageSize",defaultValue = "5")int pageSize){
         User user = (User)session.getAttribute(Const.CURRENT_USER);
         if(user == null){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");
         }
-        return categoryService.getCategoryByName(categoryName);
+        return categoryService.getCategoryByName(pageSize,pageNum,categoryName);
     }
 
     @Autowired
@@ -328,12 +328,12 @@ public class BossController {
 
     @RequestMapping(value = "offer/getoffererbyname.do",method = RequestMethod.GET)
     @ResponseBody
-    public ServerResponse<List<OfferMaterial>> getOffererByName(String offerCompany, HttpSession session){
+    public ServerResponse<PageInfo> getOffererByName(String offerCompany, HttpSession session,@RequestParam(value = "pageNum",defaultValue = "1") int pageNum, @RequestParam(value = "pageSize",defaultValue = "5")int pageSize){
         User user = (User)session.getAttribute(Const.CURRENT_USER);
         if(user == null){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");
         }
-        return offerMaterialService.getOffererByName(offerCompany);
+        return offerMaterialService.getOffererByName(pageSize,pageNum,offerCompany);
     }
 
     @Autowired
@@ -361,6 +361,32 @@ public class BossController {
         }
         if (UserAuth.BOSS.getCode() == user.getUserType()){
             return recordService.getByRecordId(user,recordId);
+        }
+        return ServerResponse.createByErrorMessage("请登入管理员账户");
+    }
+
+    @RequestMapping(value = "record/listbydec.do",method = RequestMethod.GET)
+    @ResponseBody
+    public ServerResponse<PageInfo> listByRecordDec(HttpSession session, Integer state, String recordDec, @RequestParam(value = "pageNum",defaultValue = "1") int pageNum, @RequestParam(value = "pageSize",defaultValue = "5")int pageSize){
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        if(user == null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");
+        }
+        if (UserAuth.BOSS.getCode() == user.getUserType()){
+            return recordService.listByDec(user,state,recordDec,pageSize,pageNum);
+        }
+        return ServerResponse.createByErrorMessage("请登入管理员账户");
+    }
+
+    @RequestMapping(value = "record/listbyofferid.do",method = RequestMethod.GET)
+    @ResponseBody
+    public ServerResponse<PageInfo> getListByOfferId(HttpSession session, Integer state, String recordDec, @RequestParam(value = "pageNum",defaultValue = "1") int pageNum, @RequestParam(value = "pageSize",defaultValue = "5")int pageSize){
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        if(user == null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");
+        }
+        if (UserAuth.BOSS.getCode() == user.getUserType()){
+            return recordService.listByDec(user,state,recordDec,pageSize,pageNum);
         }
         return ServerResponse.createByErrorMessage("请登入管理员账户");
     }

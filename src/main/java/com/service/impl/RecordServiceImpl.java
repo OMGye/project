@@ -51,10 +51,6 @@ public class RecordServiceImpl implements RecordService{
 
     @Override
     public ServerResponse addRecord(User user,Record record, String path, MultipartFile[] files) {
-        logger.info(record.getRecordDec());
-        logger.info(""+record.getRecordType());
-        logger.info(""+record.getSumPrice());
-
         if (record.getRecordType() == null || StringUtils.isBlank(record.getRecordDec()))
             return ServerResponse.createByErrorMessage("参数不能为空");
         if(record.getUnitPrice() == null && record.getNumber() == null && record.getSumPrice() == null)
@@ -320,6 +316,54 @@ public class RecordServiceImpl implements RecordService{
         if (rowCount > 0)
             return ServerResponse.createBySuccess("拒绝成功");
         return ServerResponse.createByErrorMessage("拒绝失败");
+    }
+
+    @Override
+    public ServerResponse<PageInfo> listByDec(User user, Integer state, String recordDec, int pageSize, int pageNum) {
+        if (recordDec == null || state == null)
+            return ServerResponse.createByErrorMessage("参数为空");
+        recordDec = "%" + recordDec + "%";
+        Integer itemId =user.getItemId();
+        if (user.getUserType() == UserAuth.FINANCIAL.getCode() || user.getUserType() == UserAuth.BOSS.getCode())
+            itemId = null;
+        PageHelper.startPage(pageNum,pageSize);
+        PageHelper.orderBy("record_id desc");
+        Integer userId = null;
+        if (user.getUserType() == UserAuth.ITEM_UPLOAD.getCode())
+            userId = user.getUserId();
+        List<Record> list = recordMapper.selectlistByDec(state,recordDec,itemId,userId);
+        PageInfo pageInfo = new PageInfo(list);
+        return ServerResponse.createBySuccess(pageInfo);
+    }
+
+    @Override
+    public ServerResponse deleteByRecordId(User user, Integer recordId) {
+        if (recordId == null)
+            return ServerResponse.createByErrorMessage("没有传递参数");
+        Record record = recordMapper.selectByPrimaryKey(recordId);
+        if (record == null)
+            return ServerResponse.createByErrorMessage("没有该条记录");
+        if (user.getUserType() == UserAuth.ITEM_UPLOAD.getCode())
+            if (record.getState() == Const.RecordConst.FIRST_CHECK)
+                return ServerResponse.createByErrorMessage("该记录已被审核，不能删除");
+        if (user.getUserType() == UserAuth.MANAGER.getCode())
+            if (record.getState() == Const.RecordConst.Last_CHECK)
+                return ServerResponse.createByErrorMessage("该记录已被审核，不能删除");
+        int row = recordMapper.deleteByPrimaryKey(recordId);
+        if (row > 0)
+            return ServerResponse.createBySuccess("删除成功");
+        return ServerResponse.createByErrorMessage("删除失败");
+    }
+
+    @Override
+    public ServerResponse<PageInfo> listByOfferId(User user, Integer state, Integer offerId, int pageSize, int pageNum) {
+        if (offerId == null || state == null)
+            return ServerResponse.createByErrorMessage("参数为空");
+        PageHelper.startPage(pageNum,pageSize);
+        PageHelper.orderBy("record_id desc");
+        List<Record> list = recordMapper.selectByOfferId(state,offerId);
+        PageInfo pageInfo = new PageInfo(list);
+        return ServerResponse.createBySuccess(pageInfo);
     }
 
 

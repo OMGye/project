@@ -181,4 +181,30 @@ public class ManagerController {
         return ServerResponse.createByErrorMessage("请登入管理员账户");
     }
 
+    @RequestMapping(value = "record/listbydec.do",method = RequestMethod.GET)
+    @ResponseBody
+    public ServerResponse<PageInfo> listByRecordDec(HttpSession session, Integer state, String recordDec, @RequestParam(value = "pageNum",defaultValue = "1") int pageNum, @RequestParam(value = "pageSize",defaultValue = "5")int pageSize){
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        if(user == null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");
+        }
+        if (UserAuth.MANAGER.getCode() == user.getUserType()){
+            return recordService.listByDec(user,state,recordDec,pageSize,pageNum);
+        }
+        return ServerResponse.createByErrorMessage("请登入管理员账户");
+    }
+
+    @RequestMapping(value = "record/deletebyrecordid.do",method = RequestMethod.POST)
+    @ResponseBody
+    public ServerResponse<PageInfo> deleteByRecordId( HttpSession session,Integer recordId){
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        if(user == null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");
+        }
+        if (UserAuth.MANAGER.getCode() == user.getUserType()){
+            return recordService.deleteByRecordId(user,recordId);
+        }
+        return ServerResponse.createByErrorMessage("请登入管理员账户");
+    }
+
 }

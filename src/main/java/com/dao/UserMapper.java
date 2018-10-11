@@ -33,4 +33,6 @@ public interface UserMapper {
     int updateManagerByItemId(Integer itemId);
 
     int updateUploadByItemId(Integer itemId);
+
+    List<User> selectByName(String userName);
 }

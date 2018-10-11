@@ -233,4 +233,25 @@
     </where>
   </select>
 
+  <select id="selectlistByDec" parameterType="map" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    from project_record
+    <where>
+      <if test="state != null"> state = #{state}</if>
+      <if test="itemId != null ">and item_id = #{itemId}</if>
+      <if test="recordDec != null">and record_dec like #{recordDec}</if>
+      <if test="userId != null">and user_id = #{userId}</if>
+    </where>
+  </select>
+
+  <select id="selectByOfferId" parameterType="map" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    from project_record
+   WHERE offer_id = #{offerId}
+    and state = #{state}
+  </select>
+
+
 </mapper>

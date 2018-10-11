@@ -25,7 +25,7 @@ public interface ItemService {
 
     ServerResponse updateItem(Item item, MultipartFile file, String path, String endTime);
 
-    ServerResponse<List<Item>> getItemByName(String itemName);
+    ServerResponse<PageInfo> getItemByName(int pageNum, int pageSize, String itemName);
 
     ServerResponse<Item> getItemById(Integer itemId);
 }

@@ -75,17 +75,21 @@ public class OfferMaterialServiceImpl implements OfferMaterialService{
     }
 
     @Override
-    public ServerResponse<List<OfferMaterial>> getOffererByName(String offererName) {
+    public ServerResponse<PageInfo> getOffererByName(int pageSize, int pageNum, String offererName) {
+        PageHelper.startPage(pageNum,pageSize);
         if (offererName == null)
             return ServerResponse.createByErrorMessage("参数不能为空");
         offererName = "%" + offererName + "%";
         List<OfferMaterial> list = offerMaterialMapper.selectByOffererName(offererName);
-        return ServerResponse.createBySuccess(list);
+        PageInfo pageInfo = new PageInfo(list);
+        return ServerResponse.createBySuccess(pageInfo);
     }
 
     @Override
     public ServerResponse<OfferMaterial> getOffererById(Integer offererId) {
-        
-        return null;
+        if (offererId == null)
+            return ServerResponse.createByErrorMessage("参数为空");
+        OfferMaterial offerMaterial = offerMaterialMapper.selectByPrimaryKey(offererId);
+        return ServerResponse.createBySuccess(offerMaterial);
     }
 }

@@ -57,10 +57,11 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public ServerResponse<String> addUser(User user, MultipartFile file, String path) {
-
-
         if (StringUtils.isBlank(user.getUserName()) | StringUtils.isBlank(user.getPassword()) | StringUtils.isBlank(user.getPhone() )| user.getUserType() == null )
             return ServerResponse.createByErrorMessage("参数错误");
+        List<User> list = userMapper.selectByName(user.getUserName());
+        if (list.size() > 0)
+            return ServerResponse.createByErrorMessage("该名字已经存在");
         if (file != null) {
             String fileName = file.getOriginalFilename();
             //扩展名
@@ -173,11 +174,14 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public ServerResponse<List<User>> getUserByUserName(String userName) {
+    public ServerResponse<PageInfo> getUserByUserName(int pageNum, int pageSize,String userName) {
+        PageHelper.startPage(pageNum,pageSize);
         if (userName == null)
             return ServerResponse.createByErrorMessage("参数不能为空");
         userName = "%" + userName + "%";
         List<User> list = userMapper.selectByUserName(userName);
-        return ServerResponse.createBySuccess(list);
+        PageInfo pageInfo = new PageInfo(list);
+        pageInfo.setList(list);
+        return ServerResponse.createBySuccess(pageInfo);
     }
 }
