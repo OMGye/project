@@ -19,5 +19,5 @@ public interface CategoryService {
 
     ServerResponse update(Category category);
 
-    ServerResponse<PageInfo> getCategoryByName(int pageSize, int pageNum,String categoryName);
+    ServerResponse<PageInfo<Category>> getCategoryByName(int pageSize, int pageNum,String categoryName);
 }

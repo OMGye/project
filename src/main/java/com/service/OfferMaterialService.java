@@ -19,7 +19,7 @@ public interface OfferMaterialService {
 
     ServerResponse update(OfferMaterial offerMaterial);
 
-    ServerResponse<PageInfo> getOffererByName(int pageSize, int pageNum, String offererName);
+    ServerResponse<PageInfo<OfferMaterial>> getOffererByName(int pageSize, int pageNum, String offererName);
 
     ServerResponse<OfferMaterial> getOffererById(Integer offererId);
 }

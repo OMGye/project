@@ -213,7 +213,7 @@ public class ItemServiceImpl implements ItemService{
     }
 
     @Override
-    public ServerResponse<PageInfo> getItemByName(int pageNum, int pageSize, String itemName) {
+    public ServerResponse<PageInfo<Item>> getItemByName(int pageNum, int pageSize, String itemName) {
         PageHelper.startPage(pageNum,pageSize);
         if (itemName == null)
             return ServerResponse.createByErrorMessage("参数不能为空");
