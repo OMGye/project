@@ -74,7 +74,7 @@ public class CategoryServiceImpl implements CategoryService{
             return ServerResponse.createByErrorMessage("参数不能为空");
         categoryName = "%" + categoryName + "%";
         List<Category> list = categoryMapper.selectByCategoryName(categoryName);
-        PageInfo pageInfo = new PageInfo(list);
+        PageInfo<Category> pageInfo = new PageInfo(list);
         return ServerResponse.createBySuccess(pageInfo);
     }
 }

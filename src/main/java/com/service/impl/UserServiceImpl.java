@@ -180,7 +180,7 @@ public class UserServiceImpl implements UserService{
             return ServerResponse.createByErrorMessage("参数不能为空");
         userName = "%" + userName + "%";
         List<User> list = userMapper.selectByUserName(userName);
-        PageInfo pageInfo = new PageInfo(list);
+        PageInfo<User> pageInfo = new PageInfo(list);
         pageInfo.setList(list);
         return ServerResponse.createBySuccess(pageInfo);
     }

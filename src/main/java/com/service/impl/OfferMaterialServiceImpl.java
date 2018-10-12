@@ -81,7 +81,7 @@ public class OfferMaterialServiceImpl implements OfferMaterialService{
             return ServerResponse.createByErrorMessage("参数不能为空");
         offererName = "%" + offererName + "%";
         List<OfferMaterial> list = offerMaterialMapper.selectByOffererName(offererName);
-        PageInfo pageInfo = new PageInfo(list);
+        PageInfo<OfferMaterial> pageInfo = new PageInfo(list);
         return ServerResponse.createBySuccess(pageInfo);
     }
 

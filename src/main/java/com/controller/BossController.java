@@ -111,7 +111,7 @@ public class BossController {
 
     @RequestMapping(value = "user/getuserbyname.do",method = RequestMethod.GET)
     @ResponseBody
-    public ServerResponse<PageInfo> getUserName(HttpSession session, String userName, @RequestParam(value = "pageNum",defaultValue = "1") int pageNum, @RequestParam(value = "pageSize",defaultValue = "5")int pageSize){
+    public ServerResponse<PageInfo<User>> getUserName(HttpSession session, String userName, @RequestParam(value = "pageNum",defaultValue = "1") int pageNum, @RequestParam(value = "pageSize",defaultValue = "5")int pageSize){
         User user = (User)session.getAttribute(Const.CURRENT_USER);
         if(user == null){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");
@@ -166,7 +166,7 @@ public class BossController {
 
     @RequestMapping(value = "item/getitembyname.do",method = RequestMethod.GET)
     @ResponseBody
-    public ServerResponse<PageInfo> getItembyName(String itemName, HttpSession session,@RequestParam(value = "pageNum",defaultValue = "1") int pageNum, @RequestParam(value = "pageSize",defaultValue = "5")int pageSize){
+    public ServerResponse<PageInfo<Item>> getItembyName(String itemName, HttpSession session,@RequestParam(value = "pageNum",defaultValue = "1") int pageNum, @RequestParam(value = "pageSize",defaultValue = "5")int pageSize){
         User user = (User)session.getAttribute(Const.CURRENT_USER);
         if(user == null){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");
@@ -261,7 +261,7 @@ public class BossController {
     }
     @RequestMapping(value = "category/getcategorybyname.do",method = RequestMethod.GET)
     @ResponseBody
-    public ServerResponse<PageInfo> getCategoryByName(String categoryName, HttpSession session,@RequestParam(value = "pageNum",defaultValue = "1") int pageNum, @RequestParam(value = "pageSize",defaultValue = "5")int pageSize){
+    public ServerResponse<PageInfo<Category>> getCategoryByName(String categoryName, HttpSession session,@RequestParam(value = "pageNum",defaultValue = "1") int pageNum, @RequestParam(value = "pageSize",defaultValue = "5")int pageSize){
         User user = (User)session.getAttribute(Const.CURRENT_USER);
         if(user == null){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");
@@ -328,7 +328,7 @@ public class BossController {
 
     @RequestMapping(value = "offer/getoffererbyname.do",method = RequestMethod.GET)
     @ResponseBody
-    public ServerResponse<PageInfo> getOffererByName(String offerCompany, HttpSession session,@RequestParam(value = "pageNum",defaultValue = "1") int pageNum, @RequestParam(value = "pageSize",defaultValue = "5")int pageSize){
+    public ServerResponse<PageInfo<OfferMaterial>> getOffererByName(String offerCompany, HttpSession session,@RequestParam(value = "pageNum",defaultValue = "1") int pageNum, @RequestParam(value = "pageSize",defaultValue = "5")int pageSize){
         User user = (User)session.getAttribute(Const.CURRENT_USER);
         if(user == null){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");
