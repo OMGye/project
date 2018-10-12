@@ -17,13 +17,14 @@
       <arg column="record_refuse" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="state" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="record_imgs" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="record_img_name" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
       <arg column="last_edit_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List" >
     record_id, user_id, user_name, item_id, item_name, record_type, record_dec, offer_id, 
-    unit_price, number,sum_price,record_refuse, state, record_imgs, create_time, last_edit_time
+    unit_price, number,sum_price,record_refuse, state, record_imgs,record_img_name,create_time, last_edit_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -40,13 +41,13 @@
       item_id, item_name, record_type, 
       record_dec, offer_id, unit_price, 
       number,sum_price,record_refuse, state,
-      record_imgs, create_time, last_edit_time
+      record_imgs, record_img_name, create_time, last_edit_time
       )
     values (#{recordId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, 
       #{itemId,jdbcType=INTEGER}, #{itemName,jdbcType=VARCHAR}, #{recordType,jdbcType=INTEGER}, 
       #{recordDec,jdbcType=VARCHAR}, #{offerId,jdbcType=INTEGER}, #{unitPrice,jdbcType=DECIMAL}, 
       #{number,jdbcType=INTEGER},#{sumPrice,jdbcType=DECIMAL},#{recordRefuse,jdbcType=VARCHAR}, #{state,jdbcType=INTEGER},
-      #{recordImgs,jdbcType=VARCHAR}, now(), now()
+      #{recordImgs,jdbcType=VARCHAR}, #{recordImgName,jdbcType=VARCHAR}, now(), now()
       )
   </insert>
   <insert id="insertSelective" parameterType="com.pojo.Record" >
@@ -93,6 +94,9 @@
       </if>
       <if test="recordImgs != null" >
         record_imgs,
+      </if>
+      <if test="recordImgName != null" >
+        record_img_name,
       </if>
       <if test="createTime != null" >
         create_time,
@@ -144,6 +148,9 @@
       <if test="recordImgs != null" >
         #{recordImgs,jdbcType=VARCHAR},
       </if>
+      <if test="recordImgName != null" >
+        #{recordImgName,jdbcType=VARCHAR},
+      </if>
       <if test="createTime != null" >
         #{createTime,jdbcType=TIMESTAMP},
       </if>
@@ -194,6 +201,9 @@
       <if test="recordImgs != null" >
         record_imgs = #{recordImgs,jdbcType=VARCHAR},
       </if>
+      <if test="recordImgName != null" >
+        record_img_name = #{recordImgName,jdbcType=VARCHAR},
+      </if>
       <if test="createTime != null" >
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
@@ -216,6 +226,7 @@
        record_refuse = #{recordRefuse,jdbcType = VARCHAR},
       state = #{state,jdbcType=INTEGER},
       record_imgs = #{recordImgs,jdbcType=VARCHAR},
+       record_img_name = #{recordImgName,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       last_edit_time = now()
     where record_id = #{recordId,jdbcType=INTEGER}

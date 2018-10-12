@@ -32,6 +32,17 @@ public class Record {
 
     private String recordImgs;
 
+    private String recordImgName;
+
+    public void setRecordImgName(String recordImgName) {
+        this.recordImgName = recordImgName;
+    }
+
+    public String getRecordImgName() {
+
+        return recordImgName;
+    }
+
     private Date createTime;
 
     private Date lastEditTime;
@@ -167,7 +178,7 @@ public class Record {
         return recordRefuse;
     }
 
-    public Record(Integer recordId, Integer userId, String userName, Integer itemId, String itemName, Integer recordType, String recordDec, Integer offerId, BigDecimal unitPrice, Integer number, BigDecimal sumPrice, String recordRefuse, Integer state, String recordImgs, Date createTime, Date lastEditTime) {
+    public Record(Integer recordId, Integer userId, String userName, Integer itemId, String itemName, Integer recordType, String recordDec, Integer offerId, BigDecimal unitPrice, Integer number, BigDecimal sumPrice, String recordRefuse, Integer state, String recordImgs, String recordImgName, Date createTime, Date lastEditTime) {
         this.recordId = recordId;
         this.userId = userId;
         this.userName = userName;
@@ -182,6 +193,7 @@ public class Record {
         this.recordRefuse = recordRefuse;
         this.state = state;
         this.recordImgs = recordImgs;
+        this.recordImgName = recordImgName;
         this.createTime = createTime;
         this.lastEditTime = lastEditTime;
     }

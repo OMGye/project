@@ -60,6 +60,7 @@ public class RecordServiceImpl implements RecordService{
             String imgName = "";
             for (MultipartFile file : files) {
                 String fileName = file.getOriginalFilename();
+                record.setRecordImgName(record.getRecordImgName()+fileName+ ",");
                 //扩展名
                 //abc.jpg
                 String fileExtensionName = fileName.substring(fileName.lastIndexOf(".") + 1);
@@ -102,6 +103,7 @@ public class RecordServiceImpl implements RecordService{
             }
             record.setRecordImgs(imgName);
         }
+        record.setRecordImgName(record.getRecordImgName().substring(0,record.getRecordImgName().length()-1));
         if (record.getUnitPrice() != null && record.getNumber() != null)
             record.setSumPrice(BigDecimalUtil.mul(record.getUnitPrice().doubleValue(),record.getNumber()));
         record.setUserId(user.getUserId());
@@ -132,6 +134,12 @@ public class RecordServiceImpl implements RecordService{
             return ServerResponse.createByErrorMessage("您不是此条记录的上传者，不能进行修改");
         if(file != null){
             String fileName = file.getOriginalFilename();
+            if (record.getRecordImgName() == null){
+                record.setRecordImgName(fileName);
+            }
+            else {
+                record.setRecordImgName(record.getRecordImgName() + "," + fileName);
+            }
             //扩展名
             //abc.jpg
             String fileExtensionName = fileName.substring(fileName.lastIndexOf(".")+1);
@@ -168,8 +176,8 @@ public class RecordServiceImpl implements RecordService{
     }
 
     @Override
-    public ServerResponse deleteRecordImg(User user, Integer recordId, String fileName) {
-        if (recordId == null && fileName == null)
+    public ServerResponse deleteRecordImg(User user, Integer recordId, String fileName, String name) {
+        if (recordId == null && fileName == null && name == null)
             return ServerResponse.createByErrorMessage("没有传递参数");
         Record record = recordMapper.selectByPrimaryKey(recordId);
         if (record == null)
@@ -192,6 +200,19 @@ public class RecordServiceImpl implements RecordService{
             if (i != imgs.length - 1)
                 sb.append(",");
         }
+        String[] imgNames = record.getRecordImgName().split(",");
+        for (int i = 0; i < imgNames.length; i++)
+            if (imgs[i].equals(name)) {
+                imgs[i] = "";
+                break;
+            }
+        StringBuilder sbName = new StringBuilder();
+        for (int i = 0; i < imgNames.length; i++){
+            sbName.append(imgs[i]);
+            if (i != imgNames.length - 1)
+                sbName.append(",");
+        }
+        record.setRecordImgName(sbName.toString());
         record.setRecordImgs(sb.toString());
         int rowCount = recordMapper.updateByPrimaryKeySelective(record);
         if (rowCount > 0)
@@ -365,6 +386,8 @@ public class RecordServiceImpl implements RecordService{
         PageInfo pageInfo = new PageInfo(list);
         return ServerResponse.createBySuccess(pageInfo);
     }
+
+
 
 
 }

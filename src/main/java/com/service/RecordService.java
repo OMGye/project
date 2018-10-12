@@ -15,7 +15,7 @@ public interface RecordService {
 
     ServerResponse addRecordImg(User user, Integer recordId, String path, MultipartFile file);
 
-    ServerResponse deleteRecordImg(User user, Integer recordId, String fileName);
+    ServerResponse deleteRecordImg(User user, Integer recordId, String fileName, String name);
 
     ServerResponse<PageInfo> list(User user, Integer state, Integer type, int pageSize, int pageNum);
 
