@@ -320,7 +320,7 @@ public class RecordServiceImpl implements RecordService{
 
     @Override
     public ServerResponse<PageInfo> listByDec(User user, Integer state, String recordDec, int pageSize, int pageNum) {
-        if (recordDec == null || state == null)
+        if (recordDec == null)
             return ServerResponse.createByErrorMessage("参数为空");
         recordDec = "%" + recordDec + "%";
         Integer itemId =user.getItemId();
@@ -357,7 +357,7 @@ public class RecordServiceImpl implements RecordService{
 
     @Override
     public ServerResponse<PageInfo> listByOfferId(User user, Integer state, Integer offerId, int pageSize, int pageNum) {
-        if (offerId == null || state == null)
+        if (offerId == null)
             return ServerResponse.createByErrorMessage("参数为空");
         PageHelper.startPage(pageNum,pageSize);
         PageHelper.orderBy("record_id desc");

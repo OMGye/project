@@ -249,8 +249,10 @@
     SELECT
     <include refid="Base_Column_List"/>
     from project_record
-   WHERE offer_id = #{offerId}
-    and state = #{state}
+    <where>
+      <if test="state != null"> state = #{state}</if>
+      <if test="offerId != null">and offer_id = #{offerId}</if>
+    </where>
   </select>
 
 
