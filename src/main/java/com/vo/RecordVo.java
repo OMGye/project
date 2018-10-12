@@ -36,6 +36,17 @@ public class RecordVo {
 
     private String offerName;
 
+    private String recordImgName;
+
+    public void setRecordImgName(String recordImgName) {
+        this.recordImgName = recordImgName;
+    }
+
+    public String getRecordImgName() {
+
+        return recordImgName;
+    }
+
     public void setRecordRefuse(String recordRefuse) {
         this.recordRefuse = recordRefuse;
     }
