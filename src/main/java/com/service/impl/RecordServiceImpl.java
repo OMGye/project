@@ -60,7 +60,10 @@ public class RecordServiceImpl implements RecordService{
             String imgName = "";
             for (MultipartFile file : files) {
                 String fileName = file.getOriginalFilename();
-                record.setRecordImgName(record.getRecordImgName()+fileName+ ",");
+                if (record.getRecordImgName() == null)
+                    record.setRecordImgName(fileName+ ",");
+                else
+                    record.setRecordImgName(record.getRecordImgName()+fileName+ ",");
                 //扩展名
                 //abc.jpg
                 String fileExtensionName = fileName.substring(fileName.lastIndexOf(".") + 1);
