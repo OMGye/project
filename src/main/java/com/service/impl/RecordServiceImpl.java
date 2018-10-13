@@ -367,6 +367,12 @@ public class RecordServiceImpl implements RecordService{
         Record record = recordMapper.selectByPrimaryKey(recordId);
         if (record == null)
             return ServerResponse.createByErrorMessage("没有该条记录");
+        if (user.getUserType() == UserAuth.BOSS.getCode()){
+            int row = recordMapper.deleteByPrimaryKey(recordId);
+            if (row > 0)
+                return ServerResponse.createBySuccess("删除成功");
+            return ServerResponse.createByErrorMessage("删除失败");
+        }
         if (user.getUserType() == UserAuth.ITEM_UPLOAD.getCode())
             if (record.getState() == Const.RecordConst.FIRST_CHECK)
                 return ServerResponse.createByErrorMessage("该记录已被审核，不能删除");
