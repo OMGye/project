@@ -336,6 +336,21 @@ public class BossController {
         return offerMaterialService.getOffererByName(pageSize,pageNum,offerCompany);
     }
 
+    @RequestMapping(value = "offer/getofferbyid.do",method = RequestMethod.POST)
+    @ResponseBody
+    public ServerResponse getOfferById(Integer offerId, HttpSession session){
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        if(user == null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");
+        }
+        if (UserAuth.BOSS.getCode() == user.getUserType() || UserAuth.MANAGER.getCode() == user.getUserType()){
+            return offerMaterialService.getOffererById(offerId);
+        }
+
+        return ServerResponse.createByErrorMessage("请登入管理员账户");
+    }
+
+
     @Autowired
     private RecordService recordService;
 
