@@ -380,13 +380,13 @@ public class BossController {
 
     @RequestMapping(value = "record/listbyofferid.do",method = RequestMethod.GET)
     @ResponseBody
-    public ServerResponse<PageInfo> getListByOfferId(HttpSession session, Integer state, String recordDec, @RequestParam(value = "pageNum",defaultValue = "1") int pageNum, @RequestParam(value = "pageSize",defaultValue = "5")int pageSize){
+    public ServerResponse<PageInfo> getListByOfferId(HttpSession session, Integer state, Integer offerId, @RequestParam(value = "pageNum",defaultValue = "1") int pageNum, @RequestParam(value = "pageSize",defaultValue = "5")int pageSize){
         User user = (User)session.getAttribute(Const.CURRENT_USER);
         if(user == null){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");
         }
         if (UserAuth.BOSS.getCode() == user.getUserType()){
-            return recordService.listByDec(user,state,recordDec,pageSize,pageNum);
+            return recordService.listByOfferId(user,state,offerId,pageSize,pageNum);
         }
         return ServerResponse.createByErrorMessage("请登入管理员账户");
     }
