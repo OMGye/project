@@ -219,7 +219,7 @@ public class ItemServiceImpl implements ItemService{
             }
         StringBuilder sbName = new StringBuilder();
         for (int i = 0; i < imgNames.length; i++){
-            sbName.append(imgs[i]);
+            sbName.append(imgNames[i]);
             if (i != imgNames.length - 1)
                 sbName.append(",");
         }
