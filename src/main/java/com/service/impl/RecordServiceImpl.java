@@ -170,7 +170,10 @@ public class RecordServiceImpl implements RecordService{
                 logger.error("上传文件异常",e);
                 return null;
             }
+            if (record.getRecordImgs() != null)
             record.setRecordImgs(record.getRecordImgs()+","+PropertiesUtil.getProperty("ftp.server.http.prefix")+targetFile.getName());
+            else
+                record.setRecordImgs(PropertiesUtil.getProperty("ftp.server.http.prefix")+targetFile.getName());
         }
         int rowCount = recordMapper.updateByPrimaryKeySelective(record);
         if (rowCount > 0)

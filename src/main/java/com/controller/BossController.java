@@ -139,7 +139,7 @@ public class BossController {
 
     @RequestMapping(value = "item/addfile.do",method = RequestMethod.POST)
     @ResponseBody
-    public ServerResponse addRecorImg(HttpSession session, Integer itemId, @RequestParam(value = "upload_file",required = false) MultipartFile file, HttpServletRequest request){
+    public ServerResponse addItemFile(HttpSession session, Integer itemId, @RequestParam(value = "upload_file",required = false) MultipartFile file, HttpServletRequest request){
         User user = (User)session.getAttribute(Const.CURRENT_USER);
         if(user == null){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");
@@ -153,7 +153,7 @@ public class BossController {
 
     @RequestMapping(value = "item/deletefile.do",method = RequestMethod.POST)
     @ResponseBody
-    public ServerResponse deleteFile(HttpSession session, Integer itemId, String fileName, String name, HttpServletRequest request){
+    public ServerResponse deleteItemFile(HttpSession session, Integer itemId, String fileName, String name, HttpServletRequest request){
         User user = (User)session.getAttribute(Const.CURRENT_USER);
         if(user == null){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");
