@@ -21,6 +21,8 @@ public class Item {
 
     private String itemFile;
 
+    private String itemFileName;
+
     private Integer state;
 
     private Date createTime;
@@ -29,7 +31,7 @@ public class Item {
 
     private Date endTime;
 
-    public Item(Integer itemId, String itemName, String itemDec, Integer prority, Integer itemManagerId, String itemManagerName, Integer itemUploaderId, String itemUploaderName, String itemFile, Integer state, Date createTime, Date lastEditTime, Date endTime) {
+    public Item(Integer itemId, String itemName, String itemDec, Integer prority, Integer itemManagerId, String itemManagerName, Integer itemUploaderId, String itemUploaderName, String itemFile, String itemFileName, Integer state, Date createTime, Date lastEditTime, Date endTime) {
         this.itemId = itemId;
         this.itemName = itemName;
         this.itemDec = itemDec;
@@ -39,6 +41,7 @@ public class Item {
         this.itemUploaderId = itemUploaderId;
         this.itemUploaderName = itemUploaderName;
         this.itemFile = itemFile;
+        this.itemFileName = itemFileName;
         this.state = state;
         this.createTime = createTime;
         this.lastEditTime = lastEditTime;
@@ -151,5 +154,14 @@ public class Item {
 
     public void setEndTime(Date endTime) {
         this.endTime = endTime;
+    }
+
+    public void setItemFileName(String itemFileName) {
+        this.itemFileName = itemFileName;
+    }
+
+    public String getItemFileName() {
+
+        return itemFileName;
     }
 }

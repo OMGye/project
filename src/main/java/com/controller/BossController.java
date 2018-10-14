@@ -125,18 +125,45 @@ public class BossController {
 
     @RequestMapping(value = "item/additem.do",method = RequestMethod.POST)
     @ResponseBody
-    public ServerResponse addItem(HttpSession session, Item item, String endTimeString,HttpServletRequest request,@RequestParam(value = "upload_file",required = false) MultipartFile file){
+    public ServerResponse addItem(HttpSession session, Item item, String endTimeString,HttpServletRequest request,@RequestParam(value = "upload_file",required = false) MultipartFile[] files){
         User user = (User)session.getAttribute(Const.CURRENT_USER);
         if(user == null){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");
         }
         if (UserAuth.BOSS.getCode() == user.getUserType()){
-            return itemService.addNewItem(item,file,request.getSession().getServletContext().getRealPath("upload"),endTimeString);
+            return itemService.addNewItem(item,files,request.getSession().getServletContext().getRealPath("upload"),endTimeString);
         }
 
         return ServerResponse.createByErrorMessage("请登入管理员账户");
     }
 
+    @RequestMapping(value = "item/addfile.do",method = RequestMethod.POST)
+    @ResponseBody
+    public ServerResponse addRecorImg(HttpSession session, Integer itemId, @RequestParam(value = "upload_file",required = false) MultipartFile file, HttpServletRequest request){
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        if(user == null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");
+        }
+        if (UserAuth.BOSS.getCode() == user.getUserType()){
+            String path = request.getSession().getServletContext().getRealPath("upload");
+            return itemService.addItemFile(itemId,path,file);
+        }
+        return ServerResponse.createByErrorMessage("请登入管理员账户");
+    }
+
+    @RequestMapping(value = "item/deletefile.do",method = RequestMethod.POST)
+    @ResponseBody
+    public ServerResponse deleteFile(HttpSession session, Integer itemId, String fileName, String name, HttpServletRequest request){
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        if(user == null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");
+        }
+        if (UserAuth.BOSS.getCode() == user.getUserType()){
+            String path = request.getSession().getServletContext().getRealPath("upload");
+            return itemService.deleteItemFile(itemId,fileName,name);
+        }
+        return ServerResponse.createByErrorMessage("请登入管理员账户");
+    }
     @RequestMapping(value = "item/listitem.do",method = RequestMethod.GET)
     @ResponseBody
     public ServerResponse<PageInfo<Item>> listitem(HttpSession session, @RequestParam(value = "pageNum",defaultValue = "1") int pageNum, @RequestParam(value = "pageSize",defaultValue = "5")int pageSize){

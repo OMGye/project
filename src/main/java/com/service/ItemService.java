@@ -16,7 +16,11 @@ import java.util.List;
  */
 public interface ItemService {
 
-    ServerResponse addNewItem(Item item, MultipartFile file, String path, String endTime);
+    ServerResponse addNewItem(Item item, MultipartFile[] files, String path, String endTime);
+
+    ServerResponse addItemFile(Integer itemId, String path, MultipartFile file);
+
+    ServerResponse deleteItemFile(Integer itemId, String fileName, String name);
 
     ServerResponse<PageInfo<Item>> listItem(int pageNum, int pageSize);
 

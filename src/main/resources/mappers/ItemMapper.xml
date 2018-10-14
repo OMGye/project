@@ -12,6 +12,7 @@
       <arg column="item_uploader_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="item_uploader_name" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="item_file" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="item_file_name" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="state" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
       <arg column="last_edit_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
@@ -20,7 +21,7 @@
   </resultMap>
   <sql id="Base_Column_List" >
     item_id, item_name, item_dec, prority, item_manager_id, item_manager_name, item_uploader_id, 
-    item_uploader_name, item_file, state, create_time, last_edit_time, end_time
+    item_uploader_name, item_file,item_file_name, state, create_time, last_edit_time, end_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -35,12 +36,12 @@
   <insert id="insert" parameterType="com.pojo.Item"  useGeneratedKeys="true" keyProperty="itemId">
     insert into project_item (item_id, item_name, item_dec, 
       prority, item_manager_id, item_manager_name, 
-      item_uploader_id, item_uploader_name, item_file, 
+      item_uploader_id, item_uploader_name, item_file, item_file_name,
       state, create_time, last_edit_time, 
       end_time)
     values (#{itemId,jdbcType=INTEGER}, #{itemName,jdbcType=VARCHAR}, #{itemDec,jdbcType=VARCHAR}, 
       #{prority,jdbcType=INTEGER}, #{itemManagerId,jdbcType=INTEGER}, #{itemManagerName,jdbcType=VARCHAR}, 
-      #{itemUploaderId,jdbcType=INTEGER}, #{itemUploaderName,jdbcType=VARCHAR}, #{itemFile,jdbcType=VARCHAR}, 
+      #{itemUploaderId,jdbcType=INTEGER}, #{itemUploaderName,jdbcType=VARCHAR}, #{itemFile,jdbcType=VARCHAR}, #{itemFileName,jdbcType=VARCHAR},
       #{state,jdbcType=INTEGER}, now(), now(),
       #{endTime,jdbcType=TIMESTAMP})
   </insert>
@@ -73,6 +74,9 @@
       </if>
       <if test="itemFile != null" >
         item_file,
+      </if>
+      <if test="itemFile != null" >
+        item_file_name,
       </if>
       <if test="state != null" >
         state,
@@ -115,6 +119,9 @@
       <if test="itemFile != null" >
         #{itemFile,jdbcType=VARCHAR},
       </if>
+      <if test="itemFileName != null" >
+        #{itemFileName,jdbcType=VARCHAR},
+      </if>
       <if test="state != null" >
         #{state,jdbcType=INTEGER},
       </if>
@@ -156,6 +163,9 @@
       <if test="itemFile != null" >
         item_file = #{itemFile,jdbcType=VARCHAR},
       </if>
+      <if test="itemFileName != null" >
+        item_file_name = #{itemFileName,jdbcType=VARCHAR},
+      </if>
       <if test="state != null" >
         state = #{state,jdbcType=INTEGER},
       </if>
@@ -181,6 +191,7 @@
       item_uploader_id = #{itemUploaderId,jdbcType=INTEGER},
       item_uploader_name = #{itemUploaderName,jdbcType=VARCHAR},
       item_file = #{itemFile,jdbcType=VARCHAR},
+      item_file_name = #{itemFileName,jdbcType=VARCHAR},
       state = #{state,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       last_edit_time = now(),
