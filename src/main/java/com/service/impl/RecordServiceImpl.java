@@ -204,7 +204,8 @@ public class RecordServiceImpl implements RecordService{
         for (int i = 0; i < imgs.length; i++){
             sb.append(imgs[i]);
             if (i != imgs.length - 1)
-                sb.append(",");
+                if (!imgs[i].equals(""))
+                    sb.append(",");
         }
         String[] imgNames = record.getRecordImgName().split(",");
         for (int i = 0; i < imgNames.length; i++)
@@ -216,10 +217,17 @@ public class RecordServiceImpl implements RecordService{
         for (int i = 0; i < imgNames.length; i++){
             sbName.append(imgs[i]);
             if (i != imgNames.length - 1)
-                sbName.append(",");
+                if (!imgNames[i].equals(""))
+                    sbName.append(",");
         }
-        record.setRecordImgName(sbName.toString());
-        record.setRecordImgs(sb.toString());
+        fileName = sb.toString();
+        if (fileName.charAt(fileName.length() - 1) == ',')
+            fileName.substring(0,fileName.length() - 1);
+        name = sbName.toString();
+        if (name.charAt(name.length() - 1) == ',')
+            name.substring(0,name.length() - 1);
+        record.setRecordImgName(name);
+        record.setRecordImgs(fileName);
         int rowCount = recordMapper.updateByPrimaryKeySelective(record);
         if (rowCount > 0)
             return ServerResponse.createBySuccessMessage("删除成功");

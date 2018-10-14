@@ -225,8 +225,14 @@ public class ItemServiceImpl implements ItemService{
                 if (!imgNames[i].equals(""))
                     sbName.append(",");
         }
-        item.setItemFileName(sbName.toString());
-        item.setItemFile(sb.toString());
+        fileName = sb.toString();
+        if (fileName.charAt(fileName.length() - 1) == ',')
+            fileName.substring(0,fileName.length() - 1);
+        name = sbName.toString();
+        if (name.charAt(name.length() - 1) == ',')
+            name.substring(0,name.length() - 1);
+        item.setItemFileName(name);
+        item.setItemFile(fileName);
         int rowCount = itemMapper.updateByPrimaryKeySelective(item);
         if (rowCount > 0)
             return ServerResponse.createBySuccessMessage("删除成功");
@@ -347,5 +353,10 @@ public class ItemServiceImpl implements ItemService{
             return ServerResponse.createByErrorMessage("参数错误");
         Item item = itemMapper.selectByPrimaryKey(itemId);
         return ServerResponse.createBySuccess(item);
+    }
+
+    public static void main(String[] args) {
+        String s = "111,";
+        System.out.println(s.substring(0,s.length() - 1));
     }
 }
