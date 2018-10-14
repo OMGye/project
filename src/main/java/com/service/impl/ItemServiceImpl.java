@@ -209,7 +209,8 @@ public class ItemServiceImpl implements ItemService{
         for (int i = 0; i < imgs.length; i++){
             sb.append(imgs[i]);
             if (i != imgs.length - 1)
-                sb.append(",");
+                if (!imgs[i].equals(""))
+                    sb.append(",");
         }
         String[] imgNames = item.getItemFileName().split(",");
         for (int i = 0; i < imgNames.length; i++)
@@ -221,7 +222,8 @@ public class ItemServiceImpl implements ItemService{
         for (int i = 0; i < imgNames.length; i++){
             sbName.append(imgNames[i]);
             if (i != imgNames.length - 1)
-                sbName.append(",");
+                if (!imgNames[i].equals(""))
+                    sbName.append(",");
         }
         item.setItemFileName(sbName.toString());
         item.setItemFile(sb.toString());
