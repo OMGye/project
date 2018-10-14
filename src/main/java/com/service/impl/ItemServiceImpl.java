@@ -213,8 +213,8 @@ public class ItemServiceImpl implements ItemService{
         }
         String[] imgNames = item.getItemFileName().split(",");
         for (int i = 0; i < imgNames.length; i++)
-            if (imgs[i].equals(name)) {
-                imgs[i] = "";
+            if (imgNames[i].equals(name)) {
+                imgNames[i] = "";
                 break;
             }
         StringBuilder sbName = new StringBuilder();
