@@ -227,10 +227,10 @@ public class ItemServiceImpl implements ItemService{
         }
         fileName = sb.toString();
         if (fileName.charAt(fileName.length() - 1) == ',')
-            fileName.substring(0,fileName.length() - 1);
+            fileName = fileName.substring(0,fileName.length() - 1);
         name = sbName.toString();
         if (name.charAt(name.length() - 1) == ',')
-            name.substring(0,name.length() - 1);
+            name = name.substring(0,name.length() - 1);
         item.setItemFileName(name);
         item.setItemFile(fileName);
         int rowCount = itemMapper.updateByPrimaryKeySelective(item);
