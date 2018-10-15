@@ -106,7 +106,8 @@ public class RecordServiceImpl implements RecordService{
             }
             record.setRecordImgs(imgName);
         }
-        record.setRecordImgName(record.getRecordImgName().substring(0,record.getRecordImgName().length()-1));
+        if(record.getRecordImgName() != null)
+            record.setRecordImgName(record.getRecordImgName().substring(0,record.getRecordImgName().length()-1));
         if (record.getUnitPrice() != null && record.getNumber() != null)
             record.setSumPrice(BigDecimalUtil.mul(record.getUnitPrice().doubleValue(),record.getNumber()));
         record.setUserId(user.getUserId());
