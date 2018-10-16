@@ -242,7 +242,7 @@ public class ItemServiceImpl implements ItemService{
     @Override
     public ServerResponse<PageInfo<Item>> listItem(int pageNum, int pageSize) {
         PageHelper.startPage(pageNum,pageSize);
-
+        PageHelper.orderBy("item_id desc");
         List<Item> list = itemMapper.select();
         PageInfo<Item> pageInfo = new PageInfo(list);
         pageInfo.setList(list);
