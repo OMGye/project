@@ -340,6 +340,7 @@ public class ItemServiceImpl implements ItemService{
         PageHelper.startPage(pageNum,pageSize);
         if (itemName == null)
             return ServerResponse.createByErrorMessage("参数不能为空");
+        PageHelper.orderBy("item_id desc");
         itemName = "%" + itemName + "%";
         List<Item> list = itemMapper.selectByName(itemName);
         PageInfo<Item> pageInfo = new PageInfo(list);
