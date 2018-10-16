@@ -226,10 +226,10 @@ public class ItemServiceImpl implements ItemService{
                     sbName.append(",");
         }
         fileName = sb.toString();
-        if (fileName.charAt(fileName.length() - 1) == ',')
+        if (fileName.length() > 0 && fileName.charAt(fileName.length() - 1) == ',')
             fileName = fileName.substring(0,fileName.length() - 1);
         name = sbName.toString();
-        if (name.charAt(name.length() - 1) == ',')
+        if (name.length() > 0 && name.charAt(name.length() - 1) == ',')
             name = name.substring(0,name.length() - 1);
         item.setItemFileName(name);
         item.setItemFile(fileName);
