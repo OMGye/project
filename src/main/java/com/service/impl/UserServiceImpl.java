@@ -176,6 +176,7 @@ public class UserServiceImpl implements UserService{
     @Override
     public ServerResponse<PageInfo<User>> getUserByUserName(int pageNum, int pageSize,String userName) {
         PageHelper.startPage(pageNum,pageSize);
+        PageHelper.orderBy("user_id desc");
         if (userName == null)
             return ServerResponse.createByErrorMessage("参数不能为空");
         userName = "%" + userName + "%";

@@ -77,6 +77,7 @@ public class OfferMaterialServiceImpl implements OfferMaterialService{
     @Override
     public ServerResponse<PageInfo<OfferMaterial>> getOffererByName(int pageSize, int pageNum, String offererName) {
         PageHelper.startPage(pageNum,pageSize);
+        PageHelper.orderBy("offer_id desc");
         if (offererName == null)
             return ServerResponse.createByErrorMessage("参数不能为空");
         offererName = "%" + offererName + "%";

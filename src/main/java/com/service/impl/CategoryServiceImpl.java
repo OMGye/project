@@ -70,6 +70,7 @@ public class CategoryServiceImpl implements CategoryService{
     @Override
     public ServerResponse<PageInfo<Category>> getCategoryByName(int pageSize, int pageNum,String categoryName) {
         PageHelper.startPage(pageNum,pageSize);
+        PageHelper.orderBy("category_id desc");
         if (categoryName == null)
             return ServerResponse.createByErrorMessage("参数不能为空");
         categoryName = "%" + categoryName + "%";
