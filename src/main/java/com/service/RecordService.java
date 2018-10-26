@@ -4,6 +4,7 @@ import com.common.ServerResponse;
 import com.github.pagehelper.PageInfo;
 import com.pojo.Record;
 import com.pojo.User;
+import com.vo.RecordAmountVo;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -37,5 +38,6 @@ public interface RecordService {
 
     ServerResponse<PageInfo> listByOfferId(User user, Integer state, Integer offerId , int pageSize, int pageNum);
 
+   ServerResponse<RecordAmountVo> getRecordAmount(Integer itemId, Integer offerId);
 
 }

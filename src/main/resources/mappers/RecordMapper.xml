@@ -11,6 +11,8 @@
       <arg column="record_type" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="record_dec" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="offer_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="record_car_offer" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="record_car_number" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="unit_price" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
       <arg column="number" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="sum_price" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
@@ -22,8 +24,18 @@
       <arg column="last_edit_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
     </constructor>
   </resultMap>
+
+
+  <resultMap id="RecordAmount" type="com.vo.RecordDecNum" >
+    <constructor >
+      <arg column="record_dec" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="number" jdbcType="INTEGER" javaType="java.lang.Integer" />
+    </constructor>
+  </resultMap>
+
+
   <sql id="Base_Column_List" >
-    record_id, user_id, user_name, item_id, item_name, record_type, record_dec, offer_id, 
+    record_id, user_id, user_name, item_id, item_name, record_type, record_dec, offer_id, record_car_offer,record_car_number,
     unit_price, number,sum_price,record_refuse, state, record_imgs,record_img_name,create_time, last_edit_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
@@ -39,13 +51,13 @@
   <insert id="insert" parameterType="com.pojo.Record" >
     insert into project_record (record_id, user_id, user_name, 
       item_id, item_name, record_type, 
-      record_dec, offer_id, unit_price, 
+      record_dec, offer_id,record_car_offer,record_car_number, unit_price,
       number,sum_price,record_refuse, state,
       record_imgs, record_img_name, create_time, last_edit_time
       )
     values (#{recordId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, 
       #{itemId,jdbcType=INTEGER}, #{itemName,jdbcType=VARCHAR}, #{recordType,jdbcType=INTEGER}, 
-      #{recordDec,jdbcType=VARCHAR}, #{offerId,jdbcType=INTEGER}, #{unitPrice,jdbcType=DECIMAL}, 
+      #{recordDec,jdbcType=VARCHAR}, #{offerId,jdbcType=INTEGER},#{recordCarOffer,jdbcType=VARCHAR}, #{recordCarNumber,jdbcType=INTEGER},  #{unitPrice,jdbcType=DECIMAL},
       #{number,jdbcType=INTEGER},#{sumPrice,jdbcType=DECIMAL},#{recordRefuse,jdbcType=VARCHAR}, #{state,jdbcType=INTEGER},
       #{recordImgs,jdbcType=VARCHAR}, #{recordImgName,jdbcType=VARCHAR}, now(), now()
       )
@@ -76,6 +88,12 @@
       </if>
       <if test="offerId != null" >
         offer_id,
+      </if>
+      <if test="recordCarOffer != null" >
+        record_car_offer,
+      </if>
+      <if test="recordCarNumber != null" >
+        record_car_number,
       </if>
       <if test="unitPrice != null" >
         unit_price,
@@ -130,6 +148,12 @@
       <if test="offerId != null" >
         #{offerId,jdbcType=INTEGER},
       </if>
+      <if test="recordCarOffer != null" >
+        #{recordCarOffer,jdbcType=VARCHAR},
+      </if>
+      <if test="recordCarNumber != null" >
+        #{recordCarNumber,jdbcType=INTEGER},
+      </if>
       <if test="unitPrice != null" >
         #{unitPrice,jdbcType=DECIMAL},
       </if>
@@ -183,6 +207,12 @@
       <if test="offerId != null" >
         offer_id = #{offerId,jdbcType=INTEGER},
       </if>
+      <if test="recordCarOffer != null" >
+        record_car_offer = #{recordCarOffer,jdbcType=VARCHAR},
+      </if>
+      <if test="recordCarNumber != null" >
+        record_car_number = #{recordCarNumber,jdbcType=INTEGER},
+      </if>
       <if test="unitPrice != null" >
         unit_price = #{unitPrice,jdbcType=DECIMAL},
       </if>
@@ -220,6 +250,8 @@
       record_type = #{recordType,jdbcType=INTEGER},
       record_dec = #{recordDec,jdbcType=VARCHAR},
       offer_id = #{offerId,jdbcType=INTEGER},
+      record_car_offer = #{recordCarOffer,jdbcType=VARCHAR},
+       record_car_number = #{recordCarNumber,jdbcType=INTEGER},
       unit_price = #{unitPrice,jdbcType=DECIMAL},
       number = #{number,jdbcType=INTEGER},
        sum_price = #{sumPrice,jdbcType=DECIMAL},
@@ -266,5 +298,25 @@
     </where>
   </select>
 
+  <select id="selectAmountMaterial" parameterType="map" resultMap="RecordAmount">
+    SELECT
+    r.record_dec ,sum(r.number) as number
+    from project_record as r
+    <where>
+      <if test="itemId != null"> r.item_id = #{itemId}</if>
+      <if test="offerId != null">and r.offer_id = #{offerId}</if>
+      <if test="recordType != null"> and r.record_type = 0 </if>
+    </where>  GROUP BY r.record_dec
+  </select>
+
+  <select id="selectAmountPrice" parameterType="map" resultType="java.math.BigDecimal">
+    SELECT
+    sum(r.sum_price)
+    from project_record as r
+    <where>
+      <if test="itemId != null"> r.item_id = #{itemId}</if>
+      <if test="offerId != null">and r.offer_id = #{offerId}</if>
+    </where>
+  </select>
 
 </mapper>

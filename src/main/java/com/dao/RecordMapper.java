@@ -1,8 +1,10 @@
 package com.dao;
 
 import com.pojo.Record;
+import com.vo.RecordDecNum;
 import org.apache.ibatis.annotations.Param;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface RecordMapper {
@@ -23,4 +25,9 @@ public interface RecordMapper {
     List<Record> selectlistByDec(@Param("state")Integer state, @Param("recordDec")String recordDec, @Param("itemId")Integer itemId,@Param("userId")Integer userId);
 
     List<Record> selectByOfferId(@Param("state")Integer state, @Param("offerId")Integer offerId);
+
+    List<RecordDecNum> selectAmountMaterial(@Param("itemId")Integer itemId, @Param("offerId")Integer offerId,@Param("recordType")Integer recordType);
+
+    BigDecimal selectAmountPrice(@Param("itemId")Integer itemId, @Param("offerId")Integer offerId);
+
 }

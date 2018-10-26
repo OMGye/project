@@ -17,6 +17,8 @@ import com.service.RecordService;
 import com.util.BigDecimalUtil;
 import com.util.FTPUtil;
 import com.util.PropertiesUtil;
+import com.vo.RecordAmountVo;
+import com.vo.RecordDecNum;
 import com.vo.RecordVo;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -28,6 +30,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -408,7 +411,16 @@ public class RecordServiceImpl implements RecordService{
         return ServerResponse.createBySuccess(pageInfo);
     }
 
+    @Override
+    public ServerResponse<RecordAmountVo> getRecordAmount(Integer itemId, Integer offerId) {
 
+        List<RecordDecNum> list = recordMapper.selectAmountMaterial(itemId,offerId,0);
+        RecordAmountVo recordAmountVo = new RecordAmountVo();
+        recordAmountVo.setList(list);
+        BigDecimal bigDecimal = recordMapper.selectAmountPrice(itemId,offerId);
+        recordAmountVo.setSumPrice(bigDecimal);
+        return ServerResponse.createBySuccess(recordAmountVo);
+    }
 
 
 }

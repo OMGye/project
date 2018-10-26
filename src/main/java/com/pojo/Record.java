@@ -20,6 +20,10 @@ public class Record {
 
     private Integer offerId;
 
+    private String recordCarOffer;
+
+    private Integer recordCarNumber;
+
     private BigDecimal unitPrice;
 
     private Integer number;
@@ -33,6 +37,23 @@ public class Record {
     private String recordImgs;
 
     private String recordImgName;
+
+    public void setRecordCarOffer(String recordCarOffer) {
+        this.recordCarOffer = recordCarOffer;
+    }
+
+    public void setRecordCarNumber(Integer recordCarNumber) {
+        this.recordCarNumber = recordCarNumber;
+    }
+
+    public String getRecordCarOffer() {
+
+        return recordCarOffer;
+    }
+
+    public Integer getRecordCarNumber() {
+        return recordCarNumber;
+    }
 
     public void setRecordImgName(String recordImgName) {
         this.recordImgName = recordImgName;
@@ -178,7 +199,7 @@ public class Record {
         return recordRefuse;
     }
 
-    public Record(Integer recordId, Integer userId, String userName, Integer itemId, String itemName, Integer recordType, String recordDec, Integer offerId, BigDecimal unitPrice, Integer number, BigDecimal sumPrice, String recordRefuse, Integer state, String recordImgs, String recordImgName, Date createTime, Date lastEditTime) {
+    public Record(Integer recordId, Integer userId, String userName, Integer itemId, String itemName, Integer recordType, String recordDec, Integer offerId, String recordCarOffer, Integer recordCarNumber, BigDecimal unitPrice, Integer number, BigDecimal sumPrice, String recordRefuse, Integer state, String recordImgs, String recordImgName, Date createTime, Date lastEditTime) {
         this.recordId = recordId;
         this.userId = userId;
         this.userName = userName;
@@ -187,6 +208,8 @@ public class Record {
         this.recordType = recordType;
         this.recordDec = recordDec;
         this.offerId = offerId;
+        this.recordCarOffer = recordCarOffer;
+        this.recordCarNumber = recordCarNumber;
         this.unitPrice = unitPrice;
         this.number = number;
         this.sumPrice = sumPrice;
@@ -197,6 +220,7 @@ public class Record {
         this.createTime = createTime;
         this.lastEditTime = lastEditTime;
     }
+
 
     public Record() {
     }

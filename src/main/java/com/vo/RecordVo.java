@@ -20,6 +20,10 @@ public class RecordVo {
 
     private Integer recordType;
 
+    private String recordCarOffer;
+
+    private Integer recordCarNumber;
+
     private String recordDec;
 
     private Integer offerId;
@@ -189,5 +193,22 @@ public class RecordVo {
 
     public Date getLastEditTime() {
         return lastEditTime;
+    }
+
+    public void setRecordCarOffer(String recordCarOffer) {
+        this.recordCarOffer = recordCarOffer;
+    }
+
+    public void setRecordCarNumber(Integer recordCarNumber) {
+        this.recordCarNumber = recordCarNumber;
+    }
+
+    public String getRecordCarOffer() {
+
+        return recordCarOffer;
+    }
+
+    public Integer getRecordCarNumber() {
+        return recordCarNumber;
     }
 }

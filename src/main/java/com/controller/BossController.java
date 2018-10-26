@@ -9,10 +9,7 @@ import com.pojo.Item;
 import com.pojo.OfferMaterial;
 import com.pojo.User;
 import com.service.*;
-import com.vo.ItemVo;
-import com.vo.UserAccountVo;
-import com.vo.UserPersonInfoVo;
-import com.vo.UserVo;
+import com.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -442,6 +439,19 @@ public class BossController {
         }
         if (UserAuth.BOSS.getCode() == user.getUserType()){
             return recordService.deleteByRecordId(user,recordId);
+        }
+        return ServerResponse.createByErrorMessage("请登入管理员账户");
+    }
+
+    @RequestMapping(value = "record/getrecordamount.do",method = RequestMethod.POST)
+    @ResponseBody
+    public ServerResponse<RecordAmountVo> getRecordAmount(HttpSession session, Integer itemId, Integer offerId){
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        if(user == null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");
+        }
+        if (UserAuth.BOSS.getCode() == user.getUserType()){
+            return recordService.getRecordAmount(itemId,offerId);
         }
         return ServerResponse.createByErrorMessage("请登入管理员账户");
     }
