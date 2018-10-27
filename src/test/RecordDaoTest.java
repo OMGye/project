@@ -16,7 +16,7 @@ public class RecordDaoTest extends  TestBase{
     private RecordMapper recordMapper;
     @Test
     public void test2(){
-        BigDecimal bigDecimal = recordMapper.selectAmountPrice(null,null);
-        System.out.println(bigDecimal);
+
+        System.out.println();
     }
 }

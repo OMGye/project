@@ -305,7 +305,8 @@
     <where>
       <if test="itemId != null"> r.item_id = #{itemId}</if>
       <if test="offerId != null">and r.offer_id = #{offerId}</if>
-      <if test="recordType != null"> and r.record_type = 0 </if>
+      <if test="recordType != null"> and r.record_type = #{recordType} </if>
+      <if test="state != null"> and r.state = #{state} </if>
     </where>  GROUP BY r.record_dec
   </select>
 
@@ -316,6 +317,7 @@
     <where>
       <if test="itemId != null"> r.item_id = #{itemId}</if>
       <if test="offerId != null">and r.offer_id = #{offerId}</if>
+      <if test="state != null"> and r.state = #{state} </if>
     </where>
   </select>
 

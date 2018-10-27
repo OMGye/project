@@ -4,7 +4,9 @@ import com.common.ServerResponse;
 import com.github.pagehelper.PageInfo;
 import com.pojo.Record;
 import com.pojo.User;
+import com.vo.IndexVo;
 import com.vo.RecordAmountVo;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -40,4 +42,8 @@ public interface RecordService {
 
    ServerResponse<RecordAmountVo> getRecordAmount(Integer itemId, Integer offerId);
 
+
+     XSSFWorkbook exportExcelInfo(Integer itemId, Integer type);
+
+     ServerResponse<IndexVo> getIndexVo();
 }

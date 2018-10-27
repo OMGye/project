@@ -1,6 +1,7 @@
 package com.service.impl;
 
 import com.common.Const;
+import com.common.RecordAuth;
 import com.common.ServerResponse;
 import com.common.UserAuth;
 import com.dao.ItemMapper;
@@ -9,18 +10,15 @@ import com.dao.RecordMapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
-import com.pojo.Item;
-import com.pojo.OfferMaterial;
-import com.pojo.Record;
-import com.pojo.User;
+import com.pojo.*;
 import com.service.RecordService;
 import com.util.BigDecimalUtil;
+import com.util.ExcelUtil;
 import com.util.FTPUtil;
 import com.util.PropertiesUtil;
-import com.vo.RecordAmountVo;
-import com.vo.RecordDecNum;
-import com.vo.RecordVo;
+import com.vo.*;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -31,9 +29,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Created by upupgogogo on 2018/9/4.下午1:48
@@ -414,12 +410,77 @@ public class RecordServiceImpl implements RecordService{
     @Override
     public ServerResponse<RecordAmountVo> getRecordAmount(Integer itemId, Integer offerId) {
 
-        List<RecordDecNum> list = recordMapper.selectAmountMaterial(itemId,offerId,0);
+        List<RecordDecNum> list = recordMapper.selectAmountMaterial(itemId,offerId,RecordAuth.MATERIAL.getCode(), Const.RecordConst.Last_CHECK);
         RecordAmountVo recordAmountVo = new RecordAmountVo();
         recordAmountVo.setList(list);
-        BigDecimal bigDecimal = recordMapper.selectAmountPrice(itemId,offerId);
+        BigDecimal bigDecimal = recordMapper.selectAmountPrice(itemId,offerId,Const.RecordConst.Last_CHECK);
         recordAmountVo.setSumPrice(bigDecimal);
         return ServerResponse.createBySuccess(recordAmountVo);
+    }
+
+    @Override
+    public XSSFWorkbook exportExcelInfo(Integer itemId, Integer type) {
+        XSSFWorkbook xssfWorkbook=null;
+        try {
+            //根据ID查找数据
+            List<Record> recordList = recordMapper.selectlist(Const.RecordConst.Last_CHECK,type,itemId,null);
+            List<RecordVo> recordVoList = new ArrayList<>();
+            for (Record record : recordList){
+                RecordVo recordVo = new RecordVo();
+                BeanUtils.copyProperties(record,recordVo);
+                if (record.getOfferId() != null){
+                    OfferMaterial offerMaterial = offerMaterialMapper.selectByPrimaryKey(record.getOfferId());
+                    if (offerMaterial != null)
+                        recordVo.setOfferName(offerMaterial.getOfferCompany());
+                }
+                recordVoList.add(recordVo);
+            }
+
+            List<ExcelBean> excel=new ArrayList<>();
+            Map<Integer,List<ExcelBean>> map=new LinkedHashMap<>();
+
+            //设置标题栏
+            excel.add(new ExcelBean("记录id","recordId",0));
+            excel.add(new ExcelBean("记录员名称","userName",0));
+            excel.add(new ExcelBean("项目名称","itemName",0));
+            excel.add(new ExcelBean("记录描述","recordDec",0));
+            excel.add(new ExcelBean("供应商","offerName",0));
+            excel.add(new ExcelBean("供应车号","recordCarNumber",0));
+            excel.add(new ExcelBean("司机","recordCarOffer",0));
+            excel.add(new ExcelBean("单价","unitPrice",0));
+            excel.add(new ExcelBean("数量","number",0));
+            excel.add(new ExcelBean("总价","sumPrice",0));
+            excel.add(new ExcelBean("创建时间","createTime",0));
+            map.put(0, excel);
+            String sheetName ="RecordInfo";
+            xssfWorkbook = ExcelUtil.createExcelFile(RecordVo.class, recordVoList, map, sheetName);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return xssfWorkbook;
+    }
+
+    @Override
+    public ServerResponse<IndexVo> getIndexVo() {
+
+        List<Item> itemList = itemMapper.select();
+        List<OfferMaterial> offerMaterialList = offerMaterialMapper.selectList();
+        IndexVo indexVo = new IndexVo();
+        List<ItemIndexVo> itemIndexVoList = new ArrayList<>();
+        List<OfferMaterialIndexVo> offerMaterialIndexVoList = new ArrayList<>();
+        for (Item item : itemList){
+            ItemIndexVo itemIndexVo = new ItemIndexVo();
+            BeanUtils.copyProperties(item,itemIndexVo);
+            itemIndexVoList.add(itemIndexVo);
+        }
+        for (OfferMaterial offerMaterial : offerMaterialList){
+            OfferMaterialIndexVo offerMaterialIndexVo = new OfferMaterialIndexVo();
+            BeanUtils.copyProperties(offerMaterial,offerMaterialIndexVo);
+            offerMaterialIndexVoList.add(offerMaterialIndexVo);
+        }
+        indexVo.setItemIndexVoList(itemIndexVoList);
+        indexVo.setOfferMaterialIndexVoList(offerMaterialIndexVoList);
+        return ServerResponse.createBySuccess(indexVo);
     }
 
 

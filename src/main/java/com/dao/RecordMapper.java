@@ -26,8 +26,8 @@ public interface RecordMapper {
 
     List<Record> selectByOfferId(@Param("state")Integer state, @Param("offerId")Integer offerId);
 
-    List<RecordDecNum> selectAmountMaterial(@Param("itemId")Integer itemId, @Param("offerId")Integer offerId,@Param("recordType")Integer recordType);
+    List<RecordDecNum> selectAmountMaterial(@Param("itemId")Integer itemId, @Param("offerId")Integer offerId,@Param("recordType")Integer recordType,@Param("state")Integer state);
 
-    BigDecimal selectAmountPrice(@Param("itemId")Integer itemId, @Param("offerId")Integer offerId);
+    BigDecimal selectAmountPrice(@Param("itemId")Integer itemId, @Param("offerId")Integer offerId,@Param("state")Integer state);
 
 }

@@ -10,6 +10,7 @@ import com.pojo.User;
 import com.service.ItemService;
 import com.service.RecordService;
 import com.service.UserService;
+import com.vo.IndexVo;
 import com.vo.UserPersonInfoVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -162,6 +163,19 @@ public class FinancialController {
         }
         if (UserAuth.FINANCIAL.getCode() == user.getUserType()){
             return recordService.listByDec(user,state,recordDec,pageSize,pageNum);
+        }
+        return ServerResponse.createByErrorMessage("请登入管理员账户");
+    }
+
+    @RequestMapping(value = "index/getindexvo.do",method = RequestMethod.GET)
+    @ResponseBody
+    public ServerResponse<IndexVo> getIndexVo(HttpSession session){
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        if(user == null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");
+        }
+        if (UserAuth.FINANCIAL.getCode() == user.getUserType()){
+            return recordService.getIndexVo();
         }
         return ServerResponse.createByErrorMessage("请登入管理员账户");
     }

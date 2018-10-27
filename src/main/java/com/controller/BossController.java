@@ -10,6 +10,7 @@ import com.pojo.OfferMaterial;
 import com.pojo.User;
 import com.service.*;
 import com.vo.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +19,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.BufferedOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
 
 /**
@@ -443,7 +448,7 @@ public class BossController {
         return ServerResponse.createByErrorMessage("请登入管理员账户");
     }
 
-    @RequestMapping(value = "record/getrecordamount.do",method = RequestMethod.POST)
+    @RequestMapping(value = "record/getrecordamount.do",method = RequestMethod.GET)
     @ResponseBody
     public ServerResponse<RecordAmountVo> getRecordAmount(HttpSession session, Integer itemId, Integer offerId){
         User user = (User)session.getAttribute(Const.CURRENT_USER);
@@ -455,6 +460,38 @@ public class BossController {
         }
         return ServerResponse.createByErrorMessage("请登入管理员账户");
     }
+
+    @RequestMapping(value = "record/export.do", method = RequestMethod.GET)
+    public void export(HttpSession session,HttpServletResponse response, Integer itemId, Integer type) {
+        response.setContentType("application/vnd.ms-excel");
+        response.setHeader("Content-disposition", "attachment;filename=record.xlsx;charset=UTF-8");
+        XSSFWorkbook workbook = recordService.exportExcelInfo(itemId,type);
+        try {
+            OutputStream output  = response.getOutputStream();
+            BufferedOutputStream bufferedOutPut = new BufferedOutputStream(output);
+            workbook.write(bufferedOutPut);
+            bufferedOutPut.flush();
+            bufferedOutPut.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @RequestMapping(value = "index/getindexvo.do",method = RequestMethod.GET)
+    @ResponseBody
+    public ServerResponse<IndexVo> getIndexVo( HttpSession session){
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        if(user == null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");
+        }
+        if (UserAuth.BOSS.getCode() == user.getUserType()){
+            return recordService.getIndexVo();
+        }
+        return ServerResponse.createByErrorMessage("请登入管理员账户");
+    }
+
+
+
 
 
 }
