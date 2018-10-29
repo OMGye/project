@@ -1,3 +1,5 @@
+import com.common.Const;
+import com.common.RecordAuth;
 import com.dao.RecordMapper;
 import com.pojo.Record;
 import com.vo.RecordDecNum;
@@ -16,7 +18,8 @@ public class RecordDaoTest extends  TestBase{
     private RecordMapper recordMapper;
     @Test
     public void test2(){
-
-        System.out.println();
+       List<RecordDecNum> list = recordMapper.selectAmountMaterial(null,null, RecordAuth.MATERIAL.getCode(), Const.RecordConst.Last_CHECK);
+        for (RecordDecNum recordDecNum : list)
+            System.out.println(recordDecNum.getRecordDec() + "--" + recordDecNum.getTotalPrice()+ "---"+ recordDecNum.getNumber());
     }
 }

@@ -30,4 +30,6 @@ public interface RecordMapper {
 
     BigDecimal selectAmountPrice(@Param("itemId")Integer itemId, @Param("offerId")Integer offerId,@Param("state")Integer state);
 
+    BigDecimal selectMaterialAmountPrice(@Param("itemId")Integer itemId, @Param("offerId")Integer offerId,@Param("state")Integer state, @Param("recordType")Integer recordType);
+
 }

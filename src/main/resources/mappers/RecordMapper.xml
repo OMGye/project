@@ -30,6 +30,7 @@
     <constructor >
       <arg column="record_dec" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="number" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="total_price" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
     </constructor>
   </resultMap>
 
@@ -300,7 +301,7 @@
 
   <select id="selectAmountMaterial" parameterType="map" resultMap="RecordAmount">
     SELECT
-    r.record_dec ,sum(r.number) as number
+    r.record_dec ,sum(r.number) as number,sum(r.sum_price) as total_price
     from project_record as r
     <where>
       <if test="itemId != null"> r.item_id = #{itemId}</if>
@@ -320,5 +321,18 @@
       <if test="state != null"> and r.state = #{state} </if>
     </where>
   </select>
+
+  <select id="selectMaterialAmountPrice" parameterType="map" resultType="java.math.BigDecimal">
+    SELECT
+    sum(r.sum_price)
+    from project_record as r
+    <where>
+      <if test="itemId != null"> r.item_id = #{itemId}</if>
+      <if test="offerId != null">and r.offer_id = #{offerId}</if>
+      <if test="state != null"> and r.state = #{state} </if>
+      <if test="recordType != null"> and r.record_type = #{recordType} </if>
+    </where>
+  </select>
+
 
 </mapper>

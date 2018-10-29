@@ -414,6 +414,8 @@ public class RecordServiceImpl implements RecordService{
         RecordAmountVo recordAmountVo = new RecordAmountVo();
         recordAmountVo.setList(list);
         BigDecimal bigDecimal = recordMapper.selectAmountPrice(itemId,offerId,Const.RecordConst.Last_CHECK);
+        BigDecimal materialBigDecimal = recordMapper.selectMaterialAmountPrice(itemId,offerId,Const.RecordConst.Last_CHECK,RecordAuth.MATERIAL.getCode());
+        recordAmountVo.setMaterailSumPrice(materialBigDecimal);
         recordAmountVo.setSumPrice(bigDecimal);
         return ServerResponse.createBySuccess(recordAmountVo);
     }

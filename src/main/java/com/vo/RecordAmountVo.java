@@ -10,6 +10,17 @@ public class RecordAmountVo {
 
     private BigDecimal sumPrice;
 
+    private BigDecimal materailSumPrice;
+
+    public void setMaterailSumPrice(BigDecimal materailSumPrice) {
+        this.materailSumPrice = materailSumPrice;
+    }
+
+    public BigDecimal getMaterailSumPrice() {
+
+        return materailSumPrice;
+    }
+
     private List<RecordDecNum> list;
 
     public void setSumPrice(BigDecimal sumPrice) {
