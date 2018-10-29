@@ -43,7 +43,7 @@ public interface RecordService {
    ServerResponse<RecordAmountVo> getRecordAmount(Integer itemId, Integer offerId);
 
 
-     XSSFWorkbook exportExcelInfo(Integer itemId, Integer type);
+    XSSFWorkbook exportExcelInfo(Integer itemId, Integer type, Integer offerId);
 
      ServerResponse<IndexVo> getIndexVo();
 }

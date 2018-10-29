@@ -421,11 +421,17 @@ public class RecordServiceImpl implements RecordService{
     }
 
     @Override
-    public XSSFWorkbook exportExcelInfo(Integer itemId, Integer type) {
+    public XSSFWorkbook exportExcelInfo(Integer itemId, Integer type, Integer offerId) {
         XSSFWorkbook xssfWorkbook=null;
         try {
+            List<Record> recordList = null;
             //根据ID查找数据
-            List<Record> recordList = recordMapper.selectlist(Const.RecordConst.Last_CHECK,type,itemId,null);
+            if (offerId == null) {
+                recordList = recordMapper.selectlist(Const.RecordConst.Last_CHECK,type,itemId,null);
+            }
+            else {
+                recordList = recordMapper.selectByOfferId(Const.RecordConst.Last_CHECK,offerId);
+            }
             List<RecordVo> recordVoList = new ArrayList<>();
             for (Record record : recordList){
                 RecordVo recordVo = new RecordVo();
