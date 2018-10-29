@@ -462,10 +462,10 @@ public class BossController {
     }
 
     @RequestMapping(value = "record/export.do", method = RequestMethod.GET)
-    public void export(HttpSession session,HttpServletResponse response, Integer itemId, Integer type) {
+    public void export(HttpSession session,HttpServletResponse response, Integer itemId, Integer type, Integer offerId) {
         response.setContentType("application/vnd.ms-excel");
         response.setHeader("Content-disposition", "attachment;filename=record.xlsx;charset=UTF-8");
-        XSSFWorkbook workbook = recordService.exportExcelInfo(itemId,type);
+        XSSFWorkbook workbook = recordService.exportExcelInfo(itemId,type,offerId);
         try {
             OutputStream output  = response.getOutputStream();
             BufferedOutputStream bufferedOutPut = new BufferedOutputStream(output);
