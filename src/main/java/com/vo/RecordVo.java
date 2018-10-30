@@ -22,7 +22,7 @@ public class RecordVo {
 
     private String recordCarOffer;
 
-    private Integer recordCarNumber;
+    private String recordCarNumber;
 
     private String recordDec;
 
@@ -199,16 +199,19 @@ public class RecordVo {
         this.recordCarOffer = recordCarOffer;
     }
 
-    public void setRecordCarNumber(Integer recordCarNumber) {
-        this.recordCarNumber = recordCarNumber;
-    }
+
 
     public String getRecordCarOffer() {
 
         return recordCarOffer;
     }
 
-    public Integer getRecordCarNumber() {
+    public void setRecordCarNumber(String recordCarNumber) {
+        this.recordCarNumber = recordCarNumber;
+    }
+
+    public String getRecordCarNumber() {
+
         return recordCarNumber;
     }
 }
