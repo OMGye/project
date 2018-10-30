@@ -12,7 +12,7 @@
       <arg column="record_dec" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="offer_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="record_car_offer" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="record_car_number" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="record_car_number" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="unit_price" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
       <arg column="number" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="sum_price" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
@@ -58,7 +58,7 @@
       )
     values (#{recordId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, 
       #{itemId,jdbcType=INTEGER}, #{itemName,jdbcType=VARCHAR}, #{recordType,jdbcType=INTEGER}, 
-      #{recordDec,jdbcType=VARCHAR}, #{offerId,jdbcType=INTEGER},#{recordCarOffer,jdbcType=VARCHAR}, #{recordCarNumber,jdbcType=INTEGER},  #{unitPrice,jdbcType=DECIMAL},
+      #{recordDec,jdbcType=VARCHAR}, #{offerId,jdbcType=INTEGER},#{recordCarOffer,jdbcType=VARCHAR}, #{recordCarNumber,jdbcType=VARCHAR},  #{unitPrice,jdbcType=DECIMAL},
       #{number,jdbcType=INTEGER},#{sumPrice,jdbcType=DECIMAL},#{recordRefuse,jdbcType=VARCHAR}, #{state,jdbcType=INTEGER},
       #{recordImgs,jdbcType=VARCHAR}, #{recordImgName,jdbcType=VARCHAR}, now(), now()
       )
@@ -153,7 +153,7 @@
         #{recordCarOffer,jdbcType=VARCHAR},
       </if>
       <if test="recordCarNumber != null" >
-        #{recordCarNumber,jdbcType=INTEGER},
+        #{recordCarNumber,jdbcType=VARCHAR},
       </if>
       <if test="unitPrice != null" >
         #{unitPrice,jdbcType=DECIMAL},
@@ -212,7 +212,7 @@
         record_car_offer = #{recordCarOffer,jdbcType=VARCHAR},
       </if>
       <if test="recordCarNumber != null" >
-        record_car_number = #{recordCarNumber,jdbcType=INTEGER},
+        record_car_number = #{recordCarNumber,jdbcType=VARCHAR},
       </if>
       <if test="unitPrice != null" >
         unit_price = #{unitPrice,jdbcType=DECIMAL},
@@ -252,7 +252,7 @@
       record_dec = #{recordDec,jdbcType=VARCHAR},
       offer_id = #{offerId,jdbcType=INTEGER},
       record_car_offer = #{recordCarOffer,jdbcType=VARCHAR},
-       record_car_number = #{recordCarNumber,jdbcType=INTEGER},
+       record_car_number = #{recordCarNumber,jdbcType=VARCHAR},
       unit_price = #{unitPrice,jdbcType=DECIMAL},
       number = #{number,jdbcType=INTEGER},
        sum_price = #{sumPrice,jdbcType=DECIMAL},

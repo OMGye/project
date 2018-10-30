@@ -22,7 +22,7 @@ public class Record {
 
     private String recordCarOffer;
 
-    private Integer recordCarNumber;
+    private String recordCarNumber;
 
     private BigDecimal unitPrice;
 
@@ -42,16 +42,19 @@ public class Record {
         this.recordCarOffer = recordCarOffer;
     }
 
-    public void setRecordCarNumber(Integer recordCarNumber) {
-        this.recordCarNumber = recordCarNumber;
-    }
+
 
     public String getRecordCarOffer() {
 
         return recordCarOffer;
     }
 
-    public Integer getRecordCarNumber() {
+    public void setRecordCarNumber(String recordCarNumber) {
+        this.recordCarNumber = recordCarNumber;
+    }
+
+    public String getRecordCarNumber() {
+
         return recordCarNumber;
     }
 
@@ -199,7 +202,7 @@ public class Record {
         return recordRefuse;
     }
 
-    public Record(Integer recordId, Integer userId, String userName, Integer itemId, String itemName, Integer recordType, String recordDec, Integer offerId, String recordCarOffer, Integer recordCarNumber, BigDecimal unitPrice, Integer number, BigDecimal sumPrice, String recordRefuse, Integer state, String recordImgs, String recordImgName, Date createTime, Date lastEditTime) {
+    public Record(Integer recordId, Integer userId, String userName, Integer itemId, String itemName, Integer recordType, String recordDec, Integer offerId, String recordCarOffer, String recordCarNumber, BigDecimal unitPrice, Integer number, BigDecimal sumPrice, String recordRefuse, Integer state, String recordImgs, String recordImgName, Date createTime, Date lastEditTime) {
         this.recordId = recordId;
         this.userId = userId;
         this.userName = userName;
@@ -220,7 +223,6 @@ public class Record {
         this.createTime = createTime;
         this.lastEditTime = lastEditTime;
     }
-
 
     public Record() {
     }
