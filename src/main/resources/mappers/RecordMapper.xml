@@ -334,5 +334,10 @@
     </where>
   </select>
 
+  <delete id="deleteByItemId" parameterType="java.lang.Integer" >
+    delete from project_record
+    where item_id = #{itemId,jdbcType=INTEGER}
+  </delete>
+
 
 </mapper>

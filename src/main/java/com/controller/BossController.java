@@ -153,6 +153,20 @@ public class BossController {
         return ServerResponse.createByErrorMessage("请登入管理员账户");
     }
 
+    @RequestMapping(value = "item/deleteitem.do",method = RequestMethod.POST)
+    @ResponseBody
+    public ServerResponse deleteItem(HttpSession session, Integer itemId){
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        if(user == null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");
+        }
+        if (UserAuth.BOSS.getCode() == user.getUserType()){
+
+            return itemService.delete(itemId);
+        }
+        return ServerResponse.createByErrorMessage("请登入管理员账户");
+    }
+
     @RequestMapping(value = "item/deletefile.do",method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse deleteItemFile(HttpSession session, Integer itemId, String fileName, String name, HttpServletRequest request){

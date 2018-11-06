@@ -32,4 +32,6 @@ public interface ItemService {
     ServerResponse<PageInfo<Item>> getItemByName(int pageNum, int pageSize, String itemName);
 
     ServerResponse<Item> getItemById(Integer itemId);
+
+    ServerResponse delete(Integer itemId);
 }

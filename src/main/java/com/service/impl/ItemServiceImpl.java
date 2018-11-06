@@ -4,6 +4,7 @@ import com.common.Const;
 import com.common.ServerResponse;
 import com.common.UserAuth;
 import com.dao.ItemMapper;
+import com.dao.RecordMapper;
 import com.dao.UserMapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -47,6 +48,9 @@ public class ItemServiceImpl implements ItemService{
 
     @Autowired
     private ItemMapper itemMapper;
+
+    @Autowired
+    private RecordMapper recordMapper;
 
     private Logger logger = LoggerFactory.getLogger(ItemServiceImpl.class);
 
@@ -355,6 +359,31 @@ public class ItemServiceImpl implements ItemService{
         Item item = itemMapper.selectByPrimaryKey(itemId);
         return ServerResponse.createBySuccess(item);
     }
+
+    @Override
+    public ServerResponse delete(Integer itemId) {
+        Item item = itemMapper.selectByPrimaryKey(itemId);
+        if (item == null)
+            return ServerResponse.createByErrorMessage("没有该项目");
+        if (item.getItemManagerId() != null) {
+            User user = userMapper.selectByPrimaryKey(item.getItemManagerId());
+            if (user != null){
+                user.setItemId(null);
+                userMapper.updateByPrimaryKeySelective(user);
+            }
+        }
+        if (item.getItemUploaderId() != null) {
+            User user = userMapper.selectByPrimaryKey(item.getItemUploaderId());
+            if (user != null){
+                user.setItemId(null);
+                userMapper.updateByPrimaryKeySelective(user);
+            }
+        }
+        int row = itemMapper.deleteByPrimaryKey(itemId);
+        recordMapper.deleteByItemId(itemId);
+        return ServerResponse.createBySuccess("删除成功");
+    }
+
 
     public static void main(String[] args) {
         String s = "111,";
