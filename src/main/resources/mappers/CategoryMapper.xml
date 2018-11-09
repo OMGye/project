@@ -120,14 +120,14 @@
     from project_category
   </select>
 
-  <select id="selectCountByName" parameterType="java.lang.String" resultType="BaseResultMap">
+  <select id="selectCountByName" parameterType="java.lang.String" resultMap="BaseResultMap">
     SELECT
     <include refid="Base_Column_List"/>
     from project_category
     where category_name = #{categoryName}
   </select>
 
-  <select id="selectCountByNameAndId" parameterType="map" resultType="BaseResultMap">
+  <select id="selectCountByNameAndId" parameterType="map" resultMap="BaseResultMap">
     SELECT
     <include refid="Base_Column_List"/>
     from project_category
