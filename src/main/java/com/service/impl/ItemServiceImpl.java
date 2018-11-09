@@ -403,7 +403,7 @@ public class ItemServiceImpl implements ItemService{
                     userMapper.updateItemId(item.getItemManagerId(), JsonUtil.toJonSting(list));
                 } else {
                     list = JsonUtil.toJsonList(user.getItemId());
-                    list.add(new ItemIndexVo(item.getItemId(), item.getItemName()));
+                    list.add(new ItemIndexVo(fistItem.getItemId(), fistItem.getItemName()));
                     userMapper.updateItemId(item.getItemManagerId(), JsonUtil.toJonSting(list));
 
                 }
