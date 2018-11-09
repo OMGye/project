@@ -20,9 +20,9 @@ public interface CategoryMapper {
 
     List<Category> selectList();
 
-    int selectCountByName(String offerCompany);
+    Category selectCountByName(String offerCompany);
 
-    int selectCountByNameAndId(@Param("categoryName") String categoryName, @Param("categoryId") Integer categoryId);
+    Category selectCountByNameAndId(@Param("categoryName") String categoryName, @Param("categoryId") Integer categoryId);
 
     List<Category> selectByCategoryName(String categoryName);
 }

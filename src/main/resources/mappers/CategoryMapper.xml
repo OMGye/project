@@ -120,16 +120,16 @@
     from project_category
   </select>
 
-  <select id="selectCountByName" parameterType="java.lang.String" resultType="java.lang.Integer">
+  <select id="selectCountByName" parameterType="java.lang.String" resultType="BaseResultMap">
     SELECT
-    COUNT(1)
+    <include refid="Base_Column_List"/>
     from project_category
     where category_name = #{categoryName}
   </select>
 
-  <select id="selectCountByNameAndId" parameterType="map" resultType="java.lang.Integer">
+  <select id="selectCountByNameAndId" parameterType="map" resultType="BaseResultMap">
     SELECT
-    COUNT(1)
+    <include refid="Base_Column_List"/>
     from project_category
     where category_name = #{categoryName}
     and category_id != #{categoryId}

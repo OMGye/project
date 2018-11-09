@@ -24,9 +24,10 @@ public class CategoryServiceImpl implements CategoryService{
     public ServerResponse add(Category category) {
         if (category.getCategoryName() == null)
             return ServerResponse.createByErrorMessage("名字不能为空");
-        int count = categoryMapper.selectCountByName(category.getCategoryName());
-        if (count > 0)
-            return ServerResponse.createByErrorMessage("分类名存在");
+        Category dbCategory = categoryMapper.selectCountByName(category.getCategoryName());
+        if (dbCategory != null){
+            if (dbCategory.getSpecifications().equals(category.getSpecifications())) return ServerResponse.createByErrorMessage("分类名下改规格存在");
+        }
         int row = categoryMapper.insert(category);
         if (row > 0)
             return ServerResponse.createBySuccess("添加成功");
@@ -57,9 +58,10 @@ public class CategoryServiceImpl implements CategoryService{
         if (category.getCategoryId() == null)
             return ServerResponse.createByErrorMessage("参数错误");
         if (category.getCategoryName() != null){
-            int count = categoryMapper.selectCountByNameAndId(category.getCategoryName(),category.getCategoryId());
-            if (count > 0)
-                return ServerResponse.createByErrorMessage("分类名已存在");
+            Category dbCategory = categoryMapper.selectCountByNameAndId(category.getCategoryName(),category.getCategoryId());
+            if (dbCategory != null){
+                if (dbCategory.getSpecifications().equals(category.getSpecifications())) return ServerResponse.createByErrorMessage("分类名下改规格存在");
+            }
         }
         int row = categoryMapper.updateByPrimaryKeySelective(category);
         if (row > 0)
