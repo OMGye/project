@@ -354,6 +354,8 @@ public class ItemServiceImpl implements ItemService{
             list.add(new ItemIndexVo(fistItem.getItemId(),fistItem.getItemName()));
             userMapper.updateItemId(item.getItemUploaderId(), JsonUtil.toJonSting(list));
         }
+
+
         if (fistItem.getItemManagerId() == null){
             if (item.getItemManagerId() != null){
                 User user = userMapper.selectByPrimaryKey(item.getItemManagerId());
@@ -374,6 +376,7 @@ public class ItemServiceImpl implements ItemService{
                 }
             }
         }
+
         if (fistItem.getItemManagerId() != null && item.getItemManagerId() != null) {
             User user = userMapper.selectByPrimaryKey(fistItem.getItemManagerId());
             List<ItemIndexVo> list = JsonUtil.toJsonList(user.getItemId());
@@ -382,9 +385,13 @@ public class ItemServiceImpl implements ItemService{
                     list.remove(i);
                 }
             }
-            if (list.size() == 0)
+            if (list.size() == 0){
                 user.setItemId(null);
-            userMapper.updateByPrimaryKeySelective(user);
+                userMapper.updateManagerByItemId(user.getUserId());
+            }
+            else {
+                userMapper.updateByPrimaryKeySelective(user);
+            }
 
             user = userMapper.selectByPrimaryKey(item.getItemManagerId());
             if (user != null) {
