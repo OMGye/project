@@ -1,6 +1,7 @@
 package com.vo;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by upupgogogo on 2018/8/29.下午11:21
@@ -21,9 +22,7 @@ public class UserPersonInfoVo {
 
     private Integer userType;
 
-    private Integer itemId;
-
-    private String itemName;
+    private List<ItemIndexVo> list;
 
     private Date createTime;
 
@@ -59,13 +58,7 @@ public class UserPersonInfoVo {
         this.userType = userType;
     }
 
-    public void setItemId(Integer itemId) {
-        this.itemId = itemId;
-    }
 
-    public void setItemName(String itemName) {
-        this.itemName = itemName;
-    }
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
@@ -108,14 +101,6 @@ public class UserPersonInfoVo {
         return userType;
     }
 
-    public Integer getItemId() {
-        return itemId;
-    }
-
-    public String getItemName() {
-        return itemName;
-    }
-
     public Date getCreateTime() {
         return createTime;
     }
@@ -126,5 +111,14 @@ public class UserPersonInfoVo {
 
     public String getUserImg() {
         return userImg;
+    }
+
+    public void setList(List<ItemIndexVo> list) {
+        this.list = list;
+    }
+
+    public List<ItemIndexVo> getList() {
+
+        return list;
     }
 }

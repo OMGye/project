@@ -12,6 +12,7 @@ import com.pojo.User;
 import com.service.UserService;
 import com.util.DateTimeUtil;
 import com.util.FTPUtil;
+import com.util.JsonUtil;
 import com.util.PropertiesUtil;
 import com.vo.UserAccountVo;
 import com.vo.UserPersonInfoVo;
@@ -121,12 +122,14 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public ServerResponse<User> getUserInfo(Integer userId) {
+    public ServerResponse<UserPersonInfoVo> getUserInfo(Integer userId) {
         User user = userMapper.selectByPrimaryKey(userId);
         if (user == null)
             return ServerResponse.createByErrorMessage("没有该用户");
-
-        return ServerResponse.createBySuccess(user);
+        UserPersonInfoVo userPersonInfoVo = new UserPersonInfoVo();
+        BeanUtils.copyProperties(user,userPersonInfoVo);
+        userPersonInfoVo.setList(JsonUtil.toJsonList(user.getItemId()));
+        return ServerResponse.createBySuccess(userPersonInfoVo);
     }
 
     @Override
