@@ -343,14 +343,14 @@ public class ItemServiceImpl implements ItemService{
         if (fistItem.getItemUploaderId() == null){
             if (item.getItemUploaderId() != null){
                 List<ItemIndexVo> list = new ArrayList<>();
-                list.add(new ItemIndexVo(item.getItemId(),item.getItemName()));
+                list.add(new ItemIndexVo(fistItem.getItemId(),fistItem.getItemName()));
                 userMapper.updateItemId(item.getItemUploaderId(), JsonUtil.toJonSting(list));
             }
         }
         if (fistItem.getItemUploaderId() != null && item.getItemUploaderId() != null){
             userMapper.updateUploadByItemId(fistItem.getItemUploaderId());
             List<ItemIndexVo> list = new ArrayList<>();
-            list.add(new ItemIndexVo(item.getItemId(),item.getItemName()));
+            list.add(new ItemIndexVo(fistItem.getItemId(),fistItem.getItemName()));
             userMapper.updateItemId(item.getItemUploaderId(), JsonUtil.toJonSting(list));
         }
         if (fistItem.getItemManagerId() == null){
@@ -360,13 +360,13 @@ public class ItemServiceImpl implements ItemService{
                     if (user.getItemId() == null)
                     {
                         List<ItemIndexVo> list = new ArrayList<>();
-                        list.add(new ItemIndexVo(item.getItemId(),item.getItemName()));
+                        list.add(new ItemIndexVo(fistItem.getItemId(),fistItem.getItemName()));
                         userMapper.updateItemId(item.getItemManagerId(), JsonUtil.toJonSting(list));
                     }
                     else
                     {
                         List<ItemIndexVo> list = JsonUtil.toJsonList(user.getItemId());
-                        list.add(new ItemIndexVo(item.getItemId(),item.getItemName()));
+                        list.add(new ItemIndexVo(fistItem.getItemId(),fistItem.getItemName()));
                         userMapper.updateItemId(item.getItemManagerId(), JsonUtil.toJonSting(list));
 
                     }
