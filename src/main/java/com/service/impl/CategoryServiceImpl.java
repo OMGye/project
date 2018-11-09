@@ -59,9 +59,10 @@ public class CategoryServiceImpl implements CategoryService{
         if (category.getCategoryId() == null)
             return ServerResponse.createByErrorMessage("参数错误");
         if (category.getCategoryName() != null){
-            Category dbCategory = categoryMapper.selectCountByNameAndId(category.getCategoryName(),category.getCategoryId());
-            if (dbCategory != null){
-                if (dbCategory.getSpecifications().equals(category.getSpecifications())) return ServerResponse.createByErrorMessage("分类名下该规格存在");
+            List<Category> dbCategoryList = categoryMapper.selectCountByName(category.getCategoryName());
+            if (dbCategoryList.size() >= 1){
+                for (Category dbCategory : dbCategoryList)
+                    if (dbCategory.getSpecifications().equals(category.getSpecifications())) return ServerResponse.createByErrorMessage("分类名下该规格存在");
             }
         }
         int row = categoryMapper.updateByPrimaryKeySelective(category);
