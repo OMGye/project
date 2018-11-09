@@ -385,11 +385,13 @@ public class ItemServiceImpl implements ItemService{
                     list.remove(i);
                 }
             }
+
             if (list.size() == 0){
                 user.setItemId(null);
                 userMapper.updateManagerByItemId(user.getUserId());
             }
             else {
+                user.setItemId(JsonUtil.toJonSting(list));
                 userMapper.updateByPrimaryKeySelective(user);
             }
 
