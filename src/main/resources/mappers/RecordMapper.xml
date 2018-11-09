@@ -287,7 +287,7 @@
     from project_record
     <where>
       <if test="state != null"> state = #{state}</if>
-      <if test="itemList != null ">and item_id = #{itemId}</if>
+      <if test="itemId != null ">and item_id = #{itemId}</if>
       <if test="type != null">and record_type = #{type}</if>
       <if test="userId != null">and user_id = #{userId}</if>
     </where>
