@@ -14,7 +14,7 @@ import java.util.List;
  */
 public interface UserService {
 
-    ServerResponse<UserPersonInfoVo> login(User user);
+    ServerResponse<User> login(User user);
 
     ServerResponse<String> addUser(User user, MultipartFile file, String path);
 
