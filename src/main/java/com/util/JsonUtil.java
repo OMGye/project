@@ -1,8 +1,10 @@
 package com.util;
 
+import com.alibaba.fastjson.JSONObject;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.vo.ItemIndexVo;
+
 
 import java.util.List;
 
@@ -14,7 +16,7 @@ public class JsonUtil {
 
     public static String toJonSting(List<ItemIndexVo> list){
 
-        String str = gson.toJson(list);
+        String str = JSONObject.toJSONString(list);
         return str;
 
     }
