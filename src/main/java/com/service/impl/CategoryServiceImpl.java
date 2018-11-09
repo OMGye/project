@@ -26,7 +26,7 @@ public class CategoryServiceImpl implements CategoryService{
             return ServerResponse.createByErrorMessage("名字不能为空");
         Category dbCategory = categoryMapper.selectCountByName(category.getCategoryName());
         if (dbCategory != null){
-            if (dbCategory.getSpecifications().equals(category.getSpecifications())) return ServerResponse.createByErrorMessage("分类名下改规格存在");
+            if (dbCategory.getSpecifications().equals(category.getSpecifications())) return ServerResponse.createByErrorMessage("分类名下该规格存在");
         }
         int row = categoryMapper.insert(category);
         if (row > 0)
@@ -60,7 +60,7 @@ public class CategoryServiceImpl implements CategoryService{
         if (category.getCategoryName() != null){
             Category dbCategory = categoryMapper.selectCountByNameAndId(category.getCategoryName(),category.getCategoryId());
             if (dbCategory != null){
-                if (dbCategory.getSpecifications().equals(category.getSpecifications())) return ServerResponse.createByErrorMessage("分类名下改规格存在");
+                if (dbCategory.getSpecifications().equals(category.getSpecifications())) return ServerResponse.createByErrorMessage("分类名下该规格存在");
             }
         }
         int row = categoryMapper.updateByPrimaryKeySelective(category);
