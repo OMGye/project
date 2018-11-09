@@ -20,7 +20,7 @@ public interface RecordService {
 
     ServerResponse deleteRecordImg(User user, Integer recordId, String fileName, String name);
 
-    ServerResponse<PageInfo> list(User user, Integer state, Integer type, int pageSize, int pageNum);
+    ServerResponse<PageInfo> list(User user, Integer state, Integer type, int pageSize, int pageNum,Integer itemId);
 
    ServerResponse update(User user, Record record);
 

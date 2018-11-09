@@ -231,7 +231,7 @@ public class RecordServiceImpl implements RecordService{
     }
 
     @Override
-    public ServerResponse<PageInfo> list(User user, Integer state, Integer type, int pageSize, int pageNum) {
+    public ServerResponse<PageInfo> list(User user, Integer state, Integer type, int pageSize, int pageNum,Integer itemId) {
         PageHelper.startPage(pageNum,pageSize);
         PageHelper.orderBy("record_id desc");
         List<Integer> itemList = new ArrayList<>();
@@ -242,9 +242,14 @@ public class RecordServiceImpl implements RecordService{
             itemList.add(list.get(0).getItemId());
         }
         if (user.getUserType() == UserAuth.MANAGER.getCode()){
-            List<ItemIndexVo> list = JsonUtil.toJsonList(user.getItemId());
-            for (ItemIndexVo itemIndexVo : list)
-                itemList.add(itemIndexVo.getItemId());
+            if (itemId == null){
+                List<ItemIndexVo> list = JsonUtil.toJsonList(user.getItemId());
+                for (ItemIndexVo itemIndexVo : list)
+                    itemList.add(itemIndexVo.getItemId());
+            }
+            else
+                itemList.add(itemId);
+
         }
 
         List<Record> list = recordMapper.selectlist(state,type,itemList,userId);
