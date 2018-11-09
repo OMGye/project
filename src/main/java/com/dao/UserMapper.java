@@ -24,7 +24,7 @@ public interface UserMapper {
 
     List<User> selectByUserName(String userName);
 
-    int updateItemId(@Param("itemId")Integer userId, @Param("itemId") String itemId);
+    int updateItemId(@Param("userId")Integer userId, @Param("itemId") String itemId);
 
     List<User> selectByUserType(Integer userType);
 

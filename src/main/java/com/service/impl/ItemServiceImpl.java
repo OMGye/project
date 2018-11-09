@@ -339,6 +339,7 @@ public class ItemServiceImpl implements ItemService{
             }
             item.setItemFile(PropertiesUtil.getProperty("ftp.server.http.prefix")+targetFile.getName());
         }
+
         Item fistItem = itemMapper.selectByPrimaryKey(item.getItemId());
         if (fistItem.getItemUploaderId() == null){
             if (item.getItemUploaderId() != null){
