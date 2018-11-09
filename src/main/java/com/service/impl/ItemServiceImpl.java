@@ -444,23 +444,28 @@ public class ItemServiceImpl implements ItemService{
             return ServerResponse.createByErrorMessage("没有该项目");
         if (item.getItemManagerId() != null) {
             User user = userMapper.selectByPrimaryKey(item.getItemManagerId());
-            if (user != null){
+            if (user != null) {
                 List<ItemIndexVo> list = JsonUtil.toJsonList(user.getItemId());
                 for (int i = 0; i < list.size(); i++) {
-                    if (list.get(i).getItemId() == itemId) {
+                    if (list.get(i).getItemId() == item.getItemId()) {
                         list.remove(i);
                     }
                 }
-                if (list.size() == 0)
+
+                if (list.size() == 0) {
                     user.setItemId(null);
-                userMapper.updateByPrimaryKeySelective(user);
+                    userMapper.updateManagerByItemId(user.getUserId());
+                } else {
+                    user.setItemId(JsonUtil.toJonSting(list));
+                    userMapper.updateByPrimaryKeySelective(user);
+                }
             }
         }
         if (item.getItemUploaderId() != null) {
             User user = userMapper.selectByPrimaryKey(item.getItemUploaderId());
             if (user != null){
                 user.setItemId(null);
-                userMapper.updateByPrimaryKeySelective(user);
+                userMapper.updateByPrimaryKey(user);
             }
         }
         int row = itemMapper.deleteByPrimaryKey(itemId);
