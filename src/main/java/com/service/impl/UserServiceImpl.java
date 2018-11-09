@@ -121,18 +121,12 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public ServerResponse<UserPersonInfoVo> getUserInfo(Integer userId) {
+    public ServerResponse<User> getUserInfo(Integer userId) {
         User user = userMapper.selectByPrimaryKey(userId);
         if (user == null)
             return ServerResponse.createByErrorMessage("没有该用户");
-        UserPersonInfoVo userPersonInfoVo = new UserPersonInfoVo();
-        BeanUtils.copyProperties(user,userPersonInfoVo);
-        if(user.getItemId() != null){
-            Item item = itemMapper.selectByPrimaryKey(user.getItemId());
-            if (item != null)
-                userPersonInfoVo.setItemName(item.getItemName());
-        }
-        return ServerResponse.createBySuccess(userPersonInfoVo);
+
+        return ServerResponse.createBySuccess(user);
     }
 
     @Override

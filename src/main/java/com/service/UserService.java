@@ -22,7 +22,7 @@ public interface UserService {
 
     ServerResponse<String> updateUser(User user);
 
-    ServerResponse<UserPersonInfoVo> getUserInfo(Integer userId);
+    ServerResponse<User> getUserInfo(Integer userId);
 
     ServerResponse<User> update(User user, MultipartFile file, String path);
 

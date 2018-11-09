@@ -138,7 +138,7 @@ public class UploaderController {
 
     @RequestMapping(value = "user/getuserinfo.do",method = RequestMethod.GET)
     @ResponseBody
-    public ServerResponse<UserPersonInfoVo> getUserInfo(HttpSession session){
+    public ServerResponse<User> getUserInfo(HttpSession session){
         User user = (User)session.getAttribute(Const.CURRENT_USER);
         if(user == null){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");
