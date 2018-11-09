@@ -47,12 +47,16 @@ public class UserServiceImpl implements UserService{
     private ItemMapper itemMapper;
 
     @Override
-    public ServerResponse<User> login(User user) {
+    public ServerResponse<UserPersonInfoVo> login(User user) {
         User retUser = userMapper.selectByUserNameAndPassword(user.getUserName(),user.getPassword());
         if (retUser == null)
             return ServerResponse.createByErrorMessage("账号或密码错误");
-        if (retUser.getState() == Const.User.ACTIVATE)
-            return ServerResponse.createBySuccess(retUser);
+        if (retUser.getState() == Const.User.ACTIVATE){
+            UserPersonInfoVo userPersonInfoVo = new UserPersonInfoVo();
+            BeanUtils.copyProperties(retUser,userPersonInfoVo);
+            userPersonInfoVo.setList(JsonUtil.toJsonList(retUser.getItemId()));
+            return ServerResponse.createBySuccess(userPersonInfoVo);
+        }
         return ServerResponse.createByErrorMessage("账号未激活");
     }
 
