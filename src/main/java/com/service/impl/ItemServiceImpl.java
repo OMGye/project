@@ -1,5 +1,6 @@
 package com.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.common.Const;
 import com.common.ServerResponse;
 import com.common.UserAuth;
@@ -14,11 +15,9 @@ import com.pojo.Record;
 import com.pojo.User;
 import com.service.ItemService;
 import com.util.FTPUtil;
+import com.util.JsonUtil;
 import com.util.PropertiesUtil;
-import com.vo.ItemListVo;
-import com.vo.ItemVo;
-import com.vo.UserAccountVo;
-import com.vo.UserVo;
+import com.vo.*;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -126,17 +125,31 @@ public class ItemServiceImpl implements ItemService{
         Integer rowCount = itemMapper.insert(item);
         if (rowCount <= 0)
             return ServerResponse.createByErrorMessage("新建项目失败");
-        List<Integer> userIds = new ArrayList<>();
-        if (item.getItemManagerId() != null)
-            userIds.add(item.getItemManagerId());
-        if (item.getItemUploaderId() != null)
-            userIds.add(item.getItemUploaderId());
-        if (userIds.size() > 0) {
-            int row = userMapper.updateItemId(userIds, item.getItemId());
-            if (row < userIds.size()) {
-                itemMapper.deleteByPrimaryKey(item.getItemId());
+        if (item.getItemManagerId() != null){
+            User user = userMapper.selectByPrimaryKey(item.getItemManagerId());
+            if (user != null){
+                if (user.getItemId() == null)
+                {
+                    List<ItemIndexVo> list = new ArrayList<>();
+                    list.add(new ItemIndexVo(item.getItemId(),item.getItemName()));
+                    userMapper.updateItemId(item.getItemManagerId(), JsonUtil.toJonSting(list));
+                }
+                else
+                {
+                    List<ItemIndexVo> list = JsonUtil.toJsonList(user.getItemId());
+                    list.add(new ItemIndexVo(item.getItemId(),item.getItemName()));
+                    userMapper.updateItemId(item.getItemManagerId(), JsonUtil.toJonSting(list));
+
+                }
             }
         }
+
+        if (item.getItemUploaderId() != null){
+            List<ItemIndexVo> list = new ArrayList<>();
+            list.add(new ItemIndexVo(item.getItemId(),item.getItemName()));
+            userMapper.updateItemId(item.getItemUploaderId(), JsonUtil.toJonSting(list));
+        }
+
 
         return ServerResponse.createBySuccess("新建项目成功",item);
     }
@@ -256,14 +269,27 @@ public class ItemServiceImpl implements ItemService{
 
     @Override
     public ServerResponse<List<UserVo>> getUserForCheck(Integer userType) {
+        if (userType == UserAuth.ITEM_UPLOAD.getCode()) {
+            List<User> list = userMapper.selectByUserType(userType);
+            List<UserVo> userVoList = new ArrayList<>();
+            for (User user : list) {
+                UserVo userVo = new UserVo(user.getUserId(), user.getUserName());
+                userVoList.add(userVo);
+            }
 
-        List<User> list = userMapper.selectByUserType(userType);
-        List<UserVo> userVoList = new ArrayList<>();
-        for (User user : list){
-            UserVo userVo = new UserVo(user.getUserId(),user.getUserName());
-            userVoList.add(userVo);
+            return ServerResponse.createBySuccess(userVoList);
         }
-        return ServerResponse.createBySuccess(userVoList);
+        else {
+
+            List<User> list = userMapper.selectByUserTypeIsManager(userType);
+            List<UserVo> userVoList = new ArrayList<>();
+            for (User user : list) {
+                UserVo userVo = new UserVo(user.getUserId(), user.getUserName());
+                userVoList.add(userVo);
+            }
+
+            return ServerResponse.createBySuccess(userVoList);
+        }
     }
 
 
@@ -313,31 +339,72 @@ public class ItemServiceImpl implements ItemService{
             }
             item.setItemFile(PropertiesUtil.getProperty("ftp.server.http.prefix")+targetFile.getName());
         }
+        Item fistItem = itemMapper.selectByPrimaryKey(item.getItemId());
+        if (fistItem.getItemUploaderId() == null){
+            if (item.getItemUploaderId() != null){
+                List<ItemIndexVo> list = new ArrayList<>();
+                list.add(new ItemIndexVo(item.getItemId(),item.getItemName()));
+                userMapper.updateItemId(item.getItemUploaderId(), JsonUtil.toJonSting(list));
+            }
+        }
+        if (fistItem.getItemUploaderId() != null && item.getItemUploaderId() != null){
+            userMapper.updateUploadByItemId(fistItem.getItemUploaderId());
+            List<ItemIndexVo> list = new ArrayList<>();
+            list.add(new ItemIndexVo(item.getItemId(),item.getItemName()));
+            userMapper.updateItemId(item.getItemUploaderId(), JsonUtil.toJonSting(list));
+        }
+        if (fistItem.getItemManagerId() == null){
+            if (item.getItemManagerId() != null){
+                User user = userMapper.selectByPrimaryKey(item.getItemManagerId());
+                if (user != null){
+                    if (user.getItemId() == null)
+                    {
+                        List<ItemIndexVo> list = new ArrayList<>();
+                        list.add(new ItemIndexVo(item.getItemId(),item.getItemName()));
+                        userMapper.updateItemId(item.getItemManagerId(), JsonUtil.toJonSting(list));
+                    }
+                    else
+                    {
+                        List<ItemIndexVo> list = JsonUtil.toJsonList(user.getItemId());
+                        list.add(new ItemIndexVo(item.getItemId(),item.getItemName()));
+                        userMapper.updateItemId(item.getItemManagerId(), JsonUtil.toJonSting(list));
 
+                    }
+                }
+            }
+        }
+        if (fistItem.getItemManagerId() != null && item.getItemManagerId() != null) {
+            User user = userMapper.selectByPrimaryKey(fistItem.getItemManagerId());
+            List<ItemIndexVo> list = JsonUtil.toJsonList(user.getItemId());
+            for (int i = 0; i < list.size(); i++) {
+                if (list.get(i).getItemId() == fistItem.getItemId()) {
+                    list.remove(i);
+                }
+            }
+            if (list.size() == 0)
+                user.setItemId(null);
+            userMapper.updateByPrimaryKeySelective(user);
+
+            user = userMapper.selectByPrimaryKey(item.getItemManagerId());
+            if (user != null) {
+                if (user.getItemId() == null) {
+                    list = new ArrayList<>();
+                    list.add(new ItemIndexVo(item.getItemId(), item.getItemName()));
+                    userMapper.updateItemId(item.getItemManagerId(), JsonUtil.toJonSting(list));
+                } else {
+                    list = JsonUtil.toJsonList(user.getItemId());
+                    list.add(new ItemIndexVo(item.getItemId(), item.getItemName()));
+                    userMapper.updateItemId(item.getItemManagerId(), JsonUtil.toJonSting(list));
+
+                }
+            }
+        }
 
         itemMapper.updateByPrimaryKeySelective(item);
-        List<Integer> userIds = new ArrayList<>();
-        if (item.getItemManagerId() != null)
-            userIds.add(item.getItemManagerId());
-        if (item.getItemUploaderId() != null)
-            userIds.add(item.getItemUploaderId());
-        if (userIds.size() > 1){
-            userMapper.updateSetItemBeNullByItemId(item.getItemId());
-            int count = userMapper.updateItemId(userIds,item.getItemId());
-            if (count < userIds.size())
-                return ServerResponse.createByErrorMessage("修改失败");
-        }
-        if (userIds.size() == 1){
-            if (item.getItemUploaderId() != null)
-                userMapper.updateUploadByItemId(item.getItemId());
-            if (item.getItemManagerId() != null)
-                userMapper.updateManagerByItemId(item.getItemId());
-            int count = userMapper.updateItemId(userIds,item.getItemId());
-            if (count < userIds.size())
-                return ServerResponse.createByErrorMessage("修改失败");
-        }
+
         return ServerResponse.createBySuccess("修改成功");
     }
+
 
     @Override
     public ServerResponse<PageInfo<Item>> getItemByName(int pageNum, int pageSize, String itemName) {
@@ -368,7 +435,14 @@ public class ItemServiceImpl implements ItemService{
         if (item.getItemManagerId() != null) {
             User user = userMapper.selectByPrimaryKey(item.getItemManagerId());
             if (user != null){
-                user.setItemId(null);
+                List<ItemIndexVo> list = JsonUtil.toJsonList(user.getItemId());
+                for (int i = 0; i < list.size(); i++) {
+                    if (list.get(i).getItemId() == itemId) {
+                        list.remove(i);
+                    }
+                }
+                if (list.size() == 0)
+                    user.setItemId(null);
                 userMapper.updateByPrimaryKeySelective(user);
             }
         }
@@ -385,8 +459,4 @@ public class ItemServiceImpl implements ItemService{
     }
 
 
-    public static void main(String[] args) {
-        String s = "111,";
-        System.out.println(s.substring(0,s.length() - 1));
-    }
 }

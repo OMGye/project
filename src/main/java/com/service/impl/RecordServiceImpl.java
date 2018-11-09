@@ -12,10 +12,7 @@ import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import com.pojo.*;
 import com.service.RecordService;
-import com.util.BigDecimalUtil;
-import com.util.ExcelUtil;
-import com.util.FTPUtil;
-import com.util.PropertiesUtil;
+import com.util.*;
 import com.vo.*;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -50,7 +47,7 @@ public class RecordServiceImpl implements RecordService{
 
     @Override
     public ServerResponse addRecord(User user,Record record, String path, MultipartFile[] files) {
-        if (record.getRecordType() == null || StringUtils.isBlank(record.getRecordDec()))
+        if (record.getRecordType() == null || StringUtils.isBlank(record.getRecordDec()) || record.getItemId() == null)
             return ServerResponse.createByErrorMessage("参数不能为空");
         if(record.getUnitPrice() == null && record.getNumber() == null && record.getSumPrice() == null)
             return ServerResponse.createByErrorMessage("参数不能为空");
@@ -111,8 +108,7 @@ public class RecordServiceImpl implements RecordService{
             record.setSumPrice(BigDecimalUtil.mul(record.getUnitPrice().doubleValue(),record.getNumber()));
         record.setUserId(user.getUserId());
         record.setUserName(user.getUserName());
-        record.setItemId(user.getItemId());
-        Item item = itemMapper.selectByPrimaryKey(user.getItemId());
+        Item item = itemMapper.selectByPrimaryKey(record.getItemId());
         record.setItemName(item.getItemName());
         if(user.getUserType() == UserAuth.ITEM_UPLOAD.getCode())
             record.setState(Const.RecordConst.UNCHECK);
@@ -238,10 +234,20 @@ public class RecordServiceImpl implements RecordService{
     public ServerResponse<PageInfo> list(User user, Integer state, Integer type, int pageSize, int pageNum) {
         PageHelper.startPage(pageNum,pageSize);
         PageHelper.orderBy("record_id desc");
+        List<Integer> itemList = new ArrayList<>();
         Integer userId = null;
-        if (user.getUserType() == UserAuth.ITEM_UPLOAD.getCode())
+        if (user.getUserType() == UserAuth.ITEM_UPLOAD.getCode()){
             userId = user.getUserId();
-        List<Record> list = recordMapper.selectlist(state,type,user.getItemId(),userId);
+            List<ItemIndexVo> list = JsonUtil.toJsonList(user.getItemId());
+            itemList.add(list.get(0).getItemId());
+        }
+        if (user.getUserType() == UserAuth.MANAGER.getCode()){
+            List<ItemIndexVo> list = JsonUtil.toJsonList(user.getItemId());
+            for (ItemIndexVo itemIndexVo : list)
+                itemList.add(itemIndexVo.getItemId());
+        }
+
+        List<Record> list = recordMapper.selectlist(state,type,itemList,userId);
         PageInfo pageInfo = new PageInfo(list);
         return ServerResponse.createBySuccess(pageInfo);
     }
@@ -272,8 +278,14 @@ public class RecordServiceImpl implements RecordService{
         Record record = recordMapper.selectByPrimaryKey(recordId);
         if (record == null)
             return ServerResponse.createByErrorMessage("没有该条记录");
-        if (record.getItemId() != user.getItemId() || record.getState() != Const.RecordConst.UNCHECK)
-            return ServerResponse.createByErrorMessage("该条记录不能审核");
+        boolean isEixst = false;
+        List<ItemIndexVo> list = JsonUtil.toJsonList(user.getItemId());
+        for (ItemIndexVo itemIndexVo : list){
+            if (itemIndexVo.getItemId() == record.getItemId())
+                isEixst = true;
+        }
+        if (!isEixst)
+            return ServerResponse.createByErrorMessage("您不能审核该记录");
         record.setState(Const.RecordConst.FIRST_CHECK);
         int rowCount = recordMapper.updateByPrimaryKeySelective(record);
         if (rowCount > 0)
@@ -285,7 +297,7 @@ public class RecordServiceImpl implements RecordService{
     public ServerResponse<PageInfo> AllList(Integer itemId, Integer state, Integer type, int pageSize, int pageNum) {
         PageHelper.startPage(pageNum,pageSize);
         PageHelper.orderBy("record_id desc");
-        List<Record> list = recordMapper.selectlist(state,type,itemId,null);
+        List<Record> list = recordMapper.selectlistAll(state,type,itemId,null);
         PageInfo pageInfo = new PageInfo(list);
         return ServerResponse.createBySuccess(pageInfo);
     }
@@ -316,9 +328,16 @@ public class RecordServiceImpl implements RecordService{
         if (user.getUserType() == UserAuth.ITEM_UPLOAD.getCode())
             if (record.getUserId() != user.getUserId())
                 return ServerResponse.createByErrorMessage("您无权访问该条记录");
-        if (user.getUserType() == UserAuth.MANAGER.getCode())
-            if (record.getItemId() != user.getItemId())
+        if (user.getUserType() == UserAuth.MANAGER.getCode()) {
+            boolean isEixst = false;
+            List<ItemIndexVo> list = JsonUtil.toJsonList(user.getItemId());
+            for (ItemIndexVo itemIndexVo : list) {
+                if (itemIndexVo.getItemId() == record.getItemId())
+                    isEixst = true;
+            }
+            if (!isEixst)
                 return ServerResponse.createByErrorMessage("您无权访问该条记录");
+        }
         RecordVo recordVo = new RecordVo();
         BeanUtils.copyProperties(record,recordVo);
         if (record.getOfferId() != null){
@@ -335,9 +354,16 @@ public class RecordServiceImpl implements RecordService{
         Record record = recordMapper.selectByPrimaryKey(recordId);
         if (record == null)
             return ServerResponse.createByErrorMessage("没有该条记录");
-        if (user.getUserType() == UserAuth.MANAGER.getCode())
-            if (record.getItemId() != user.getItemId())
-                return ServerResponse.createByErrorMessage("您无权限拒绝该条记录");
+        if (user.getUserType() == UserAuth.MANAGER.getCode()) {
+            boolean isEixst = false;
+            List<ItemIndexVo> list = JsonUtil.toJsonList(user.getItemId());
+            for (ItemIndexVo itemIndexVo : list) {
+                if (itemIndexVo.getItemId() == record.getItemId())
+                    isEixst = true;
+            }
+            if (!isEixst)
+                return ServerResponse.createByErrorMessage("您无权拒绝该条记录");
+        }
         record.setState(Const.RecordConst.RECORD_REFUSE);
         String str = "";
         if (user.getUserType() == UserAuth.FINANCIAL.getCode()){
@@ -358,15 +384,25 @@ public class RecordServiceImpl implements RecordService{
         if (recordDec == null)
             return ServerResponse.createByErrorMessage("参数为空");
         recordDec = "%" + recordDec + "%";
-        Integer itemId =user.getItemId();
-        if (user.getUserType() == UserAuth.FINANCIAL.getCode() || user.getUserType() == UserAuth.BOSS.getCode())
-            itemId = null;
+        List<Integer> itemList = new ArrayList<>();
+        if (user.getUserType() == UserAuth.ITEM_UPLOAD.getCode()){
+            List<ItemIndexVo> list = JsonUtil.toJsonList(user.getItemId());
+            itemList.add(list.get(0).getItemId());
+        }
+
+        if (user.getUserType() == UserAuth.MANAGER.getCode()){
+            List<ItemIndexVo> list = JsonUtil.toJsonList(user.getItemId());
+            for (ItemIndexVo itemIndexVo : list)
+                itemList.add(itemIndexVo.getItemId());
+        }
+        if (itemList.size() == 0)
+            itemList = null;
         PageHelper.startPage(pageNum,pageSize);
         PageHelper.orderBy("record_id desc");
         Integer userId = null;
         if (user.getUserType() == UserAuth.ITEM_UPLOAD.getCode())
             userId = user.getUserId();
-        List<Record> list = recordMapper.selectlistByDec(state,recordDec,itemId,userId);
+        List<Record> list = recordMapper.selectlistByDec(state,recordDec,itemList,userId);
         PageInfo pageInfo = new PageInfo(list);
         return ServerResponse.createBySuccess(pageInfo);
     }
@@ -427,7 +463,7 @@ public class RecordServiceImpl implements RecordService{
             List<Record> recordList = null;
             //根据ID查找数据
             if (offerId == null) {
-                recordList = recordMapper.selectlist(Const.RecordConst.Last_CHECK,type,itemId,null);
+                recordList = recordMapper.selectlistAll(Const.RecordConst.Last_CHECK,type,itemId,null);
             }
             else {
                 recordList = recordMapper.selectByOfferId(Const.RecordConst.Last_CHECK,offerId);

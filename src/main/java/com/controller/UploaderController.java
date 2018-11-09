@@ -10,6 +10,7 @@ import com.pojo.User;
 import com.service.ItemService;
 import com.service.RecordService;
 import com.service.UserService;
+import com.util.JsonUtil;
 import com.vo.UserPersonInfoVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -117,7 +118,7 @@ public class UploaderController {
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");
         }
         if (UserAuth.ITEM_UPLOAD.getCode() == user.getUserType() && user.getItemId() != null){
-            return itemService.getItemById(user.getItemId());
+            return itemService.getItemById(JsonUtil.toJsonList(user.getItemId()).get(0).getItemId());
         }
         return ServerResponse.createByErrorMessage("请登入管理员账户");
     }

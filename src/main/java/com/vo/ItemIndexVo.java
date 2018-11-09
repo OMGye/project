@@ -25,4 +25,13 @@ public class ItemIndexVo {
     public String getItemName() {
         return itemName;
     }
+
+    public ItemIndexVo() {
+    }
+
+    public ItemIndexVo(Integer itemId, String itemName) {
+
+        this.itemId = itemId;
+        this.itemName = itemName;
+    }
 }

@@ -1,6 +1,16 @@
 package com.pojo;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.reflect.TypeToken;
+import com.vo.ItemIndexVo;
+
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Category {
     private Integer categoryId;
@@ -86,5 +96,23 @@ public class Category {
     }
 
     public Category() {
+    }
+
+
+    public static void main(String[] args) {
+        List<ItemIndexVo> list = new ArrayList<>();
+        list.add(new ItemIndexVo(1,"projectOne"));
+        list.add(new ItemIndexVo(2,"projectTwo"));
+        list.add(new ItemIndexVo(3,"projectThree"));
+        String pojo = JSONObject.toJSONString(list);
+        System.out.println(pojo);
+        Gson gson = new Gson();
+        List<ItemIndexVo> newList = gson.fromJson(pojo, new TypeToken<List<ItemIndexVo>>(){}.
+                getType());
+
+        for (ItemIndexVo itemIndexVo : newList)
+            System.out.println(itemIndexVo.getItemId() + "--" + itemIndexVo.getItemName());
+
+
     }
 }

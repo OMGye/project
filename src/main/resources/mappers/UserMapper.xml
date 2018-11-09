@@ -10,7 +10,7 @@
       <arg column="phone" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="state" jdbcType="TINYINT" javaType="java.lang.Byte" />
       <arg column="user_type" jdbcType="INTEGER" javaType="java.lang.Integer" />
-      <arg column="item_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="item_id" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
       <arg column="last_edit_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
     </constructor>
@@ -36,7 +36,7 @@
       last_edit_time)
     values (#{userId,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
       #{userImg,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{state,jdbcType=TINYINT}, 
-      #{userType,jdbcType=INTEGER}, #{itemId,jdbcType=INTEGER}, now(),
+      #{userType,jdbcType=INTEGER}, #{itemId,jdbcType=VARCHAR}, now(),
       now())
   </insert>
   <insert id="insertSelective" parameterType="com.pojo.User" >
@@ -96,7 +96,7 @@
         #{userType,jdbcType=INTEGER},
       </if>
       <if test="itemId != null" >
-        #{itemId,jdbcType=INTEGER},
+        #{itemId,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null" >
         #{createTime,jdbcType=TIMESTAMP},
@@ -128,7 +128,7 @@
         user_type = #{userType,jdbcType=INTEGER},
       </if>
       <if test="itemId != null" >
-        item_id = #{itemId,jdbcType=INTEGER},
+        item_id = #{itemId,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null" >
         create_time = #{createTime,jdbcType=TIMESTAMP},
@@ -147,7 +147,7 @@
       phone = #{phone,jdbcType=VARCHAR},
       state = #{state,jdbcType=TINYINT},
       user_type = #{userType,jdbcType=INTEGER},
-      item_id = #{itemId,jdbcType=INTEGER},
+      item_id = #{itemId,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       last_edit_time = now()
     where user_id = #{userId,jdbcType=INTEGER}
@@ -172,10 +172,7 @@
     UPDATE
     project_user
     set item_id = #{itemId}
-    where user_id in
-    <foreach item="item" index="index" open="(" separator="," close=")" collection="userIds">
-      #{item}
-    </foreach>
+    where user_id = #{userId}
   </update>
 
   <select id="selectByUserType" resultMap="BaseResultMap" parameterType="int">
@@ -184,6 +181,14 @@
     from project_user
     where user_type = #{userType}
     and item_id IS NULL
+    and state = 1
+  </select>
+
+  <select id="selectByUserTypeIsManager" resultMap="BaseResultMap" parameterType="int">
+    SELECT
+    <include refid="Base_Column_List"/>
+    from project_user
+    where user_type = #{userType}
     and state = 1
   </select>
 
@@ -206,7 +211,7 @@
     UPDATE
     project_user
     set item_id = NULL
-    where item_id = #{itemId}
+    where user_id = #{userId}
     and user_type = 2
   </update>
 
@@ -214,7 +219,7 @@
     UPDATE
     project_user
     set item_id = NULL
-    where item_id = #{itemId}
+    where user_id = #{userId}
     and user_type = 3
   </update>
 

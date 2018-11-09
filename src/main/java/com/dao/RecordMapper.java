@@ -20,9 +20,11 @@ public interface RecordMapper {
 
     int updateByPrimaryKey(Record record);
 
-    List<Record> selectlist(@Param("state")Integer state, @Param("type")Integer type, @Param("itemId")Integer itemId,@Param("userId")Integer userId);
+    List<Record> selectlist(@Param("state")Integer state, @Param("type")Integer type, @Param("itemList")List<Integer> itemList,@Param("userId")Integer userId);
 
-    List<Record> selectlistByDec(@Param("state")Integer state, @Param("recordDec")String recordDec, @Param("itemId")Integer itemId,@Param("userId")Integer userId);
+    List<Record> selectlistAll(@Param("state")Integer state, @Param("type")Integer type, @Param("itemId")Integer itemId,@Param("userId")Integer userId);
+
+    List<Record> selectlistByDec(@Param("state")Integer state, @Param("recordDec")String recordDec, @Param("itemList")List<Integer> itemList,@Param("userId")Integer userId);
 
     List<Record> selectByOfferId(@Param("state")Integer state, @Param("offerId")Integer offerId);
 

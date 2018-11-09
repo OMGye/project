@@ -215,6 +215,12 @@
       <version>2.8.0</version>
     </dependency>
 
+    <dependency>
+      <groupId>com.alibaba</groupId>
+      <artifactId>fastjson</artifactId>
+      <version>1.2.51</version>
+    </dependency>
+
     <!-- https://mvnrepository.com/artifact/com.thetransactioncompany/cors-filter -->
     <dependency>
       <groupId>com.thetransactioncompany</groupId>

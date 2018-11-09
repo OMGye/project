@@ -24,15 +24,14 @@ public interface UserMapper {
 
     List<User> selectByUserName(String userName);
 
-    int updateItemId(@Param("userIds") List<Integer> userIds, @Param("itemId") Integer itemId);
+    int updateItemId(@Param("itemId")Integer userId, @Param("itemId") String itemId);
 
     List<User> selectByUserType(Integer userType);
 
-    int updateSetItemBeNullByItemId(Integer itemId);
+    List<User> selectByUserTypeIsManager(Integer userType);
 
-    int updateManagerByItemId(Integer itemId);
 
-    int updateUploadByItemId(Integer itemId);
+    int updateUploadByItemId(Integer userId);
 
     List<User> selectByName(String userName);
 }
