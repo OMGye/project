@@ -390,7 +390,7 @@ public class ItemServiceImpl implements ItemService{
             if (user != null) {
                 if (user.getItemId() == null) {
                     list = new ArrayList<>();
-                    list.add(new ItemIndexVo(item.getItemId(), item.getItemName()));
+                    list.add(new ItemIndexVo(fistItem.getItemId(), fistItem.getItemName()));
                     userMapper.updateItemId(item.getItemManagerId(), JsonUtil.toJonSting(list));
                 } else {
                     list = JsonUtil.toJsonList(user.getItemId());
@@ -459,5 +459,13 @@ public class ItemServiceImpl implements ItemService{
         return ServerResponse.createBySuccess("删除成功");
     }
 
-
+    public static void main(String[] args) {
+        List<ItemIndexVo> list = JsonUtil.toJsonList("[{'itemId':74,'itemName':'testOne'}]");
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).getItemId() == 74) {
+                list.remove(i);
+            }
+        }
+        System.out.println(list.size());
+    }
 }
