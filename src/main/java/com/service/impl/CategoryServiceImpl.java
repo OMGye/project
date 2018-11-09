@@ -24,9 +24,10 @@ public class CategoryServiceImpl implements CategoryService{
     public ServerResponse add(Category category) {
         if (category.getCategoryName() == null)
             return ServerResponse.createByErrorMessage("名字不能为空");
-        Category dbCategory = categoryMapper.selectCountByName(category.getCategoryName());
-        if (dbCategory != null){
-            if (dbCategory.getSpecifications().equals(category.getSpecifications())) return ServerResponse.createByErrorMessage("分类名下该规格存在");
+        List<Category> dbCategoryList = categoryMapper.selectCountByName(category.getCategoryName());
+        if (dbCategoryList.size() >= 1){
+            for (Category dbCategory : dbCategoryList)
+                if (dbCategory.getSpecifications().equals(category.getSpecifications())) return ServerResponse.createByErrorMessage("分类名下该规格存在");
         }
         int row = categoryMapper.insert(category);
         if (row > 0)

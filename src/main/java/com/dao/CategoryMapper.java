@@ -20,7 +20,7 @@ public interface CategoryMapper {
 
     List<Category> selectList();
 
-    Category selectCountByName(String offerCompany);
+    List<Category> selectCountByName(String offerCompany);
 
     Category selectCountByNameAndId(@Param("categoryName") String categoryName, @Param("categoryId") Integer categoryId);
 
