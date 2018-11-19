@@ -163,7 +163,7 @@ public class ItemServiceImpl implements ItemService{
             return ServerResponse.createByErrorMessage("没有该条记录");
         if(file != null){
             String fileName = file.getOriginalFilename();
-            if (item.getItemFileName() == null){
+            if (item.getItemFileName() == null || item.getItemFileName().equals("")){
                 item.setItemFileName(fileName);
             }
             else {
