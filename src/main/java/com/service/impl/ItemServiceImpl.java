@@ -196,7 +196,7 @@ public class ItemServiceImpl implements ItemService{
                 logger.error("上传文件异常",e);
                 return null;
             }
-            if (item.getItemFile() != null)
+            if (item.getItemFile() != null && item.getItemFile() != "")
             item.setItemFile(item.getItemFile()+","+PropertiesUtil.getProperty("ftp.server.http.prefix")+targetFile.getName());
             else
                 item.setItemFile(PropertiesUtil.getProperty("ftp.server.http.prefix")+targetFile.getName());
