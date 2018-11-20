@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.TransportMapper" >
+  <resultMap id="BaseResultMap" type="com.pojo.Transport" >
+    <constructor >
+      <idArg column="transport_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="transport_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="transport_number" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="transport_phone" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    transport_id, transport_name, transport_number, transport_phone, create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from project_transport
+    where transport_id = #{transportId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from project_transport
+    where transport_id = #{transportId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.pojo.Transport" >
+    insert into project_transport (transport_id, transport_name, transport_number, 
+      transport_phone, create_time, update_time
+      )
+    values (#{transportId,jdbcType=INTEGER}, #{transportName,jdbcType=VARCHAR}, #{transportNumber,jdbcType=VARCHAR}, 
+      #{transportPhone,jdbcType=VARCHAR}, now(), now()
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pojo.Transport" >
+    insert into project_transport
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="transportId != null" >
+        transport_id,
+      </if>
+      <if test="transportName != null" >
+        transport_name,
+      </if>
+      <if test="transportNumber != null" >
+        transport_number,
+      </if>
+      <if test="transportPhone != null" >
+        transport_phone,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="transportId != null" >
+        #{transportId,jdbcType=INTEGER},
+      </if>
+      <if test="transportName != null" >
+        #{transportName,jdbcType=VARCHAR},
+      </if>
+      <if test="transportNumber != null" >
+        #{transportNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="transportPhone != null" >
+        #{transportPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pojo.Transport" >
+    update project_transport
+    <set >
+      <if test="transportName != null" >
+        transport_name = #{transportName,jdbcType=VARCHAR},
+      </if>
+      <if test="transportNumber != null" >
+        transport_number = #{transportNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="transportPhone != null" >
+        transport_phone = #{transportPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+
+        update_time = now(),
+
+    </set>
+    where transport_id = #{transportId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pojo.Transport" >
+    update project_transport
+    set transport_name = #{transportName,jdbcType=VARCHAR},
+      transport_number = #{transportNumber,jdbcType=VARCHAR},
+      transport_phone = #{transportPhone,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where transport_id = #{transportId,jdbcType=INTEGER}
+  </update>
+
+
+  <select id="selectCountByName" parameterType="java.lang.String" resultType="java.lang.Integer">
+    SELECT
+    COUNT(1)
+    from project_transport
+    where transport_name = #{transportName,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectList" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from project_transport
+  </select>
+
+  <select id="selectCountByNameAndId" parameterType="map" resultType="java.lang.Integer">
+    SELECT
+    COUNT(1)
+    from project_transport
+    where transport_name = #{transportName,jdbcType=VARCHAR}
+    and transport_id != #{transportId}
+  </select>
+
+  <select id="selectByTransportName" parameterType="java.lang.String" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    from project_transport
+    where transport_name LIKE #{transportName}
+  </select>
+</mapper>

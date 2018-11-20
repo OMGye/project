@@ -4,10 +4,7 @@ import com.common.ResponseCode;
 import com.common.ServerResponse;
 import com.common.UserAuth;
 import com.github.pagehelper.PageInfo;
-import com.pojo.Category;
-import com.pojo.Item;
-import com.pojo.OfferMaterial;
-import com.pojo.User;
+import com.pojo.*;
 import com.service.*;
 import com.vo.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -388,6 +385,88 @@ public class BossController {
         }
         if (UserAuth.BOSS.getCode() == user.getUserType() || UserAuth.MANAGER.getCode() == user.getUserType()){
             return offerMaterialService.getOffererById(offerId);
+        }
+
+        return ServerResponse.createByErrorMessage("请登入管理员账户");
+    }
+
+
+    @Autowired
+    private TransportService transportService;
+
+    @RequestMapping(value = "transport/addtransport.do",method = RequestMethod.POST)
+    @ResponseBody
+    public ServerResponse add(Transport transport, HttpSession session){
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        if(user == null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");
+        }
+        if (UserAuth.BOSS.getCode() == user.getUserType() || UserAuth.MANAGER.getCode() == user.getUserType()){
+            return transportService.add(transport);
+        }
+
+        return ServerResponse.createByErrorMessage("请登入管理员账户");
+    }
+
+    @RequestMapping(value = "transport/deletetransport.do",method = RequestMethod.POST)
+    @ResponseBody
+    public ServerResponse transportdelete(Integer transportId, HttpSession session){
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        if(user == null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");
+        }
+        if (UserAuth.BOSS.getCode() == user.getUserType() || UserAuth.MANAGER.getCode() == user.getUserType()){
+            return transportService.delete(transportId);
+        }
+
+        return ServerResponse.createByErrorMessage("请登入管理员账户");
+    }
+
+    @RequestMapping(value = "transport/transportlist.do",method = RequestMethod.GET)
+    @ResponseBody
+    public ServerResponse transportlist(HttpSession session, @RequestParam(value = "pageNum",defaultValue = "1") int pageNum, @RequestParam(value = "pageSize",defaultValue = "5")int pageSize){
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        if(user == null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");
+        }
+
+        return transportService.list(pageSize,pageNum);
+
+    }
+
+    @RequestMapping(value = "transport/updatetransport.do",method = RequestMethod.POST)
+    @ResponseBody
+    public ServerResponse update(Transport transport, HttpSession session){
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        if(user == null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");
+        }
+        if (UserAuth.BOSS.getCode() == user.getUserType() || UserAuth.MANAGER.getCode() == user.getUserType()){
+            return transportService.update(transport);
+        }
+
+        return ServerResponse.createByErrorMessage("请登入管理员账户");
+    }
+
+    @RequestMapping(value = "transport/gettransportbyname.do",method = RequestMethod.GET)
+    @ResponseBody
+    public ServerResponse<PageInfo<Transport>> getTransportByName(String transportName, HttpSession session,@RequestParam(value = "pageNum",defaultValue = "1") int pageNum, @RequestParam(value = "pageSize",defaultValue = "5")int pageSize){
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        if(user == null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");
+        }
+        return transportService.getTransportByName(pageSize,pageNum,transportName);
+    }
+
+    @RequestMapping(value = "transport/gettransportbyid.do",method = RequestMethod.POST)
+    @ResponseBody
+    public ServerResponse getTransportById(Integer transportId, HttpSession session){
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        if(user == null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录管理员");
+        }
+        if (UserAuth.BOSS.getCode() == user.getUserType() || UserAuth.MANAGER.getCode() == user.getUserType()){
+            return transportService.getTransportById(transportId);
         }
 
         return ServerResponse.createByErrorMessage("请登入管理员账户");
