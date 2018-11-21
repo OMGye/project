@@ -115,7 +115,7 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public ServerResponse<String> updateUser(User user) {
-        if (user.getUserType() == Const.User.UNACTIVATE){
+        if (user.getState() == Const.User.UNACTIVATE){
             int row = userMapper.deleteByPrimaryKey(user.getUserId());
             if (row > 0)
                 return ServerResponse.createBySuccess("删除成功");
